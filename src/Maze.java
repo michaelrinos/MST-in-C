@@ -1,4 +1,5 @@
 import java.io.FileNotFoundException;
+import java.lang.reflect.Array;
 import java.util.*;
 
 
@@ -12,11 +13,10 @@ public class Maze {
 
     private static final int MIN_WEIGHT = 1;
     private Map<String, Node> graph;
+    private int[] predecessors;
     private int MAX_WEIGHT;
     private int matrix[][];
-    private int[] predecessors;
     private int count;
-
 
 
     /**
@@ -31,8 +31,6 @@ public class Maze {
      * @param p the value which determines if there is a weight for a node
      */
     public Maze(int n, int seed, float p) throws FileNotFoundException, InterruptedException {
-
-
         // create the graph
         graph = new HashMap<String, Node>();
 
@@ -87,17 +85,6 @@ public class Maze {
         return result;
     }
 
-    /**
-     * Method to check if a given String node is in the graph.
-     * @param nodeName: string name of a node
-     * @return boolean true if the graph contains that key; false otherwise
-     */
-    public boolean isInGraph(String nodeName) {
-        return graph.containsKey(nodeName);
-    }
-
-
-
     public int canReachDFS(String start, int count) {
 
         Node startNode = graph.get(start);
@@ -131,13 +118,14 @@ public class Maze {
         }
     }
 
-    public void printList(){
+    public void printList() {
         System.out.println("The graph as an adjacency list:");
         for (int i = 0; i < MAX_WEIGHT; i++) {
             System.out.println(graph.get(Integer.toString(i)));
         }
         System.out.println();
     }
+
     public void DFSInfo(){
         System.out.println("Depth-First Search:");
         System.out.println("Vertices:  ");
@@ -148,6 +136,39 @@ public class Maze {
         for (int temp: predecessors){
             System.out.print(temp + " ");
         }
+        System.out.println();
     }
 
+    public Edge[] getMatrix() {
+        ArrayList<Edge> edges = new ArrayList<>();
+        for (int i = 0; i < MAX_WEIGHT; i++) {
+            for (int j = i; j < MAX_WEIGHT; j++) {
+                if (i == j) continue;
+                if (matrix[i][j] == 0) continue;
+                else {
+                    edges.add(new Edge(matrix[i][j], i, j));
+                }
+            }
+        }
+        Edge[] temp = new Edge[edges.size()];
+        temp = edges.toArray(temp);
+        return temp;
+    }
+
+    public Edge[] getList(){
+        ArrayList<Edge> edges = new ArrayList<>();
+        for (int i = 0; i < MAX_WEIGHT-1 ; i++) {
+            for (Node temp : graph.get(Integer.toString(i)).getNeighbors()){
+                if (Integer.parseInt(temp.getName()) > i) {
+                    edges.add(new Edge(
+                            temp.weights.get(Integer.toString(i)),
+                            i,
+                            Integer.parseInt(temp.getName())));
+                }
+            }
+        }
+        Edge[] temp = new Edge[edges.size()];
+        temp = edges.toArray(temp);
+        return temp;
+    }
 }

@@ -13,7 +13,7 @@ public class Node {
 	private String name;
     private int marked = 0;
 	private List<Node> neighbors;
-    private Map<String, Integer> weights;
+    public Map<String, Integer> weights;
 
     /**
 	 * Constructor.  Initialized with an empty list of neighbors.

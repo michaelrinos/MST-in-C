@@ -1,0 +1,124 @@
+
+TEST: n=7, seed=100000, p=0.5
+Time to generate the graph: 7 milliseconds
+
+The graph as an adjacency matrix:
+
+ 0   0   0   2   5   0   0  
+
+ 0   0   0   0   2   4   5  
+
+ 0   0   0   1   0   0   0  
+
+ 2   0   1   0   4   7   0  
+
+ 5   2   0   4   0   0   0  
+
+ 0   4   0   7   0   0   5  
+
+ 0   5   0   0   0   5   0  
+
+The graph as an adjacency list:
+0-> 3(2) 4(5) 
+1-> 4(2) 5(4) 6(5) 
+2-> 3(1) 
+3-> 0(2) 2(1) 4(4) 5(7) 
+4-> 0(5) 1(2) 3(4) 
+5-> 1(4) 3(7) 6(5) 
+6-> 1(5) 5(5) 
+
+Depth-First Search:
+Vertices:  
+ 0 1 2 3 4 5 6
+Predecessors: 
+-1 4 3 0 3 1 5 
+===================================
+SORTED EDGES WITH MATRIX USING INSERTION SORT
+2 3 weight = 1
+0 3 weight = 2
+1 4 weight = 2
+1 5 weight = 4
+3 4 weight = 4
+0 4 weight = 5
+1 6 weight = 5
+5 6 weight = 5
+3 5 weight = 7
+
+Total weight = 35
+Runtime: 3 milliseconds
+
+===================================
+SORTED EDGES WITH MATRIX USING COUNT SORT
+2 3 weight = 1
+0 3 weight = 2
+1 4 weight = 2
+1 5 weight = 4
+3 4 weight = 4
+0 4 weight = 5
+1 6 weight = 5
+5 6 weight = 5
+3 5 weight = 7
+
+Total weight = 35
+Runtime: 0 milliseconds
+
+===================================
+SORTED EDGES WITH MATRIX USING QUICKSORT
+2 3 weight = 1
+0 3 weight = 2
+1 4 weight = 2
+1 5 weight = 4
+3 4 weight = 4
+0 4 weight = 5
+1 6 weight = 5
+5 6 weight = 5
+3 5 weight = 7
+
+Total weight = 35
+Runtime: 0 milliseconds
+
+===================================
+SORTED EDGES WITH LIST USING INSERTION SORT
+2 3 weight = 1
+0 3 weight = 2
+1 4 weight = 2
+1 5 weight = 4
+3 4 weight = 4
+0 4 weight = 5
+1 6 weight = 5
+5 6 weight = 5
+3 5 weight = 7
+
+Total weight = 35
+Runtime: 0 milliseconds
+
+===================================
+SORTED EDGES WITH LIST USING COUNT SORT
+2 3 weight = 1
+0 3 weight = 2
+1 4 weight = 2
+1 5 weight = 4
+3 4 weight = 4
+0 4 weight = 5
+1 6 weight = 5
+5 6 weight = 5
+3 5 weight = 7
+
+Total weight = 35
+Runtime: 0 milliseconds
+
+===================================
+SORTED EDGES WITH LIST USING QUICKSORT
+2 3 weight = 1
+0 3 weight = 2
+1 4 weight = 2
+1 5 weight = 4
+3 4 weight = 4
+0 4 weight = 5
+1 6 weight = 5
+5 6 weight = 5
+3 5 weight = 7
+
+Total weight = 35
+Runtime: 0 milliseconds
+
