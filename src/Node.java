@@ -11,7 +11,9 @@ import java.util.Map;
 public class Node {
 
 	private String name;
+    private int rank = 0;
     private int marked = 0;
+	private Node predecessor;
 	private List<Node> neighbors;
     public Map<String, Integer> weights;
 
@@ -27,15 +29,6 @@ public class Node {
 	}
 
 	/**
-	 * Get the String name associated with this object.
-	 * 
-	 * @return name.
-	 */
-	public String getName() { 
-		return name;
-	}
-
-	/**
 	 * Add a neighbor to this node.  Checks if already present, and does not
 	 * duplicate in this case.
 	 * 
@@ -48,30 +41,7 @@ public class Node {
 		}
 	}
 
-	/**
-	 * Method to return the adjacency list for this node containing all 
-	 * of its neighbors.
-	 * 
-	 * @return the list of neighbors of the given node
-	 */
-	public List<Node> getNeighbors() { 
-		return new LinkedList<Node>(neighbors);
-	}
-
-
-    /**
-     * @return if node has been seen yet
-     */
-    public int getMarked() {
-        return marked;
-    }
-
-    /**
-     * @param marked set if this node has been seen
-     */
-    public void setMarked(int marked) {
-        this.marked = marked;
-    }
+    //Overridden methods
 
 	/**
 	 * Method to generate a string associated with the node, including the 
@@ -114,4 +84,68 @@ public class Node {
 	public int hashCode() {
 		return this.name.hashCode();
 	}
+
+
+    //Getters and Setters
+
+    /**
+     * Get the String name associated with this object.
+     *
+     * @return name.
+     */
+    public String getName() {
+        return name;
+    }
+
+    /**
+     * Method to return the adjacency list for this node containing all
+     * of its neighbors.
+     *
+     * @return the list of neighbors of the given node
+     */
+    public List<Node> getNeighbors() { return new LinkedList<Node>(neighbors);}
+
+    /**
+     * Getter for predecessor
+     * @return predecessor
+     */
+	public Node getp() {
+		return predecessor;
+	}
+
+    /**
+     * Setter for predecessor
+     * @param predecessor
+     */
+    public void setPredecessor(Node predecessor) { this.predecessor = predecessor;}
+
+    /**
+     * Getter for predecessor
+     * @return if node has been seen yet
+     */
+    public int getMarked() { return marked;}
+
+    /**
+     * Setter for marked
+     * @param marked set if this node has been seen
+     */
+    public void setMarked(int marked) {
+        this.marked = marked;
+    }
+
+    /**
+     * Getter for rank
+     * @return rank
+     */
+	public int rank() {
+		return rank;
+	}
+
+    /**
+     * Setter for rank
+     * @param rank
+     */
+    public void setRank(int rank) {
+        this.rank = rank;
+    }
 }
