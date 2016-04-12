@@ -2,14 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="64e7e245-5d81-49ba-9b27-51d9ce68f723" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/output" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/Edge.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/Maze.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/Minimum_Spanning_Tree.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/Node.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Minimum_Spanning_Tree.java" afterPath="$PROJECT_DIR$/src/Minimum_Spanning_Tree.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Node.java" afterPath="$PROJECT_DIR$/src/Node.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/README.md" afterPath="$PROJECT_DIR$/README.md" />
     </list>
     <ignored path="Minimum_Spanning_Tree.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -110,8 +103,8 @@
     <detection-done>true</detection-done>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="66" />
-    <option name="y" value="52" />
+    <option name="x" value="2626" />
+    <option name="y" value="-1388" />
     <option name="width" value="1246" />
     <option name="height" value="1387" />
   </component>
@@ -605,15 +598,15 @@
       <updated>1457893509690</updated>
       <workItem from="1457893510876" duration="452000" />
       <workItem from="1459868858199" duration="193000" />
-      <workItem from="1460468244349" duration="834000" />
+      <workItem from="1460468244349" duration="1917000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="1479000" />
+    <option name="totallyTimeSpent" value="2562000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="66" y="52" width="1246" height="1387" extended-state="4" />
+    <frame x="2626" y="-1388" width="1246" height="1387" extended-state="4" />
     <editor active="true" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
