@@ -5,7 +5,7 @@ This project is split up into four different parts:
 -   Graph Generation
 -   Edge Sorting
 -   Kruskal's Algorithm
--   To be determined
+-   Prim's Algorithm (w/ Priority Queue)
 
 Included are expected outputs of what the program should generate.
 
@@ -57,6 +57,17 @@ Overall this changes the runtime of cycle detection from O(N) in worst case init
 For example it would take about thirty years to determine if a cycle existed using a billion items using depth-first search, but only about six seconds using Union-by-rank with path compression.
 
 The converting of the adjacency matrix and adjacency list into an array of edges, as well as cycle-checking, and the actual construction of the minimum spanning tree are timed and outputted. 
+
+### Prim's Algorithm:
+Just like Krushkal's algorithm, Prim's algorithm will find the minimum spanning tree, but through a different process. 
+Prim's Algorithms works more effectively when dealing with a very dense graph ( Graph where the number of edges is closer to the maximum).
+This is due to how it generates the MST. Prims method focuses more on **vertices** as opposed to Krushkal's which focuses on **edges**.
+
+- Prims works by first choosing any random vertex in the Graph and adding it the MST.
+- To choose the next vertex to add the MST, Look at all the neighbors from that initial vertex and add whichever vertex has the smallest edge.
+- On each pass, choose the vertex (among those not yet in the MST) that has the smallest edge weight connected to any of the verices already in the MST.
+
+Overall Prim's runtime is proportional to M log M (if using a priority queue implemented as a binary heap).
 
 ###  Error Conditions and Messages
 
