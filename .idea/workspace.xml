@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="64e7e245-5d81-49ba-9b27-51d9ce68f723" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/Minimum_Spanning_Tree/Node.class" afterPath="$PROJECT_DIR$/out/production/Minimum_Spanning_Tree/Node.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-    </list>
+    <list default="true" id="64e7e245-5d81-49ba-9b27-51d9ce68f723" name="Default" comment="" />
     <ignored path="Minimum_Spanning_Tree.iws" />
     <ignored path=".idea/workspace.xml" />
     <ignored path="$PROJECT_DIR$/out/" />
@@ -105,7 +102,7 @@
   </component>
   <component name="ProjectFrameBounds">
     <option name="x" value="65" />
-    <option name="y" value="1464" />
+    <option name="y" value="24" />
     <option name="width" value="2495" />
     <option name="height" value="1416" />
   </component>
@@ -584,15 +581,15 @@
       <workItem from="1460468244349" duration="2163000" />
       <workItem from="1460599094696" duration="35000" />
       <workItem from="1462567295331" duration="513000" />
-      <workItem from="1462662252490" duration="894000" />
+      <workItem from="1462662252490" duration="1469000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="4250000" />
+    <option name="totallyTimeSpent" value="4825000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="65" y="1464" width="2495" height="1416" extended-state="6" />
+    <frame x="65" y="24" width="2495" height="1416" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />

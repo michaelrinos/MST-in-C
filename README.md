@@ -29,8 +29,8 @@ To determine which edge has greater priority first the weights are looked at if 
 
 The conversion from adjacency list and matrix to a list of edges as well as the accompanied sorting of that list are timed and outputted. Note that graph generation is not factored into the timing.
 
-### Krushkal's Algorithm:
-Implementation of Krushkal's algorithm with path compression and union-by-rank for cycle detection, using insertion sort, count sort, and quicksort to sort the edges of the graph, where the graph is implemented as both an adjacency matrix and adjancency list.
+### Kruskal's Algorithm:
+Implementation of Kruskal's algorithm with path compression and union-by-rank for cycle detection, using insertion sort, count sort, and quicksort to sort the edges of the graph, where the graph is implemented as both an adjacency matrix and adjancency list.
 
 After the edges are sorted, and assuming no cycles are formed, choose an edge with the smallest weight from the list of the sorted edges, remove it from the list and add it to the minimum spanning tree.
 Repeat this procedure until "n" minus one edges have been added to the MST. Then check that no cycles have been formed using the union-find algorithm with path compression.
@@ -59,9 +59,9 @@ For example it would take about thirty years to determine if a cycle existed usi
 The converting of the adjacency matrix and adjacency list into an array of edges, as well as cycle-checking, and the actual construction of the minimum spanning tree are timed and outputted. 
 
 ### Prim's Algorithm:
-Just like Krushkal's algorithm, Prim's algorithm will find the minimum spanning tree, but through a different process. 
+Just like Kruskal's algorithm, Prim's algorithm will find the minimum spanning tree, but through a different process. 
 Prim's Algorithms works more effectively when dealing with a very dense graph ( Graph where the number of edges is closer to the maximum).
-This is due to how it generates the MST. Prims method focuses more on **vertices** as opposed to Krushkal's which focuses on **edges**.
+This is due to how it generates the MST. Prims method focuses more on **vertices** as opposed to Kruskal's which focuses on **edges**.
 
 - Prims works by first choosing any random vertex in the Graph and adding it the MST.
 - To choose the next vertex to add the MST, Look at all the neighbors from that initial vertex and add whichever vertex has the smallest edge.
