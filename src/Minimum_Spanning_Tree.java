@@ -1,12 +1,16 @@
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.LinkedList;
-import java.util.NoSuchElementException;
-import java.util.Scanner;
+import java.util.*;
 
 public class Minimum_Spanning_Tree {
+
     private static int numbers;
 
+    /**
+     * To-do: FILL ME IN
+     * @param args
+     * @throws InterruptedException
+     */
     public static void main(String[] args) throws InterruptedException {
         if (args.length != 1) {
             System.out.println("Input file not found");
@@ -52,8 +56,10 @@ public class Minimum_Spanning_Tree {
             }
             //print = true;
             final long startTime = System.currentTimeMillis();
-            Maze g = new Maze(n, seed, p);
+            Maze g = new Maze();
+            g.generate(n, seed, p);
             final long endTime = System.currentTimeMillis();
+            Edge[] edges;
 
             if (print) {
                 System.out.println();
@@ -63,24 +69,35 @@ public class Minimum_Spanning_Tree {
                 g.printList();
                 g.DFSInfo();
 
-                sorter(g, 1, 1, print);
-                sorter(g, 1, 2, print);
-                sorter(g, 1, 3, print);
-                sorter(g, 2, 1, print);
-                sorter(g, 2, 2, print);
-                sorter(g, 2, 3, print);
+                // I should probably make a thread to do this... but only after this class is done
+                // because who wants to have to deal with waiting for the slowest thread before outputting
+                // results - output needs to match the profs.
+
+                sorter(g, 1, 1, 1, print);
+                sorter(g, 1, 1, 2, print);
+                sorter(g, 1, 1, 3, print);
+                sorter(g, 1, 2, 1, print);
+                sorter(g, 1, 2, 2, print);
+                sorter(g, 1, 2, 3, print);
+
+                sorter(g, 2, 1, 1, print);
+                sorter(g, 2, 2, 1, print);
+
 
             } else {
                 System.out.println();
                 System.out.println("TEST: n=" + n + ", seed=" + seed + ", p=" + p);
                 System.out.println("Time to generate the graph: " + (endTime - startTime) + " milliseconds\n");
 
-                sorter(g, 1, 1, print);
-                sorter(g, 1, 2, print);
-                sorter(g, 1, 3, print);
-                sorter(g, 2, 1, print);
-                sorter(g, 2, 2, print);
-                sorter(g, 2, 3, print);
+                sorter(g, 1, 1, 1, print);
+                sorter(g, 1, 1, 2, print);
+                sorter(g, 1, 1, 3, print);
+                sorter(g, 1, 2, 1, print);
+                sorter(g, 1, 2, 2, print);
+                sorter(g, 1, 2, 3, print);
+
+                sorter(g, 2, 1, 1, print);
+                sorter(g, 2, 2, 1, print);
             }
 
         } catch (FileNotFoundException e) {
@@ -97,43 +114,63 @@ public class Minimum_Spanning_Tree {
      * @param printEdges Boolean indicating whether to print the neighbors of each node
      * @return the sorted list
      */
-    public static Edge[] sorter(Maze g, int lorm, int sort, boolean printEdges) {
-        final long startTime;
-        final long endTime;
-        Edge[] lst;
-        switch (lorm){
+    public static Edge[] sorter(Maze g, int korp, int lorm, int sort, boolean printEdges) {
+        long startTime=0;
+        long endTime=0;
+        LinkedList<Edge> MST = new LinkedList<>();
+        Edge[] lst = new Edge[numbers];
+        Node[] temp;
+        switch (korp) {
             case 1:
-                startTime = System.currentTimeMillis();
-                lst = g.getMatrix();
+                switch (lorm) {
+                    case 1:
+                        startTime = System.currentTimeMillis();
+                        lst = g.getMatrix();
+                        break;
+                    case 2:
+                        startTime = System.currentTimeMillis();
+                        lst = g.getList();
+                        break;
+                    default:
+                        lst = g.getMatrix();
+                        break;
+                }
+                switch (sort) {
+                    case 1:
+                        insertionSort(lst);
+                        break;
+                    case 2:
+                        countSort(lst, numbers + 1);
+                        break;
+                    case 3:
+                        quickSort(lst, 0, lst.length - 1);
+                        break;
+                }
+                MST = kruskal(lst);
+                endTime = System.currentTimeMillis();
                 break;
+
+
             case 2:
-                startTime = System.currentTimeMillis();
-                lst = g.getList();
-                break;
-            default:
-                startTime = 0;
-                lst = g.getMatrix();
+                switch (lorm){
+                    case 1:
+                        lst = g.getMatrix();
+
+                        temp = g.getMatrixNodes();
+                        MST = prim(temp);
+                        break;
+                    case 2:
+                        lst = g.getMatrix();
+
+                        temp = g.getListNodes();
+                        MST = prim(temp);
+                        break;
+                }
                 break;
         }
-        switch (sort) {
-            case 1:
-                insertionSort(lst);
-                endTime = System.currentTimeMillis();
-                break;
-            case 2:
-                countSort(lst, numbers + 1);
-                endTime = System.currentTimeMillis();
-                break;
-            case 3:
-                quickSort(lst, 0, lst.length - 1);
-                endTime = System.currentTimeMillis();
-                break;
-            default:
-                endTime = 0;
-                break;
-        }
-        LinkedList<Edge> krus = kruskal(lst);
-        printSorts(krus, lorm, sort, (endTime-startTime), printEdges);
+
+        //LinkedList<Edge> krus = kruskal(lst);
+        printSorts(MST, korp,lorm, sort, (endTime-startTime), printEdges);
         return lst;
     }
 
@@ -145,37 +182,43 @@ public class Minimum_Spanning_Tree {
      * @param runTime The time taken for converting from adjacency list/matrix and sorting
      * @param printEdges Weather or not to print the neighbors of each node
      */
-    public static void printSorts(LinkedList<Edge> arr, int morl, int sort, long runTime, boolean printEdges) {
+    public static void printSorts(LinkedList<Edge> arr,int korp, int morl, int sort, long runTime, boolean printEdges) {
         System.out.println("===================================");
-        System.out.print("KRUSKAL WITH ");
-        switch (morl){
+        switch (korp){
             case 1:
-                System.out.print("MATRIX USING ");
+                System.out.print("KRUSKAL WITH ");
+                switch (morl){
+                    case 1:
+                        System.out.print("MATRIX USING ");
+                        break;
+                    case 2:
+                        System.out.print("LIST USING ");
+                        break;
+                }
+                switch (sort) {
+                    case 1:
+                        System.out.println("INSERTION SORT");
+                        break;
+                    case 2:
+                        System.out.println("COUNT SORT");
+                        break;
+                    case 3:
+                        System.out.println("QUICKSORT");
+                        break;
+                }
                 break;
             case 2:
-                System.out.print("LIST USING ");
+                System.out.print("PRIM WITH ADJACENCY ");
+                switch (morl){
+                    case 1:
+                        System.out.println("MATRIX");
+                        break;
+                    case 2:
+                        System.out.println("LIST");
+                        break;
+                }
                 break;
         }
-        switch (sort) {
-            case 1:
-                System.out.println("INSERTION SORT");
-                break;
-            case 2:
-                System.out.println("COUNT SORT");
-                break;
-            case 3:
-                System.out.println("QUICKSORT");
-                break;
-        }
-        /*int tWeight = 0;
-        for (int i = 0; i < arr.length; i++) {
-            Edge temp = arr[i];
-            if (printEdges)
-                System.out.print(temp);
-            tWeight+=temp.getWeight();
-        }
-        if (!printEdges)
-            System.out.println();*/
 
         int tWeight = 0;
         for (Edge temp : arr){
@@ -186,9 +229,31 @@ public class Minimum_Spanning_Tree {
         if (!printEdges)
             System.out.println();
 
-        System.out.println("Total weight = "+tWeight);
-        System.out.println("Runtime: "+ runTime +" milliseconds\n");
+        switch (korp){
+            case 1:
+                System.out.println( "\nTotal weight of MST using Kruskal:" +
+                        " " + tWeight);
+                System.out.println( "Runtime: " + runTime + " milliseconds\n");
+                break;
+            case 2:
+                System.out.println( "\nTotal weight of MST using Prim: " + tWeight);
+                System.out.println( "Runtime: " + runTime + " milliseconds\n");
+                break;
+        }
     }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    //
+    //     _____            _   _                _____ _          __  __
+    //    / ____|          | | (_)              / ____| |        / _|/ _|
+    //   | (___   ___  _ __| |_ _ _ __   __ _  | (___ | |_ _   _| |_| |_
+    //    \___ \ / _ \| '__| __| | '_ \ / _` |  \___ \| __| | | |  _|  _|
+    //    ____) | (_) | |  | |_| | | | | (_| |  ____) | |_| |_| | | | |
+    //   |_____/ \___/|_|   \__|_|_| |_|\__, | |_____/ \__|\__,_|_| |_|
+    //                                   __/ |
+    //                                  |___/
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 
     /**
      * Quicksort sorts a list of objects by choosing a trivial point
@@ -260,6 +325,17 @@ public class Minimum_Spanning_Tree {
         for (int i = copy.length-1; i >= 0; i--)
             a[--c[copy[i].getWeight()]] = copy[i];
     }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    //        _                   _     _         _    _____ _          __  __
+    //       | |                 | |   | |       | |  / ____| |        / _|/ _|
+    //       | | ___ __ _   _ ___| |__ | | ____ _| | | (___ | |_ _   _| |_| |_
+    //       | |/ / '__| | | / __| '_ \| |/ / _` | |  \___ \| __| | | |  _|  _|
+    //       |   <| |  | |_| \__ \ | | |   < (_| | |  ____) | |_| |_| | | | |
+    //       |_|\_\_|   \__,_|___/_| |_|_|\_\__,_|_| |_____/ \__|\__,_|_| |_|
+    //
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 
     /**
      * Given a list of sorted edges, add an edge to the MST
@@ -338,4 +414,59 @@ public class Minimum_Spanning_Tree {
         }
     }
 
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    //             _____      _           _        _____ _          __  __
+    //            |  __ \    (_)         ( )      / ____| |        / _|/ _|
+    //            | |__) | __ _ _ __ ___ |/ ___  | (___ | |_ _   _| |_| |_
+    //            |  ___/ '__| | '_ ` _ \  / __|  \___ \| __| | | |  _|  _|
+    //            | |   | |  | | | | | | | \__ \  ____) | |_| |_| | | | |
+    //            |_|   |_|  |_|_| |_| |_| |___/ |_____/ \__|\__,_|_| |_|
+    //
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+    public static LinkedList<Edge> prim(Node[] a){
+        Node parent[] = new Node[a.length];
+        int key[] = new int[a.length];
+        LinkedList<Edge> MST = new LinkedList<>();
+        Heap minHeap = new Heap(numbers);
+        for (int i = 1; i < a.length ; i++) {
+            parent[i] = new Node("-1");
+            key[i] = Integer.MAX_VALUE;
+            minHeap.insert(new MinHeapNode(a[i], key[i]));
+        }
+        key[0] = 0;
+        minHeap.insert(new MinHeapNode(a[0], key[0]));
+        while (!minHeap.isEmpty() ){
+            MinHeapNode u = minHeap.deleteMin();
+            List<Node> neighbors = u.getNode().getNeighbors();
+            while (!neighbors.isEmpty()){
+                Node v = neighbors.remove(0);
+
+                int name = Integer.parseInt(v.getName());
+                int weight = v.getWeight(u.getNode().getName());
+                MinHeapNode neighbor = new MinHeapNode(v,key[name]);
+
+                if (minHeap.contains(
+                        neighbor) // If the node isn't in the MST
+                        && weight < key[name]
+                        ){
+                    key[name] = weight;
+
+                    parent[Integer.parseInt(v.getName())] = u.getNode();
+
+                    minHeap.decreaseKey(new MinHeapNode(v,weight));
+
+                }
+            }
+        }
+        for (int i = 0; i < parent.length ; i++) {
+            if (parent[i] != null) {
+                MST.add(new Edge(parent[i].getWeight(Integer.toString(i)), Integer.parseInt(parent[i].getName()), i));
+            }
+        }
+        return MST;
+    }
 }

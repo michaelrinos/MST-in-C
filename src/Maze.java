@@ -1,7 +1,5 @@
 import java.io.FileNotFoundException;
-import java.lang.reflect.Array;
 import java.util.*;
-
 
 /**
  * Graph class.  Holds representation of a graph as well as functions to
@@ -26,18 +24,20 @@ public class Maze {
      * Returns the graph in the form of a map having the names of the
      * nodes as keys, and the nodes themselves as values.
      *
-     * @param n the number of nodes in the graph
-     * @param seed seed value for random number generator
-     * @param p the value which determines if there is a weight for a node
      */
-    public Maze(int n, int seed, float p) throws FileNotFoundException, InterruptedException {
+    public Maze() {
         // create the graph
         graph = new HashMap<String, Node>();
+    }
 
+    public Map<String, Node> getGraph() {
+        return graph;
+    }
+
+    public void generate(int n, int seed, float p){
         MAX_WEIGHT = n;
         predecessors = new int[n];
         predecessors[0] = -1;
-
 
         for (int r = 0; r < n; r++) {
             String name = Integer.toString(r);
@@ -47,7 +47,7 @@ public class Maze {
         Random edgeRand = new Random(seed);
         Random weightRand = new Random(2 * seed);
         while (count != n) {
-            this.matrix =new int[n][n];
+            this.matrix = new int[n][n];
             count = 0;
             int range = MAX_WEIGHT - MIN_WEIGHT + 1;
             for (int i = 0; i < n; i++) {
@@ -65,10 +65,10 @@ public class Maze {
                     }
                 }
             }
-            count = canReachDFS(Integer.toString(0),0);
+            graph.get(Integer.toString(0)).setPredecessor(new Node("-1"));
+            count = canReachDFS(Integer.toString(0), 0);
         }
     }
-
 
     /**
      * Method to generate a string associated with the graph.  The string
@@ -88,16 +88,20 @@ public class Maze {
     public int canReachDFS(String start, int count) {
 
         Node startNode = graph.get(start);
-        int name =Integer.parseInt(start);
-        if (startNode.getMarked() == 0){
-            count+=1;
+        int name = Integer.parseInt(start);
+        if (startNode.getMarked() == 0) {
+            count += 1;
         }
 
         startNode.setMarked(1);
         for (Node temp : startNode.getNeighbors()) {
             if (temp.getMarked() == 0) {
                 int tName = Integer.parseInt(temp.getName());
+
                 predecessors[tName] = name;
+                temp.setPredecessor(startNode);
+
+
                 count = canReachDFS(temp.getName(), count);
             }
         }
@@ -106,13 +110,13 @@ public class Maze {
         return count;
     }
 
-    public void printMatrix(){
+    public void printMatrix() {
         System.out.println("The graph as an adjacency matrix:\n");
         for (int i = 0; i < MAX_WEIGHT; i++) {
             System.out.print(" ");
             for (int j = 0; j < MAX_WEIGHT; j++) {
                 if (j == 0) System.out.print(matrix[i][j]);
-                else System.out.print("   "+matrix[i][j]);
+                else System.out.print("   " + matrix[i][j]);
             }
             System.out.println("\n");
         }
@@ -126,15 +130,16 @@ public class Maze {
         System.out.println();
     }
 
-    public void DFSInfo(){
+    public void DFSInfo() {
         System.out.println("Depth-First Search:");
         System.out.println("Vertices:  ");
         for (int i = 0; i < MAX_WEIGHT; i++) {
-            System.out.print(" "+i);
+            System.out.print(" " + i);
         }
+
         System.out.println("\nPredecessors: ");
-        for (int temp: predecessors){
-            System.out.print(temp + " ");
+        for (int i = 0; i < MAX_WEIGHT ; i++) {
+            System.out.print(graph.get(Integer.toString(i)).getp().getName() + " ");
         }
         System.out.println();
     }
@@ -155,10 +160,10 @@ public class Maze {
         return temp;
     }
 
-    public Edge[] getList(){
+    public Edge[] getList() {
         ArrayList<Edge> edges = new ArrayList<>();
-        for (int i = 0; i < MAX_WEIGHT-1 ; i++) {
-            for (Node temp : graph.get(Integer.toString(i)).getNeighbors()){
+        for (int i = 0; i < MAX_WEIGHT - 1; i++) {
+            for (Node temp : graph.get(Integer.toString(i)).getNeighbors()) {
                 if (Integer.parseInt(temp.getName()) > i) {
                     edges.add(new Edge(
                             temp.weights.get(Integer.toString(i)),
@@ -171,4 +176,34 @@ public class Maze {
         temp = edges.toArray(temp);
         return temp;
     }
+    public Node[] getListNodes(){
+        Node[] nodes = new Node[MAX_WEIGHT];
+        for (int i = 0; i <MAX_WEIGHT ; i++) {
+            nodes[i] = graph.get(Integer.toString(i));
+        }
+        return nodes;
+    }
+    public Node[] getMatrixNodes(){
+        ArrayList<Node> nodes = new ArrayList<>();
+        for (int i = 0; i < MAX_WEIGHT ; i++) {
+            nodes.add(new Node(Integer.toString(i)));
+        }
+
+        for (int i = 0; i < MAX_WEIGHT; i++) {
+            for (int j = 0; j < MAX_WEIGHT ; j++) {
+                if (i == j) continue;
+                if (matrix[i][j] == 0) continue;
+                else {
+                    nodes.get(i).addNeighbor(nodes.get(j),matrix[i][j]);
+                    nodes.get(j).addNeighbor(nodes.get(i),matrix[i][j]);
+                }
+            }
+        }
+        Node[] temp = new Node[MAX_WEIGHT];
+        temp = nodes.toArray(temp);
+        return temp;
+
+    }
+
+
 }
