@@ -43,7 +43,7 @@ int main(int argc, const char* argv[]){
     const time_t startTime = time(0);
     //Init maze
     const time_t endTime = time(0);
-    
+    printf("numbers %d starttime %ld endtime %ld print %d", numbers, startTime, endTime, print);
     
     fclose(fp); //be kind rewind
     return 0;
