@@ -53,28 +53,30 @@ CLIBFLAGS =	-lm -lbsd
 
 
 CPP_FILES =	
-C_FILES =	Minimum_Spanning_Tree.c Node.c
+C_FILES =	Minimum_Spanning_Tree.c Node.c Maze.c hash.c
 PS_FILES =	
 S_FILES =	
-H_FILES =	Node.h
+H_FILES =	Node.h Maze.h hash.h
 SOURCEFILES =	$(H_FILES) $(CPP_FILES) $(C_FILES) $(S_FILES)
 .PRECIOUS:	$(SOURCEFILES)
-OBJFILES =	
-
+OBJFILES = hash.o Maze.o
+	
 #
 # Main targets
 #
 
-all:	MST 
+all:	MST
 
-MST:	$(OBJFILES)
-	$(CC) $(CFLAGS) -o MST Minimum_Spanning_Tree.c Node.h $(OBJFILES) $(CLIBFLAGS)
+MST: 	Minimum_Spanning_Tree.o $(OBJFILES)
+	$(CC) $(CFLAGS) -o MST Minimum_Spanning_Tree.o $(OBJFILES) $(CLIBFLAGS)
 
 #
 # Dependencies
 #
 
-MST.o:	Node.h
+Minimum_Spanning_Tree.o: Maze.h
+hash.o:     hash.h
+Maze.o:     Maze.h
 
 #
 # Housekeeping
@@ -86,7 +88,7 @@ archive.tgz:	$(SOURCEFILES) Makefile
 	tar cf - $(SOURCEFILES) Makefile | gzip > archive.tgz
 
 clean:
-	-/bin/rm -f $(OBJFILES) MST.o
+	-/bin/rm -f $(OBJFILES) MST.o Hashtable.o
 
 realclean:        clean
-	-/bin/rm -f MST 
+	-/bin/rm -f MST Hashtable

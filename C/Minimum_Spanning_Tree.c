@@ -1,5 +1,7 @@
-#include <stdio.h>
+#include "hash.h"
+#include "Maze.h"
 #include <stdlib.h>
+#include <stdio.h>
 #include <time.h>
 
 
@@ -42,6 +44,8 @@ int main(int argc, const char* argv[]){
     
     const time_t startTime = time(0);
     //Init maze
+    Maze * maze = create(numbers);
+    printf("Maze %d", maze->count);
     const time_t endTime = time(0);
     printf("numbers %d starttime %ld endtime %ld print %d", numbers, startTime, endTime, print);
     
