@@ -18,5 +18,6 @@ struct Maze{
 typedef struct Maze Maze;
 
 Maze* create(size_t size);
+void generate(int number, int seed, double value);
 
 #endif

@@ -28,4 +28,37 @@ Maze * create (size_t size){
     }
     return maze;
 }
+void generate(Maze * maze, int n, int seed, double p){
+    maze->pSize = n;
+    maze->predecessors = (int *)malloc(sizeof(int) * maze->pSize);
+    maze->predecessors[0] = -1;
 
+    for (int i = 0; i < n; i++){
+        Node node = create( (char) i );
+        ht_set(maze->map, (char) i, node);
+    }
+
+    srand(seed);
+    
+    while (maze->count != n){
+        maze->count = 0;
+        int range = n - 1 + 1;
+		for (int i = 0; i < n; i++) {
+                for (int j = i; j < n; j++) {
+                    if (i == j) continue;
+					double r = (double) rand() / (double)((unsigned)RAND_MAX + 1);
+                    if (r <= p){
+                        //int weight = MIN_WEIGHT + weightRand.nextInt(range);
+                    }
+                    maze->matrix[i][j] = weight;
+                    maze->matrix[j][i] = weight;
+                    //Add j as a neighbor to i
+                    //Add i as a neighbor to j
+                }
+        }
+        //set the predecessor of 0 as -1
+        canReachDFS((char) 0, maze->count);     //Update how many nodes we can get 
+                                                //to from the first node used in 
+                                                //while check and set to count.
+    }
+}
