@@ -59,7 +59,7 @@ S_FILES =
 H_FILES =	Node.h Maze.h hash.h
 SOURCEFILES =	$(H_FILES) $(CPP_FILES) $(C_FILES) $(S_FILES)
 .PRECIOUS:	$(SOURCEFILES)
-OBJFILES = hash.o Maze.o
+OBJFILES = hash.o Maze.o Node.o
 	
 #
 # Main targets
@@ -75,8 +75,9 @@ MST: 	Minimum_Spanning_Tree.o $(OBJFILES)
 #
 
 Minimum_Spanning_Tree.o: Maze.h
-hash.o:     hash.h
+hash.o:     hash.h Node.h
 Maze.o:     Maze.h
+Node.o:     Node.h
 
 #
 # Housekeeping

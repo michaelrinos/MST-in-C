@@ -51,7 +51,7 @@ int ht_hash( hashtable_s *hashtable, char *key ) {
 }
 
 /* Create a key-value pair. */
-entry_s *ht_newpair( char *key, char *value ) {
+entry_s *ht_newpair( char *key, Node * value ) {
 	entry_s *newpair;
 
 	if( ( newpair = malloc( sizeof( entry_s ) ) ) == NULL ) {
@@ -62,7 +62,7 @@ entry_s *ht_newpair( char *key, char *value ) {
 		return NULL;
 	}
 
-	if( ( newpair->value = strdup( value ) ) == NULL ) {
+	if( ( newpair->value = value ) == NULL ) {
 		return NULL;
 	}
 
@@ -72,7 +72,7 @@ entry_s *ht_newpair( char *key, char *value ) {
 }
 
 /* Insert a key-value pair into a hash table. */
-void ht_set( hashtable_s *hashtable, char *key, char *value ) {
+void ht_set( hashtable_s *hashtable, char *key, Node * value ) {
 	int bin = 0;
 	entry_s *newpair = NULL;
 	entry_s *next = NULL;
@@ -90,8 +90,9 @@ void ht_set( hashtable_s *hashtable, char *key, char *value ) {
 	/* There's already a pair.  Let's replace that string. */
 	if( next != NULL && next->key != NULL && strcmp( key, next->key ) == 0 ) {
 
-		free( next->value );
-		next->value = strdup( value );
+//		free( next->value );            // I should call delete not free here
+        destroy_node(next->value);
+		next->value = value;
 
 	/* Nope, could't find it.  Time to grow a pair. */
 	} else {
@@ -115,7 +116,7 @@ void ht_set( hashtable_s *hashtable, char *key, char *value ) {
 }
 
 /* Retrieve a key-value pair from a hash table. */
-char *ht_get( hashtable_s *hashtable, char *key ) {
+Node *ht_get( hashtable_s *hashtable, char *key ) {
 	int bin = 0;
 	entry_s *pair;
 

@@ -15,9 +15,9 @@ struct Node{
 
 };
 
-Node * create(char * name);
+Node * create_node(char * name);
 
-void destroy(Node * n);
+void destroy_node(Node * n);
 
 
 #endif

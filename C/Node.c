@@ -4,7 +4,7 @@
 #include <assert.h>
 
 
-Node * create(char * name){
+Node * create_node(char * name){
     Node * node = (Node *) malloc(sizeof(Node));
     if ( node == NULL ){
         assert(NULL);
@@ -23,7 +23,7 @@ Node * create(char * name){
     return node;
 }
 
-void destroy(Node * n){
+void destroy_node(Node * n){
     free(n->predecessor);
     free(n->neighbors);
     free(n);

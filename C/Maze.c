@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include <assert.h>
 
-Maze * create (size_t size){
+Maze * create_maze(size_t size){
     Maze * maze = (Maze *)malloc(sizeof(Maze));
     if ( maze == NULL ){
         assert(NULL);
@@ -34,8 +34,11 @@ void generate(Maze * maze, int n, int seed, double p){
     maze->predecessors[0] = -1;
 
     for (int i = 0; i < n; i++){
-        Node node = create( (char) i );
-        ht_set(maze->map, (char) i, node);
+        char * str = "";
+        sprintf(str, "%d", i);
+
+        Node * node = create_node(str );
+        ht_set(maze->map, str, node);
     }
 
     srand(seed);
@@ -46,18 +49,20 @@ void generate(Maze * maze, int n, int seed, double p){
 		for (int i = 0; i < n; i++) {
                 for (int j = i; j < n; j++) {
                     if (i == j) continue;
-					double r = (double) rand() / (double)((unsigned)RAND_MAX + 1);
+					double r = (double) rand() / (double)(1+1-0);
                     if (r <= p){
-                        //int weight = MIN_WEIGHT + weightRand.nextInt(range);
+                        int weight = 1 + rand() % (range+1-0);
+                        maze->matrix[i][j] = weight;
+                        maze->matrix[j][i] = weight;
+                        //ht_get(maze->map, (char) i );
+                        //ht_get(maze->map, (char) j );
+                        //Add j as a neighbor to i
+                        //Add i as a neighbor to j
                     }
-                    maze->matrix[i][j] = weight;
-                    maze->matrix[j][i] = weight;
-                    //Add j as a neighbor to i
-                    //Add i as a neighbor to j
                 }
         }
         //set the predecessor of 0 as -1
-        canReachDFS((char) 0, maze->count);     //Update how many nodes we can get 
+        //canReachDFS((char) 0, maze->count);     //Update how many nodes we can get 
                                                 //to from the first node used in 
                                                 //while check and set to count.
     }

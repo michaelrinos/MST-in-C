@@ -1,6 +1,6 @@
 #ifndef MAZE_H
 #define MAZE_H
-
+#include "Node.h"
 #include "hash.h"
 #include <stdio.h>
 
@@ -17,7 +17,7 @@ struct Maze{
 
 typedef struct Maze Maze;
 
-Maze* create(size_t size);
-void generate(int number, int seed, double value);
+Maze* create_maze(size_t size);
+void generate(Maze * maze, int number, int seed, double value);
 
 #endif

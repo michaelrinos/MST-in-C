@@ -1,10 +1,11 @@
 #ifndef HASH_H
 #define HASH_H
+#include "Node.h"
 
 typedef struct entry_s entry_s;
 struct entry_s {
     char * key;
-    char * value;
+    Node * value;
     entry_s * next;
 
 };
@@ -20,10 +21,10 @@ hashtable_s * ht_create (int size);
 
 int ht_hash( hashtable_s * hashtable, char * key);
 
-entry_s * ht_newpair( char * key, char * value);
+entry_s * ht_newpair( char * key, Node * value);
 
-void ht_set( hashtable_s *hastable, char * key, char * value);
+void ht_set( hashtable_s *hastable, char * key, Node * value);
 
-char * ht_get( hashtable_s * hashtable, char * key);
+Node * ht_get( hashtable_s * hashtable, char * key);
 
 #endif
