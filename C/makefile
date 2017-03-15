@@ -78,7 +78,6 @@ Minimum_Spanning_Tree.o: Maze.h
 hash.o:     hash.h Node.h
 Maze.o:     Maze.h
 Node.o:     Node.h
-
 #
 # Housekeeping
 #
