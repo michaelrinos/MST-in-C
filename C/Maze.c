@@ -22,7 +22,7 @@ Maze * create_maze(size_t size){
         maze->matrix[i] = (int *) malloc(sizeof(int) * maze->mSize);
     }   
 
-    maze->map = ht_create( 65536 );
+    maze->map = htn_create( 65536 );
     if ( maze->map == NULL){
         assert(NULL);
     }
@@ -38,7 +38,7 @@ void generate(Maze * maze, int n, int seed, double p){
         sprintf(str, "%d", i);
 
         Node * node = create_node(str );
-        ht_set(maze->map, str, node);
+        htn_set(maze->map, str, node);
     }
 
     srand(seed);
@@ -54,8 +54,20 @@ void generate(Maze * maze, int n, int seed, double p){
                         int weight = 1 + rand() % (range+1-0);
                         maze->matrix[i][j] = weight;
                         maze->matrix[j][i] = weight;
-                        //ht_get(maze->map, (char) i );
-                        //ht_get(maze->map, (char) j );
+
+                        char * str_i = "";
+                        char * str_j = "";
+
+                        sprintf(str_i, "%d", i);
+                        Node * i = htn_get(maze->map, str_i );
+                        
+                        sprintf(str_j, "%d", j);
+                        Node * j = htn_get(maze->map,  str_j );
+                        i->neighbors[i->nSize++] = *j; // Set j as a neighbor of i
+                        //i->
+                        j->neighbors[j->nSize++] = *i; // Set i as a neighbor of j
+                        //j->
+
                         //Add j as a neighbor to i
                         //Add i as a neighbor to j
                     }

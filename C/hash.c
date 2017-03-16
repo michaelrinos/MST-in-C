@@ -1,5 +1,4 @@
 #define _XOPEN_SOURCE 500 /* Enable certain library functions (strdup) on linux.  See feature_test_macros(7) */
-
 #include "hash.h"
 #include <stdlib.h>
 #include <stdio.h>
@@ -8,21 +7,21 @@
 
 
 
-/* Create a new hashtable. */
-hashtable_s *ht_create( int size ) {
+/* Create a new hashtable which contains nodes */
+hashtable_n *htn_create( int size ) {
 
-	hashtable_s *hashtable = NULL;
+	hashtable_n *hashtable = NULL;
 	int i;
 
 	if( size < 1 ) return NULL;
 
 	/* Allocate the table itself. */
-	if( ( hashtable = malloc( sizeof( hashtable_s ) ) ) == NULL ) {
+	if( ( hashtable = malloc( sizeof( hashtable_n ) ) ) == NULL ) {
 		return NULL;
 	}
 
 	/* Allocate pointers to the head nodes. */
-	if( ( hashtable->table = malloc( sizeof( entry_s * ) * size ) ) == NULL ) {
+	if( ( hashtable->table = malloc( sizeof( entry_n * ) * size ) ) == NULL ) {
 		return NULL;
 	}
 	for( i = 0; i < size; i++ ) {
@@ -35,7 +34,7 @@ hashtable_s *ht_create( int size ) {
 }
 
 /* Hash a string for a particular hash table. */
-int ht_hash( hashtable_s *hashtable, char *key ) {
+int htn_hash( hashtable_n *hashtable, char *key ) {
 
 	unsigned long int hashval;
 	size_t i = 0;
@@ -50,11 +49,13 @@ int ht_hash( hashtable_s *hashtable, char *key ) {
 	return hashval % hashtable->size;
 }
 
-/* Create a key-value pair. */
-entry_s *ht_newpair( char *key, Node * value ) {
-	entry_s *newpair;
+/* Create a key-value pair.
+ * Containing a char * as the key and a Node as a value
+ **/
+entry_n *htn_newpair( char *key, Node * value ) {
+	entry_n *newpair;
 
-	if( ( newpair = malloc( sizeof( entry_s ) ) ) == NULL ) {
+	if( ( newpair = malloc( sizeof( entry_n ) ) ) == NULL ) {
 		return NULL;
 	}
 
@@ -72,13 +73,13 @@ entry_s *ht_newpair( char *key, Node * value ) {
 }
 
 /* Insert a key-value pair into a hash table. */
-void ht_set( hashtable_s *hashtable, char *key, Node * value ) {
+void htn_set( hashtable_n *hashtable, char *key, Node * value ) {
 	int bin = 0;
-	entry_s *newpair = NULL;
-	entry_s *next = NULL;
-	entry_s *last = NULL;
+	entry_n *newpair = NULL;
+	entry_n *next = NULL;
+	entry_n *last = NULL;
 
-	bin = ht_hash( hashtable, key );
+	bin = htn_hash( hashtable, key );
 
 	next = hashtable->table[ bin ];
 
@@ -96,7 +97,7 @@ void ht_set( hashtable_s *hashtable, char *key, Node * value ) {
 
 	/* Nope, could't find it.  Time to grow a pair. */
 	} else {
-		newpair = ht_newpair( key, value );
+		newpair = htn_newpair( key, value );
 
 		/* We're at the start of the linked list in this bin. */
 		if( next == hashtable->table[ bin ] ) {
@@ -116,11 +117,11 @@ void ht_set( hashtable_s *hashtable, char *key, Node * value ) {
 }
 
 /* Retrieve a key-value pair from a hash table. */
-Node *ht_get( hashtable_s *hashtable, char *key ) {
+Node *htn_get( hashtable_n *hashtable, char *key ) {
 	int bin = 0;
-	entry_s *pair;
+	entry_n *pair;
 
-	bin = ht_hash( hashtable, key );
+	bin = htn_hash( hashtable, key );
 
 	/* Step through the bin, looking for our value. */
 	pair = hashtable->table[ bin ];
@@ -137,3 +138,6 @@ Node *ht_get( hashtable_s *hashtable, char *key ) {
 	}
 	
 }
+
+
+

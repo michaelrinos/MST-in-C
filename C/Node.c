@@ -11,15 +11,17 @@ Node * create_node(char * name){
     }
     node->rank=0;
     node->marked=0;
+    node->nSize=0;
     node->name=name;
     node->predecessor=(Node *)malloc(sizeof(Node));
     if ( node->predecessor == NULL ){
         assert(NULL);
     }
     node->neighbors=(Node *)malloc(sizeof(Node));
-    if ( node->neighbros == NULL ){
+    if ( node->neighbors == NULL ){
         assert(NULL);
     }
+    node->weights = ht_create( 65536 );
     return node;
 }
 

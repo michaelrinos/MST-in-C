@@ -1,17 +1,18 @@
 #ifndef NODE_H
 #define NODE_H
+#include "hashtable.h"
 #include <stdlib.h>
 #include <string.h>
 
 typedef struct Node Node;
-
 struct Node{
     int rank;
     int marked;
-    int weight;
+    int nSize;
     char * name;
     Node * predecessor;
-    Node * neightbors;
+    Node * neighbors;
+    hashtable_t * weights;
 
 };
 

@@ -11,7 +11,7 @@ struct Maze{
     size_t mSize;
     int * predecessors;
     int ** matrix;
-    hashtable_s * map;
+    hashtable_n * map;
 
 };
 
