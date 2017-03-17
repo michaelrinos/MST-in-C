@@ -12,7 +12,7 @@ struct Node{
     char * name;
     Node * predecessor;
     Node * neighbors;
-    hashtable_t * weights;
+    hashtable_s * weights;
 
 };
 
