@@ -1,24 +1,30 @@
 #ifndef NODE_H
 #define NODE_H
-#include "hashtable.h"
+#include "table.h"
 #include <stdlib.h>
 #include <string.h>
+
+#define INITIAL_CAPACITY 16
+#define LOAD_THRESHOLD 0.75
+#define RESIZE_FACTOR 2
 
 typedef struct Node Node;
 struct Node{
     int rank;
     int marked;
-    int nSize;
+    size_t nSize;
+    size_t nCapacity;
     char * name;
     Node * predecessor;
-    Node * neighbors;
-    hashtable_s * weights;
-
+    Table * weights;
+    void (*print)(Node * toPrint);  ///< print function for printing all info
+    Node ** neighbors;
 };
 
-Node * create_node(char * name);
 
+void init_node(Node ** node, char * name, void (*printNode)(Node * n));
 void destroy_node(Node * n);
-
+void printNode(Node * n);
+void * putNeighbor(Node * a, Node * b, long weight);
 
 #endif

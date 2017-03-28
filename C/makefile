@@ -46,29 +46,36 @@ CPP = $(CPP) $(CPPFLAGS)
 
 # any warning will be considered a compiler error.
 CFLAGS =	-ggdb -std=c99 -Wall -Wextra -pedantic -Werror
-CLIBFLAGS =	-lm -lbsd
+CLIBFLAGS =	-lm -z muldefs
 
 
 ########## End of flags from header.mak
 
 
 CPP_FILES =	
-C_FILES =	Minimum_Spanning_Tree.c Node.c Maze.c hash.c hashtable.c
+C_FILES =	Minimum_Spanning_Tree.c Node.c Maze.c hash.c table.c
 PS_FILES =	
 S_FILES =	
-H_FILES =	Node.h Maze.h hash.h hashtable.h
+H_FILES =	Node.h Maze.h hash.h table.h
 SOURCEFILES =	$(H_FILES) $(CPP_FILES) $(C_FILES) $(S_FILES)
 .PRECIOUS:	$(SOURCEFILES)
-OBJFILES = hash.o Maze.o Node.o hashtable.o
+OBJFILES = hash.o Maze.o Node.o table.o
+LOCAL_LIBS = libtable.a
 	
 #
 # Main targets
 #
 
-all:	MST
+all:	MST test_table test_node
 
 MST: 	Minimum_Spanning_Tree.o $(OBJFILES)
 	$(CC) $(CFLAGS) -o MST Minimum_Spanning_Tree.o $(OBJFILES) $(CLIBFLAGS)
+
+test_table: test_table.o $(OBJFILES)
+	$(CC) $(CFLAGS) -o test_table test_table.o $(OBJFILES) $(CLIBFLAGS)
+
+test_node: test_node.o $(OBJFILES)
+	$(CC) $(CFLAGS) -o test_node test_node.o $(OBJFILES) $(CLIBFLAGS)
 
 #
 # Dependencies
@@ -76,8 +83,10 @@ MST: 	Minimum_Spanning_Tree.o $(OBJFILES)
 
 hash.o:     hash.h Node.h
 Maze.o:     Maze.h hash.h
-Node.o:     Node.h hashtable.h
-hashtable.o: hashtable.h
+Node.o:     Node.h table.h
+table.o:    table.h
+test_node.o:    hash.h Node.h
+test_table.o:   hash.h table.h
 
 #
 # Housekeeping
@@ -89,7 +98,7 @@ archive.tgz:	$(SOURCEFILES) Makefile
 	tar cf - $(SOURCEFILES) Makefile | gzip > archive.tgz
 
 clean:
-	-/bin/rm -f $(OBJFILES) Minimum_Spanning_Tree.o
+	-/bin/rm -f $(OBJFILES) Minimum_Spanning_Tree.o test_node.o test_table.o
 
 realclean:        clean
-	-/bin/rm -f MST Hashtable
+	-/bin/rm -f MST Hashtable test_table test_node

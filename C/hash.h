@@ -1,31 +1,51 @@
+/// \file hash.h
+/// \brief Definitions for some common hashing functions, along with
+///    equality checking and debug printing.   This is used by both
+///    test_table.c and jukebox.c
+
 #ifndef HASH_H
 #define HASH_H
-#include "Node.h"
 
-typedef struct entry_n {
-    char * key;
-    Node * value;
-    entry_n * next;
-}Entry;
+#include <stdbool.h>  // bool
+#include <stdio.h>    // printf
 
-typedef struct hashtable_n{
-    size_t size;
-    size_t capacity;
-    long (*hash)(void* key);  ///< hash function for key
-    bool (*equals)(void *key1, void* key2); ///< equals function for key comparison
-    void (*print)(void *key, void* value);  ///< print function for table dump debug
-    entry_n ** table;
-}Table;
+/// A hash function for longs, which is just the long value.
+/// @param element The long value
+/// @return The hash code
+long longHash(void* element);
 
-Table* create(long (*hash)(void* key),
-              bool (*equals)(void* key1, void* key2),
-              void (*print)(void* key1, void* key2));
+/// A comparison function for two longs.
+/// @param element1 The first long
+/// @param element2 The second long
+/// @return Whether the longs are equal or not
+bool longEquals(void* element1, void* element2);
 
+/// A print function for long keys with c-string values.
+/// @param key the integer key
+/// @param value the c-string value
+void longStrPrint(void* key, void* value);
 
-void * htn_set( hashtable_n *hastable, void * key, void * value);
+/// A function for hashing a native c-string.  
+/// @param element the c-string to hash
+/// @return the hash value of the c-string
+long strHash(void* element);
 
-void * htn_get( hashtable_n * hashtable, void * key);
+/// A comparison function for c-strings
+/// @param element1 first c-string
+/// @param element2 second c-string
+/// @return Whether the c-string's are equal or not
+bool strEquals(void* element1, void* element2);
 
-bool has(hashtable_n * hashtable, void * key);
+/// A print function for c-string keys with long values.
+/// @param key the c-string key
+/// @param value the long value
+void strLongPrint(void* key, void* value);
+
+/// A print function for long keys with long values.
+/// @param key the long key
+/// @param value the long value
+void longLongPrint(void* key, void* value);
+
+void strStrPrint(void * key, void * value);
 
 #endif

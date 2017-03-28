@@ -11,7 +11,7 @@ struct Maze{
     size_t mSize;
     int * predecessors;
     int ** matrix;
-    hashtable_n * graph;
+    Table * graph;
 
 };
 
@@ -19,5 +19,7 @@ typedef struct Maze Maze;
 
 Maze* create_maze(size_t size);
 void generate(Maze * maze, int number, int seed, double value);
+void printMatrix(Maze * maze);
+void printList(Maze * maze);
 
 #endif

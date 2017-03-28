@@ -1,51 +1,54 @@
-#define _XOPEN_SOURCE 500 /* Enable certain library functions (strdup) on linux.  See feature_test_macros(7) */
-#include "hash.h"
-#include <stdlib.h>
-#include <stdio.h>
-#include <limits.h>
+/// \file hash.c
+/// \brief Implementations of some common hashing functions, along with
+///    equality checking and debug printing.
+
 #include <string.h>
+#include "hash.h"
 
+#include <string.h>  // strcmp
 
-Table* create(long (*hash)(void* key),
-              bool (*equals)(void* key1, void* key2),
-              void (*print)(void* key1, void* key2)){
+long longHash(void* element) {
+    return (long)element;
+}
 
-    Table* myTable =(Table*)malloc(sizeof(Table));
-    if (myTable==NULL){
-        assert(NULL);
+bool longEquals(void* element1, void* element2) {
+    return (long)element1 == (long)element2;
+}
+
+void longStrPrint(void* key, void* value) {
+    printf("%lu : %s", (long)key, (char*)value);
+}
+
+/// Uses djb2, A simple c-string hashing algorithm by Dan Bernstein
+/// http://www.cse.yorku.ca/~oz/hash.html
+long strHash(void* element) {
+    unsigned char *str = (unsigned char *) element;
+    unsigned long hash = 5381;
+    int c;
+
+    while ((c = *str++)) {
+        hash = ((hash << 5) + hash) + c; /* hash * 33 + c */
     }
-    myTable-> table = (Entry**)calloc(INITIAL_CAPACITY, sizeof(Entry*));
-    myTable-> size = 0;
-    myTable-> capacity = INITIAL_CAPACITY;
-    myTable-> hash = hash;
-    myTable-> equals = equals;
-    myTable-> print = print;
-    
-    return myTable;
+    return (long)hash;
 }
 
-void * htn_set( hashtable_n *hastable, void * key, void * value){
-    
+bool strEquals(void* element1, void* element2) {
+    return strcmp((char*)element1, (char*)element2) == 0;
 }
 
-void * htn_get( hashtable_n * hashtable, void * key){
-    long hash = hashtable->hash(key);
-    if (hashtable->table[key] == NULL){
-        assert(NULL);
-    }
-
-    if (hashtable->size >= hashtable.capacity * LOAD_THRESHOLD){
-        Entry ** oldTable = hashtable->table;
-        size_t oldSize = hashtable->size;
-        hashtable->capacity = oldSize * RESIZE_FACTOR;
-        hashtable->table = (Entry**) calloc(hashtable->capacity, sizeof(Entry*));
-        for (size_t i = 0; i <= oldSize; i++){  //Wrong
-            htn_set(hashtable. 
-        }
-    }
+void strLongPrint(void* key, void* value) {
+    printf("%s : %lu", (char*)key, (long)value);
 }
 
-bool has(hashtable_n * hashtable, void * key){
-
+void longLongPrint(void* key, void* value) {
+    printf("%lu : %lu", (long)key, (long)value);
 }
 
+/**
+void strNodePrint(void* key, void* value) {
+    printf("%s : %lu", (char*)key, (Node *)value);
+}
+**/
+void strStrPrint(void * key, void * value){
+    printf("%s : %s", (char *) key, (char *) value);
+}

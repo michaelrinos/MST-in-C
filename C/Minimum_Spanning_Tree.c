@@ -35,6 +35,7 @@ int main(int argc, const char* argv[]){
 
     printf("n %d, seed %d p %f", n, seed, p); 
 
+    fclose(fp); //be kind rewind
 
 
     int numbers = n;
@@ -45,10 +46,16 @@ int main(int argc, const char* argv[]){
     const time_t startTime = time(0);
     //Init maze
     Maze * maze = create_maze(numbers);
+    generate(maze, n, seed, p);
     printf("Maze %d", maze->count);
     const time_t endTime = time(0);
-    printf("numbers %d starttime %ld endtime %ld print %d", numbers, startTime, endTime, print);
     
-    fclose(fp); //be kind rewind
+    if ( print ) {
+        printf("\nTEST: n= %d, seed=%d, p=%f\n", numbers, seed, p);
+        printf("Time to generate the graph: %lu milliseconds\n\n", (endTime - startTime));
+        printMatrix(maze);
+        printList(maze);
+    }
+    
     return 0;
 }

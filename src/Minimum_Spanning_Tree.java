@@ -59,7 +59,6 @@ public class Minimum_Spanning_Tree {
             Maze g = new Maze();
             g.generate(n, seed, p);
             final long endTime = System.currentTimeMillis();
-            Edge[] edges;
 
             if (print) {
                 System.out.println();
