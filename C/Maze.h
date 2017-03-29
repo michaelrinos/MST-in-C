@@ -2,6 +2,7 @@
 #define MAZE_H
 #include "Node.h"
 #include "hash.h"
+#include "Edge.h"
 #include <stdio.h>
 
 
@@ -21,5 +22,7 @@ Maze* create_maze(size_t size);
 void generate(Maze * maze, int number, int seed, double value);
 void printMatrix(Maze * maze);
 void printList(Maze * maze);
+void DFSInfo(Maze * maze);
+Edge * getMatrix(Maze * maze);
 
 #endif

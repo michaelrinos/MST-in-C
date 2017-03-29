@@ -5,6 +5,124 @@
 #include <time.h>
 
 
+/**
+void printSorts(LinkedList<Edge> arr,int korp, int morl, int sort, long runTime, boolean printEdges) {
+    System.out.println("===================================");
+    switch (korp){
+        case 1:
+            System.out.print("KRUSKAL WITH ");
+            switch (morl){
+                case 1:
+                    System.out.print("MATRIX USING ");
+                    break;
+                case 2:
+                    System.out.print("LIST USING ");
+                    break;
+            }
+            switch (sort) {
+                case 1:
+                    System.out.println("INSERTION SORT");
+                    break;
+                case 2:
+                    System.out.println("COUNT SORT");
+                    break;
+                case 3:
+                    System.out.println("QUICKSORT");
+                    break;
+            }
+            break;
+        case 2:
+            System.out.print("PRIM WITH ADJACENCY ");
+            switch (morl){
+                case 1:
+                    System.out.println("MATRIX");
+                    break;
+                case 2:
+                    System.out.println("LIST");
+                    break;
+            }
+            break;
+    }
+
+    int tWeight = 0;
+    for (Edge temp : arr){
+        if (printEdges)
+            System.out.print(temp);
+        tWeight+=temp.getWeight();
+        }
+        if (!printEdges)
+            printf("\n");
+
+        switch (korp){
+            case 1:
+                printf( "\nTotal weight of MST using Kruskal: " + " " + tWeight + "\n");
+                printf( "Runtime: " + runTime + " milliseconds\n\n");
+                break;
+            case 2:
+                System.out.println( "\nTotal weight of MST using Prim: " + tWeight);
+                System.out.println( "Runtime: " + runTime + " milliseconds\n");
+                break;
+        }
+}
+
+
+void Sorter(Maze * maze, int korp, int lorm, int sort, int printEdges, int numbers){
+    long startTime = 0;
+    long endTime = 0;
+    Edge lst[numbers];
+    switch (korp) {
+        case 1:
+            switch (lorm) {
+                case 1:
+                    startTime = System.currentTimeMillis();
+                    lst = g.getMatrix();
+                    break;
+                case 2:
+                    startTime = System.currentTimeMillis();
+                    lst = g.getList();
+                    break;
+                default:
+                    lst = g.getMatrix();
+                    break;
+            }
+            switch (sort) {
+                case 1:
+                    insertionSort(lst);
+                    break;
+                case 2:
+                    countSort(lst, numbers + 1);
+                    break;
+                case 3:
+                    quickSort(lst, 0, lst.length - 1);
+                    break;
+            }
+            MST = kruskal(lst);
+            endTime = System.currentTimeMillis();
+            break;
+        case 2:
+            switch (lorm){
+                case 1:
+                    lst = g.getMatrix();
+
+                    temp = g.getMatrixNodes();
+                    MST = prim(temp);
+                    break;
+                case 2:
+                    lst = g.getMatrix();
+
+                    temp = g.getListNodes();
+                    MST = prim(temp);
+                    break;
+            }
+            break;
+    }
+
+    //LinkedList<Edge> krus = kruskal(lst);
+    printSorts(MST, korp,lorm, sort, (endTime-startTime), printEdges);
+    //return lst;
+} 
+**/
+
 int main(int argc, const char* argv[]){
     if( argc !=2){
         printf("Input file not found \n");
@@ -55,7 +173,38 @@ int main(int argc, const char* argv[]){
         printf("Time to generate the graph: %lu milliseconds\n\n", (endTime - startTime));
         printMatrix(maze);
         printList(maze);
+        DFSInfo(maze);
+
+        /**
+		sorter(g, 1, 1, 1, print);
+        sorter(g, 1, 1, 2, print);
+        sorter(g, 1, 1, 3, print);
+        sorter(g, 1, 2, 1, print);
+        sorter(g, 1, 2, 2, print);
+        sorter(g, 1, 2, 3, print);
+
+        sorter(g, 2, 1, 1, print);
+        sorter(g, 2, 2, 1, print);
+        **/
+
+    } else {
+        printf("\nTEST: n= %d, seed=%d, p=%f\n", numbers, seed, p);
+        printf("Time to generate the graph: %lu milliseconds\n\n", (endTime - startTime));
+        
+        /**
+        sorter(g, 1, 1, 1, print);
+        sorter(g, 1, 1, 2, print);
+        sorter(g, 1, 1, 3, print);
+        sorter(g, 1, 2, 1, print);
+        sorter(g, 1, 2, 2, print);
+        sorter(g, 1, 2, 3, print);
+
+        sorter(g, 2, 1, 1, print);
+        sorter(g, 2, 2, 1, print);
+        **/
+
     }
+
     
     return 0;
 }

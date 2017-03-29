@@ -149,24 +149,39 @@ void printList(Maze * maze) {
 
 
 
+void DFSInfo(Maze * maze){
 
+    printf("Depth-First Search:\n");
+    printf("Vertices:  \n");
+    for (int i = 0 ; i < maze->count; i++){
+        printf(" %d", i);
+    }
+    
+    printf("\nPredecessors: \n");
+    
+    for (int i = 0 ; i < maze->count; i++){
+        char * str = malloc(sizeof(int));
+        sprintf(str, "%d", i);
+        printf("%s " , ( (Node*) get(maze->graph, str) )->predecessor->name );
+    }
+    printf("\n");
+}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+Edge * getMatrix(Maze * maze){
+    Edge *edges = calloc(sizeof(Edge), maze->count);
+    int loc = 0;
+    for (int i = 0; i < maze->count; i++){
+        for (int j = 0; j < maze->count; j++){
+            if ( i == j ) continue;
+            if ( maze->matrix[i][j] == 0 ) continue;
+            else {
+                Edge * e = malloc(sizeof(e));
+                e->weight = maze->matrix[i][j];
+                e->row = i;
+                e->col = j;
+                edges[loc++] = *e;
+            }
+        }
+    }
+    return edges;
+}
