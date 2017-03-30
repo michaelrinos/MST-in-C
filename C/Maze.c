@@ -81,9 +81,9 @@ void generate(Maze * maze, int n, int seed, double p){
                         maze->matrix[i][j] = weight;
                         maze->matrix[j][i] = weight;
 
-                        char * str_i = malloc(sizeof(int));
-                        char * str_j = malloc(sizeof(int));
-                        char * str_w = malloc(sizeof(int));
+                        char * str_i = malloc(sizeof(char) * MAX_NUMS);
+                        char * str_j = malloc(sizeof(char) * MAX_NUMS);
+                        char * str_w = malloc(sizeof(char) * MAX_NUMS);
 
                         sprintf(str_w, "%d", weight);                           // Convert weight to string
                         
@@ -179,6 +179,28 @@ Edge * getMatrix(Maze * maze){
                 e->weight = maze->matrix[i][j];
                 e->row = i;
                 e->col = j;
+                e->print = printEdge;
+                edges[loc++] = *e;
+            }
+        }
+    }
+    return edges;
+}
+
+Edge * getList(Maze * maze){
+    Edge * edges = calloc(sizeof(Edge), maze->count);
+    Table * table = maze->graph;
+    int loc = 0;
+    for (int i = 0; i < maze->count; i++ ){
+        char * str = malloc(sizeof(char) * MAX_NUMS);
+        sprintf(str, "%d", i);
+        Node * n = get(table, str);
+        for (size_t j = 0; j < n->nSize; j++){
+            if ( atoi(n->name) > i ){
+                Edge * e = malloc(sizeof(e));
+                e->weight =(long) get(n->weights, str);
+                e->row = i;
+                e->col = atoi(n->name);
                 edges[loc++] = *e;
             }
         }

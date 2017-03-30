@@ -5,6 +5,7 @@
 #include "Edge.h"
 #include <stdio.h>
 
+#define MAX_NUMS 16
 
 struct Maze{
     int count;
@@ -24,5 +25,6 @@ void printMatrix(Maze * maze);
 void printList(Maze * maze);
 void DFSInfo(Maze * maze);
 Edge * getMatrix(Maze * maze);
+Edge * getList(Maze * maze);
 
 #endif

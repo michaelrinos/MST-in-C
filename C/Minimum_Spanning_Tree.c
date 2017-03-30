@@ -5,49 +5,50 @@
 #include <time.h>
 
 
-/**
-void printSorts(LinkedList<Edge> arr,int korp, int morl, int sort, long runTime, boolean printEdges) {
-    System.out.println("===================================");
+
+void printSorts(Edge * arr,int korp, int morl, int sort, long runTime, int printEdges) {
+    printf("===================================\n");
     switch (korp){
         case 1:
-            System.out.print("KRUSKAL WITH ");
+            printf("KRUSKAL WITH ");
             switch (morl){
                 case 1:
-                    System.out.print("MATRIX USING ");
+                    printf("MATRIX USING ");
                     break;
                 case 2:
-                    System.out.print("LIST USING ");
+                    printf("LIST USING ");
                     break;
             }
             switch (sort) {
                 case 1:
-                    System.out.println("INSERTION SORT");
+                    printf("INSERTION SORT\n");
                     break;
                 case 2:
-                    System.out.println("COUNT SORT");
+                    printf("COUNT SORT\n");
                     break;
                 case 3:
-                    System.out.println("QUICKSORT");
+                    printf("QUICKSORT\n");
                     break;
             }
             break;
         case 2:
-            System.out.print("PRIM WITH ADJACENCY ");
+            printf("PRIM WITH ADJACENCY ");
             switch (morl){
                 case 1:
-                    System.out.println("MATRIX");
+                    printf("MATRIX\n");
                     break;
                 case 2:
-                    System.out.println("LIST");
+                    printf("LIST\n");
                     break;
             }
             break;
     }
 
-    int tWeight = 0;
+    //int tWeight = 0;
+    /**
     for (Edge temp : arr){
         if (printEdges)
-            System.out.print(temp);
+            printf(temp);
         tWeight+=temp.getWeight();
         }
         if (!printEdges)
@@ -55,63 +56,65 @@ void printSorts(LinkedList<Edge> arr,int korp, int morl, int sort, long runTime,
 
         switch (korp){
             case 1:
-                printf( "\nTotal weight of MST using Kruskal: " + " " + tWeight + "\n");
-                printf( "Runtime: " + runTime + " milliseconds\n\n");
+                printf( "\nTotal weight of MST using Kruskal:  %d\n", tWeight);
+                printf( "Runtime: %lu milliseconds\n\n", runTime");
                 break;
             case 2:
-                System.out.println( "\nTotal weight of MST using Prim: " + tWeight);
-                System.out.println( "Runtime: " + runTime + " milliseconds\n");
+                printf( "\nTotal weight of MST using Prim: %d\n", tWeight);
+                printf( "Runtime: %lu milliseconds\n\n", runTime");
                 break;
         }
+    **/
 }
 
 
 void Sorter(Maze * maze, int korp, int lorm, int sort, int printEdges, int numbers){
-    long startTime = 0;
-    long endTime = 0;
-    Edge lst[numbers];
+    time_t startTime;
+    time_t endTime;
+    //Edge lst[numbers];
+    Edge * lst;
     switch (korp) {
         case 1:
             switch (lorm) {
                 case 1:
-                    startTime = System.currentTimeMillis();
-                    lst = g.getMatrix();
+                    startTime = time(0);
+                    lst = getMatrix(maze);
                     break;
                 case 2:
-                    startTime = System.currentTimeMillis();
-                    lst = g.getList();
+                    startTime = time(0);
+                    lst = getList(maze);
                     break;
                 default:
-                    lst = g.getMatrix();
+                    lst = getMatrix(maze);
                     break;
             }
             switch (sort) {
                 case 1:
-                    insertionSort(lst);
+                    //insertionSort(lst);
                     break;
                 case 2:
-                    countSort(lst, numbers + 1);
+                    //countSort(lst, numbers + 1);
                     break;
                 case 3:
-                    quickSort(lst, 0, lst.length - 1);
+                    //quickSort(lst, 0, lst.length - 1);
                     break;
             }
-            MST = kruskal(lst);
-            endTime = System.currentTimeMillis();
+            //MST = kruskal(lst);
+            endTime = time(0);
             break;
         case 2:
             switch (lorm){
                 case 1:
-                    lst = g.getMatrix();
+                    lst = getMatrix(maze);
 
-                    temp = g.getMatrixNodes();
-                    MST = prim(temp);
+                    //temp = getMatrixNodes();
+                    //MST = prim(temp);
                     break;
                 case 2:
-                    lst = g.getMatrix();
+                    lst = getMatrix(maze);
 
-                    temp = g.getListNodes();
-                    MST = prim(temp);
+                    //temp = getListNodes();
+                    //MST = prim(temp);
                     break;
             }
             break;
@@ -121,7 +124,7 @@ void Sorter(Maze * maze, int korp, int lorm, int sort, int printEdges, int numbe
     printSorts(MST, korp,lorm, sort, (endTime-startTime), printEdges);
     //return lst;
 } 
-**/
+
 
 int main(int argc, const char* argv[]){
     if( argc !=2){
