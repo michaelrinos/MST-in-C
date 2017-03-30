@@ -10,7 +10,7 @@ struct Edge{
 };
 
 void printEdge(Edge * e);
-
+int compareTo(Edge * a, Edge * b);
 
 
 #endif

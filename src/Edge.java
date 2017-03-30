@@ -27,8 +27,7 @@ public class Edge implements Comparable<Edge> {
         if (result == 0){
             if (this.row - o.row == 0){
                 return this.col - o.col;
-            }
-            else
+            } else
                 return this.row -o.row;
         }
         else
