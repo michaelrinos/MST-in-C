@@ -94,3 +94,12 @@ void printNode(Node * n){
     strcat(result, "\n");
     printf("%s", result);
 }
+
+
+int compareToNode(Node * a, Node * b){
+    a_num = atoi(a->name);
+    b_num = atoi(b->name);
+    return a_num - b_num;
+}
+
+

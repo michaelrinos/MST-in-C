@@ -10,6 +10,138 @@
 
 
 
+
+
+
+
+
+
+
+///////////////////////////////////////////////////////////////////////////////
+//    _____      _           _        _____ _          __  __
+//   |  __ \    (_)         ( )      / ____| |        / _|/ _|
+//   | |__) | __ _ _ __ ___ |/ ___  | (___ | |_ _   _| |_| |_
+//   |  ___/ '__| | '_ ` _ \  / __|  \___ \| __| | | |  _|  _|
+//   | |   | |  | | | | | | | \__ \  ____) | |_| |_| | | | |
+//   |_|   |_|  |_|_| |_| |_| |___/ |_____/ \__|\__,_|_| |_|
+//
+///////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+
+
+///////////////////////////////////////////////////////////////////////////////
+//    _                   _     _         _    _____ _          __  __
+//   | |                 | |   | |       | |  / ____| |        / _|/ _|
+//   | | ___ __ _   _ ___| |__ | | ____ _| | | (___ | |_ _   _| |_| |_
+//   | |/ / '__| | | / __| '_ \| |/ / _` | |  \___ \| __| | | |  _|  _|
+//   |   <| |  | |_| \__ \ | | |   < (_| | |  ____) | |_| |_| | | | |
+//   |_|\_\_|   \__,_|___/_| |_|_|\_\__,_|_| |_____/ \__|\__,_|_| |_|
+//
+///////////////////////////////////////////////////////////////////////////////
+
+
+/**
+* Given a list of sorted edges, add an edge to the MST
+* as long as a cycle is not formed with the previously
+* added edges.
+* @param a The list of sorted edges
+* @return the Minimum spanning tree
+*/
+LinkedList<Edge> kruskal(Edge * a){
+    Node[] b = new Node[numbers];
+    for (int i = 0; i < numbers ; i++) {
+        char * str_i = malloc(sizeof(char) * MAX_NUMS);
+        sprintf(str_i, "%d", i);        
+
+        Node n = init_node( (Node **) n, str_i, printNode);
+        b[i] = n;
+    }
+
+    int includedCount = 0;
+    int edges = 0;
+    LinkedList<Edge> MST = new LinkedList<>();
+    while (includedCount < numbers-1){
+        Node root1 = b[ a[edges]->row ];
+        Node root2 = b[ a[edges]->col ];
+
+        if (root1.predecessor == NULL){
+            root1.predecessor = (Node *) root1;
+        }
+        if (root2.predecessor == NULL){
+            root2.predecessor = (Node *) root2;
+        }
+
+        root1 = find(root1);
+        root2 = find(root2);
+        
+        if ( compareToNode(&root1, &root2) != 0 ){
+            MST.add( a [edges] );
+            includedCount+=1;
+            Union(root1, root2);
+        }
+        edges++;
+    }
+    return MST;
+}
+
+/**
+* Given a Node in the tree find recursively traverses up the
+* tree until finding the root which it then sets as the
+* root of all children so that when its called on the same
+* Node it doesn't have to traverse up the tree again
+* @param p The root or any of its children of a tree
+* @return The root of the Tree
+*/
+Node find(Node p) {
+    Node * pp = p.predecessor;
+    if (compareToNode(&p, pp) != 0){          //!(p.equals( p.getp() ) )
+        Node daPred = find(*pp);
+        p.predecessor = &daPred;
+    }
+    return *p.predecessor;
+}
+
+/**
+* Union takes two Nodes U and V from which it determined each
+* Nodes rank and automatically sets the smaller tree
+* as a subtree of the larger tree. If both trees are the
+* same size then V becomes the subtree for U and the rank
+* of U increments by 1
+* @param u A Node in a tree of Nodes
+* @param v A Node in a tree of Nodes
+*/
+void Union(Node u, Node v) {
+    Node i = find(u);
+    Node j = find(v);
+
+    if (i.rank > j.rank) {
+        j.predecessor = &i;
+    } else {
+        i.predecessor = &j;
+        if (i.rank == j.rank) {
+            j.rank = j.rank + 1;
+        }
+    }
+}
+
+
+//////////////////////////////////////////////////////////////////////////////
+//
+//     _____            _   _                _____ _          __  __
+//    / ____|          | | (_)              / ____| |        / _|/ _|
+//   | (___   ___  _ __| |_ _ _ __   __ _  | (___ | |_ _   _| |_| |_
+//    \___ \ / _ \| '__| __| | '_ \ / _` |  \___ \| __| | | |  _|  _|
+//    ____) | (_) | |  | |_| | | | | (_| |  ____) | |_| |_| | | | |
+//   |_____/ \___/|_|   \__|_|_| |_|\__, | |_____/ \__|\__,_|_| |_|
+//                                   __/ |
+//                                  |___/
+///////////////////////////////////////////////////////////////////////////////
+
+
 /**
 * Quicksort sorts a list of objects by choosing a trivial point
 * in the list then ensuring that everything to the left is smaller
@@ -36,8 +168,8 @@ void quickSort(Edge * arr, int low, int high, int length) {
         }
     }
     // recursively sort two sub parts
-    if (low < j) quickSort(arr, low, j);
-    if (high > i) quickSort(arr, i, high);
+    if (low < j) quickSort(arr, low, j, length - j);
+    if (high > i) quickSort(arr, i, high, length - i);
 }
 
 
@@ -165,6 +297,7 @@ void Sorter(Maze * maze, int korp, int lorm, int sort, int printEdges, int numbe
     time_t endTime;
     //Edge lst[numbers];
     Edge * lst;
+    Edge * MST;
     switch (korp) {
         case 1:
             switch (lorm) {
@@ -182,13 +315,13 @@ void Sorter(Maze * maze, int korp, int lorm, int sort, int printEdges, int numbe
             }
             switch (sort) {
                 case 1:
-                    insertionSort(lst);
+                    insertionSort(lst, maze->mSize);
                     break;
                 case 2:
-                    //countSort(lst, numbers + 1);
+                    countSort(lst, numbers + 1, maze->mSize);
                     break;
                 case 3:
-                    //quickSort(lst, 0, lst.length - 1);
+                    quickSort(lst, 0, maze->mSize, maze->mSize );
                     break;
             }
             //MST = kruskal(lst);
@@ -199,14 +332,14 @@ void Sorter(Maze * maze, int korp, int lorm, int sort, int printEdges, int numbe
                 case 1:
                     lst = getMatrix(maze);
 
-                    //temp = getMatrixNodes();
-                    //MST = prim(temp);
+                    Edge * temp = getMatrixNodes();
+                    MST = prim(temp);
                     break;
                 case 2:
                     lst = getMatrix(maze);
 
-                    //temp = getListNodes();
-                    //MST = prim(temp);
+                    temp = getListNodes();
+                    MST = prim(temp);
                     break;
             }
             break;
@@ -216,6 +349,8 @@ void Sorter(Maze * maze, int korp, int lorm, int sort, int printEdges, int numbe
     printSorts(MST, korp,lorm, sort, (endTime-startTime), printEdges);
     //return lst;
 } 
+
+int numbers;
 
 
 int main(int argc, const char* argv[]){
@@ -251,7 +386,7 @@ int main(int argc, const char* argv[]){
     fclose(fp); //be kind rewind
 
 
-    int numbers = n;
+    numbers = n;
     int print=0;
     if (n < 10)
         print = 1;
