@@ -15,6 +15,7 @@
 
 
 
+int numbers = 0;
 
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -42,51 +43,6 @@
 //   |_|\_\_|   \__,_|___/_| |_|_|\_\__,_|_| |_____/ \__|\__,_|_| |_|
 //
 ///////////////////////////////////////////////////////////////////////////////
-
-
-/**
-* Given a list of sorted edges, add an edge to the MST
-* as long as a cycle is not formed with the previously
-* added edges.
-* @param a The list of sorted edges
-* @return the Minimum spanning tree
-*/
-LinkedList<Edge> kruskal(Edge * a){
-    Node[] b = new Node[numbers];
-    for (int i = 0; i < numbers ; i++) {
-        char * str_i = malloc(sizeof(char) * MAX_NUMS);
-        sprintf(str_i, "%d", i);        
-
-        Node n = init_node( (Node **) n, str_i, printNode);
-        b[i] = n;
-    }
-
-    int includedCount = 0;
-    int edges = 0;
-    LinkedList<Edge> MST = new LinkedList<>();
-    while (includedCount < numbers-1){
-        Node root1 = b[ a[edges]->row ];
-        Node root2 = b[ a[edges]->col ];
-
-        if (root1.predecessor == NULL){
-            root1.predecessor = (Node *) root1;
-        }
-        if (root2.predecessor == NULL){
-            root2.predecessor = (Node *) root2;
-        }
-
-        root1 = find(root1);
-        root2 = find(root2);
-        
-        if ( compareToNode(&root1, &root2) != 0 ){
-            MST.add( a [edges] );
-            includedCount+=1;
-            Union(root1, root2);
-        }
-        edges++;
-    }
-    return MST;
-}
 
 /**
 * Given a Node in the tree find recursively traverses up the
@@ -128,6 +84,55 @@ void Union(Node u, Node v) {
     }
 }
 
+/**
+* Given a list of sorted edges, add an edge to the MST
+* as long as a cycle is not formed with the previously
+* added edges.
+* @param a The list of sorted edges
+* @return the Minimum spanning tree
+*/
+Edge * kruskal(Edge * a){
+    Node b[numbers];
+    for (int i = 0; i < numbers ; i++) {
+        char * str_i = malloc(sizeof(char) * MAX_NUMS);
+        sprintf(str_i, "%d", i);        
+
+        Node * n = malloc(sizeof(Node));
+        init_node((Node **) &n, str_i, printNode);
+        b[i] = *n;
+    }
+
+    int includedCount = 0;
+    int edges = 0;
+
+    //LinkedList<Edge> MST = new LinkedList<>();
+    Edge * MST = calloc(sizeof(Edge), numbers);
+    int size = 0;
+
+    while (includedCount < numbers-1){
+        Node root1 = b[ a[edges].row ];
+        Node root2 = b[ a[edges].col ];
+
+        if (root1.predecessor == NULL){
+            root1.predecessor = &root1;
+        }
+        if (root2.predecessor == NULL){
+            root2.predecessor = &root2;
+        }
+
+        root1 = find(root1);
+        root2 = find(root2);
+        
+        if ( compareToNode(&root1, &root2) != 0 ){
+            MST[size++] = a[edges];
+            //MST.add( a [edges] );
+            includedCount+=1;
+            Union(root1, root2);
+        }
+        edges++;
+    }
+    return MST;
+}
 
 //////////////////////////////////////////////////////////////////////////////
 //
@@ -350,7 +355,6 @@ void Sorter(Maze * maze, int korp, int lorm, int sort, int printEdges, int numbe
     //return lst;
 } 
 
-int numbers;
 
 
 int main(int argc, const char* argv[]){
