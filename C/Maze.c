@@ -207,3 +207,30 @@ Edge * getList(Maze * maze){
     }
     return edges;
 }
+
+Node * getMatrixNodes(Maze * maze){ 
+    Node * nodes = calloc(sizeof(Node), maze->count);
+    for (int i = 0; i < MAX_WEIGHT ; i++) {
+        char * str = malloc(sizeof(char) * MAX_NUMS);
+        sprintf(str, "%d", i);
+        Node * n = malloc(sizeof(Node));
+        init_node(&n, str, printNode);
+        nodes[0] = *n;
+        //nodes.add(new Node(Integer.toString(i)));
+    }
+
+    for (int i = 0; i < MAX_WEIGHT; i++) {
+        for (int j = 0; j < MAX_WEIGHT ; j++) {
+            if (i == j) continue;
+            if (matrix[i][j] == 0) continue;
+            else {
+                putNeighbor(nodes[i], nodes[j], maze->matrix[i][j]);
+                putNeighbor(nodes[j], nodes[i], maze->matrix[i][j]);
+
+                //nodes.get(i).addNeighbor(nodes.get(j),matrix[i][j]);
+                //nodes.get(j).addNeighbor(nodes.get(i),matrix[i][j]);
+            }
+        }
+    }
+    return nodes;
+}

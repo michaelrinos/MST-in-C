@@ -1,9 +1,10 @@
 #include "hash.h"
 #include "Maze.h"
 #include "Edge.h"
-#include <stdlib.h>
-#include <stdio.h>
 #include <time.h>
+#include <stdio.h>
+#include <assert.h>
+#include <stdlib.h>
 
 
 
@@ -28,7 +29,48 @@ int numbers = 0;
 //
 ///////////////////////////////////////////////////////////////////////////////
 
+Edge * prim(Node[] a){
+    Node parent[] = new Node[a.length];
+    int key[] = new int[a.length];
+    LinkedList<Edge> MST = new LinkedList<>();
+    Heap minHeap = new Heap(numbers);
+    for (int i = 1; i < a.length ; i++) {
+        parent[i] = new Node("-1");
+        key[i] = Integer.MAX_VALUE;
+        minHeap.insert(new MinHeapNode(a[i], key[i]));
+    }
+    key[0] = 0;
+    minHeap.insert(new MinHeapNode(a[0], key[0]));
+    while (!minHeap.isEmpty() ){
+        MinHeapNode u = minHeap.deleteMin();
+        List<Node> neighbors = u.getNode().getNeighbors();
+        while (!neighbors.isEmpty()){
+            Node v = neighbors.remove(0);
 
+            int name = Integer.parseInt(v.getName());
+            int weight = v.getWeight(u.getNode().getName());
+            MinHeapNode neighbor = new MinHeapNode(v,key[name]);
+
+            if (minHeap.contains(
+                    neighbor) // If the node isn't in the MST
+                    && weight < key[name]
+                    ){
+                key[name] = weight;
+
+                parent[Integer.parseInt(v.getName())] = u.getNode();
+
+                minHeap.decreaseKey(new MinHeapNode(v,weight));
+
+            }
+        }
+    }
+    for (int i = 0; i < parent.length ; i++) {
+        if (parent[i] != null) {
+            MST.add(new Edge(parent[i].getWeight(Integer.toString(i)), Integer.parseInt(parent[i].getName()), i));
+        }
+    }
+    return MST;
+}
 
 
 
@@ -266,8 +308,8 @@ void printSorts(Edge * arr,int korp, int morl, int sort, long runTime, int print
             break;
     }
 
-    //int tWeight = 0;
     /**
+    int tWeight = 0;
     for (Edge temp : arr){
         if (printEdges)
             printf(temp);
@@ -297,12 +339,13 @@ void printSorts(Edge * arr,int korp, int morl, int sort, long runTime, int print
 * @param printEdges Boolean indicating whether to print the neighbors of each node
 * @return the sorted list
 */
-void Sorter(Maze * maze, int korp, int lorm, int sort, int printEdges, int numbers){
+void sorter(Maze * maze, int korp, int lorm, int sort, int printEdges){
     time_t startTime;
     time_t endTime;
     //Edge lst[numbers];
     Edge * lst;
     Edge * MST;
+    Node * temp;
     switch (korp) {
         case 1:
             switch (lorm) {
@@ -337,7 +380,7 @@ void Sorter(Maze * maze, int korp, int lorm, int sort, int printEdges, int numbe
                 case 1:
                     lst = getMatrix(maze);
 
-                    Edge * temp = getMatrixNodes();
+                    temp = getMatrixNodes(maze);
                     MST = prim(temp);
                     break;
                 case 2:
@@ -401,6 +444,7 @@ int main(int argc, const char* argv[]){
     generate(maze, n, seed, p);
     printf("Maze %d", maze->count);
     const time_t endTime = time(0);
+    assert(maze != NULL);
     
     if ( print ) {
         printf("\nTEST: n= %d, seed=%d, p=%f\n", numbers, seed, p);
@@ -409,8 +453,9 @@ int main(int argc, const char* argv[]){
         printList(maze);
         DFSInfo(maze);
 
+        
+		sorter(maze, 1, 1, 1, print);
         /**
-		sorter(g, 1, 1, 1, print);
         sorter(g, 1, 1, 2, print);
         sorter(g, 1, 1, 3, print);
         sorter(g, 1, 2, 1, print);
