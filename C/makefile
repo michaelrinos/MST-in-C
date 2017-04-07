@@ -53,13 +53,13 @@ CLIBFLAGS =	-lm -z muldefs
 
 
 CPP_FILES =	
-C_FILES =	Minimum_Spanning_Tree.c Node.c Maze.c hash.c table.c Edge.c
+C_FILES =	Minimum_Spanning_Tree.c Node.c Maze.c hash.c table.c Edge.c Heap.c
 PS_FILES =	
 S_FILES =	
-H_FILES =	Node.h Maze.h hash.h table.h Edge.h
+H_FILES =	Node.h Maze.h hash.h table.h Edge.h Heap.h
 SOURCEFILES =	$(H_FILES) $(CPP_FILES) $(C_FILES) $(S_FILES)
 .PRECIOUS:	$(SOURCEFILES)
-OBJFILES = hash.o Maze.o Node.o table.o Edge.o
+OBJFILES = hash.o Maze.o Node.o table.o Edge.o Heap.o
 	
 #
 # Main targets
@@ -76,6 +76,9 @@ test_table: test_table.o $(OBJFILES)
 test_node: test_node.o $(OBJFILES)
 	$(CC) $(CFLAGS) -o test_node test_node.o $(OBJFILES) $(CLIBFLAGS)
 
+test_heap: test_heap.o $(OBJDILES)
+	$(CC) $(CFLAGS) -o test_heap test_heap.o $(OBJFILES) $(CLIBFLAGS)
+
 #
 # Dependencies
 #
@@ -83,6 +86,7 @@ test_node: test_node.o $(OBJFILES)
 hash.o:     hash.h Node.h
 Maze.o:     Maze.h hash.h
 Node.o:     Node.h table.h
+Heap.o:     Heap.h Node.h
 Edge.o:     Edge.h
 table.o:    table.h
 test_node.o:    hash.h Node.h
