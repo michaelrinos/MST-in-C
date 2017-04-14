@@ -65,7 +65,7 @@ OBJFILES = hash.o Maze.o Node.o table.o Edge.o Heap.o
 # Main targets
 #
 
-all:	MST test_table test_node
+all:	MST test_table test_node test_heap
 
 MST: 	Minimum_Spanning_Tree.o $(OBJFILES)
 	$(CC) $(CFLAGS) -o MST Minimum_Spanning_Tree.o $(OBJFILES) $(CLIBFLAGS)
@@ -76,7 +76,7 @@ test_table: test_table.o $(OBJFILES)
 test_node: test_node.o $(OBJFILES)
 	$(CC) $(CFLAGS) -o test_node test_node.o $(OBJFILES) $(CLIBFLAGS)
 
-test_heap: test_heap.o $(OBJDILES)
+test_heap: test_heap.o $(OBJFILES)
 	$(CC) $(CFLAGS) -o test_heap test_heap.o $(OBJFILES) $(CLIBFLAGS)
 
 #
@@ -86,9 +86,10 @@ test_heap: test_heap.o $(OBJDILES)
 hash.o:     hash.h Node.h
 Maze.o:     Maze.h hash.h
 Node.o:     Node.h table.h
-Heap.o:     Heap.h Node.h
+Heap.o:     Heap.h Node.h table.h
 Edge.o:     Edge.h
 table.o:    table.h
+test_heap.o:    Heap.h
 test_node.o:    hash.h Node.h
 test_table.o:   hash.h table.h
 
@@ -102,7 +103,7 @@ archive.tgz:	$(SOURCEFILES) Makefile
 	tar cf - $(SOURCEFILES) Makefile | gzip > archive.tgz
 
 clean:
-	-/bin/rm -f $(OBJFILES) Minimum_Spanning_Tree.o test_node.o test_table.o
+	-/bin/rm -f $(OBJFILES) Minimum_Spanning_Tree.o test_node.o test_table.o test_heap.o
 
 realclean:        clean
-	-/bin/rm -f MST Hashtable test_table test_node
+	-/bin/rm -f MST Hashtable test_table test_node test_heap

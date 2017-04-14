@@ -33,7 +33,7 @@ Edge * prim(Node * a){
     Node parent[numbers];
     int key[numbers];
     Edge * MST = calloc(sizeof(Edge), numbers);
-    /**Heap minHeap = new Heap(numbers);
+    Heap minHeap = new Heap(numbers);
     for (int i = 1; i < a.length ; i++) {
         parent[i] = new Node("-1");
         key[i] = Integer.MAX_VALUE;
@@ -69,7 +69,7 @@ Edge * prim(Node * a){
             MST.add(new Edge(parent[i].getWeight(Integer.toString(i)), Integer.parseInt(parent[i].getName()), i));
         }
     }
-    **/
+    
     return MST;
 }
 

@@ -97,8 +97,8 @@ void printNode(Node * n){
 
 
 int compareToNode(Node * a, Node * b){
-    a_num = atoi(a->name);
-    b_num = atoi(b->name);
+    int a_num = atoi(a->name);
+    int b_num = atoi(b->name);
     return a_num - b_num;
 }
 

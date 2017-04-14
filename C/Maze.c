@@ -210,7 +210,7 @@ Edge * getList(Maze * maze){
 
 Node * getMatrixNodes(Maze * maze){ 
     Node * nodes = calloc(sizeof(Node), maze->count);
-    for (int i = 0; i < MAX_WEIGHT ; i++) {
+    for (int i = 0; i < maze->count ; i++) {
         char * str = malloc(sizeof(char) * MAX_NUMS);
         sprintf(str, "%d", i);
         Node * n = malloc(sizeof(Node));
@@ -219,13 +219,13 @@ Node * getMatrixNodes(Maze * maze){
         //nodes.add(new Node(Integer.toString(i)));
     }
 
-    for (int i = 0; i < MAX_WEIGHT; i++) {
-        for (int j = 0; j < MAX_WEIGHT ; j++) {
+    for (int i = 0; i < maze->count; i++) {
+        for (int j = 0; j < maze->count ; j++) {
             if (i == j) continue;
-            if (matrix[i][j] == 0) continue;
+            if (maze->matrix[i][j] == 0) continue;
             else {
-                putNeighbor(nodes[i], nodes[j], maze->matrix[i][j]);
-                putNeighbor(nodes[j], nodes[i], maze->matrix[i][j]);
+                putNeighbor(&nodes[i], &nodes[j], maze->matrix[i][j]);
+                putNeighbor(&nodes[j], &nodes[i], maze->matrix[i][j]);
 
                 //nodes.get(i).addNeighbor(nodes.get(j),matrix[i][j]);
                 //nodes.get(j).addNeighbor(nodes.get(i),matrix[i][j]);
