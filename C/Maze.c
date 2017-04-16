@@ -59,7 +59,7 @@ void generate(Maze * maze, int n, int seed, double p){
     maze->predecessors[0] = -1;
 
     for (int i = 0; i < n; i++){
-        char * str = malloc(sizeof(int));
+        char * str = malloc(sizeof(char) * MAX_NUMS);
         sprintf(str, "%d", i);
 
         Node * node = malloc(sizeof(*node));
@@ -231,6 +231,16 @@ Node * getMatrixNodes(Maze * maze){
                 //nodes.get(j).addNeighbor(nodes.get(i),matrix[i][j]);
             }
         }
+    }
+    return nodes;
+}
+
+Node * getListNodes(Maze * maze){
+    Node * nodes = calloc(sizeof(Node), maze->count);
+    for (int i = 0; i < maze->count; i ++){
+        char * str = malloc(sizeof(char) * MAX_NUMS);
+        sprintf(str, "%d", i);
+        nodes[i] = *((Node *)get(maze->graph, str));
     }
     return nodes;
 }

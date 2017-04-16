@@ -1,8 +1,10 @@
 #include "hash.h"
 #include "Maze.h"
 #include "Edge.h"
+#include "Heap.h"
 #include <time.h>
 #include <stdio.h>
+#include <limits.h>
 #include <assert.h>
 #include <stdlib.h>
 
@@ -33,40 +35,65 @@ Edge * prim(Node * a){
     Node parent[numbers];
     int key[numbers];
     Edge * MST = calloc(sizeof(Edge), numbers);
-    Heap minHeap = new Heap(numbers);
-    for (int i = 1; i < a.length ; i++) {
-        parent[i] = new Node("-1");
-        key[i] = Integer.MAX_VALUE;
-        minHeap.insert(new MinHeapNode(a[i], key[i]));
+    Heap * minHeap = malloc(sizeof(Heap));
+    for (int i = 1; i < numbers ; i++) {
+        Node * n = malloc(sizeof(Node));
+        init_node((Node **) &n, "-1", printNode);
+        parent[i] = *n;
+        key[i] = INT_MAX;
+        MinHeapNode * m = malloc(sizeof(MinHeapNode));
+        m->Node = &a[i];
+        m->key = key[i];
+        heap_add(minHeap, m);
     }
     key[0] = 0;
-    minHeap.insert(new MinHeapNode(a[0], key[0]));
-    while (!minHeap.isEmpty() ){
-        MinHeapNode u = minHeap.deleteMin();
-        List<Node> neighbors = u.getNode().getNeighbors();
-        while (!neighbors.isEmpty()){
-            Node v = neighbors.remove(0);
+    MinHeapNode * m = malloc(sizeof(MinHeapNode));
+    m->Node = &a[0];
+    m->key = key[0];
+    heap_add(minHeap, m);
+//    minHeap.insert(new MinHeapNode(a[0], key[0]));
+    while ( minHeap->size != 0){                 //!minHeap.isEmpty() ){
+        MinHeapNode * u = heap_remove(minHeap);
+        Node ** neighbors = u->Node->neighbors;
+        for (size_t i = 0; i < u->Node->nSize;i++){
+            Node * v = neighbors[0];
 
-            int name = Integer.parseInt(v.getName());
-            int weight = v.getWeight(u.getNode().getName());
-            MinHeapNode neighbor = new MinHeapNode(v,key[name]);
+            int name = atoi(v->name);
+            int weight = *((int *) get(v->weights, (void *)u->Node->name));
+            //int weight = v.getWeight(u.getNode().getName());
+            MinHeapNode * neighbor = malloc(sizeof(MinHeapNode));
+            neighbor->Node = v;
+            neighbor->key = key[name];
+            
+            //MinHeapNode neighbor = new MinHeapNode(v,key[name]);
 
-            if (minHeap.contains(
-                    neighbor) // If the node isn't in the MST
+            if (contains(minHeap, neighbor) // If the node isn't in the MST
                     && weight < key[name]
                     ){
+
                 key[name] = weight;
-
-                parent[Integer.parseInt(v.getName())] = u.getNode();
-
-                minHeap.decreaseKey(new MinHeapNode(v,weight));
+                
+                parent[name] = *(u->Node);
+                //parent[Integer.parseInt(v.getName())] = u.getNode();
+                MinHeapNode * t = malloc(sizeof(MinHeapNode));
+                t->Node = v;
+                t->key = weight;
+                decreaseKey(minHeap, t);
+                //minHeap.decreaseKey(new MinHeapNode(v,weight));
 
             }
         }
     }
-    for (int i = 0; i < parent.length ; i++) {
-        if (parent[i] != null) {
-            MST.add(new Edge(parent[i].getWeight(Integer.toString(i)), Integer.parseInt(parent[i].getName()), i));
+    size_t count = 0;
+    for (int i = 0; i < numbers ; i++) {
+        if ( &parent[i] != NULL) {
+            Edge * e = malloc(sizeof(Edge));
+            e->weight = *( (int *) get(parent[i].weights, (void *) &i));
+            e->row = atoi(parent[i].name);
+            e->col = i;
+            e->print = printEdge;
+            MST[count++] = *e;
+            //MST.add(new Edge(parent[i].getWeight(Integer.toString(i)), Integer.parseInt(parent[i].getName()), i));
         }
     }
     
@@ -309,27 +336,36 @@ void printSorts(Edge * arr,int korp, int morl, int sort, long runTime, int print
             break;
     }
 
-    /**
+    
     int tWeight = 0;
-    for (Edge temp : arr){
+    for (int i = 0; i < numbers; i++){
+        if (&arr[i] != NULL){
+            Edge * temp = &arr[i];
+            
+            if (printEdges)
+                temp->print(temp);
+            tWeight+=temp->weight;
+        }
+    }
+    /**for (Edge temp : arr){
         if (printEdges)
             printf(temp);
         tWeight+=temp.getWeight();
-        }
-        if (!printEdges)
-            printf("\n");
+    }**/
+    if (!printEdges)
+        printf("\n");
 
-        switch (korp){
-            case 1:
-                printf( "\nTotal weight of MST using Kruskal:  %d\n", tWeight);
-                printf( "Runtime: %lu milliseconds\n\n", runTime");
-                break;
-            case 2:
-                printf( "\nTotal weight of MST using Prim: %d\n", tWeight);
-                printf( "Runtime: %lu milliseconds\n\n", runTime");
-                break;
-        }
-    **/
+    switch (korp){
+        case 1:
+            printf( "\nTotal weight of MST using Kruskal:  %d\n", tWeight);
+            printf( "Runtime: %lu milliseconds\n\n", runTime);
+            break;
+        case 2:
+            printf( "\nTotal weight of MST using Prim: %d\n", tWeight);
+            printf( "Runtime: %lu milliseconds\n\n", runTime);
+            break;
+    }
+    
 }
 
 /**
@@ -387,7 +423,7 @@ void sorter(Maze * maze, int korp, int lorm, int sort, int printEdges){
                 case 2:
                     lst = getMatrix(maze);
 
-                    temp = getListNodes();
+                    temp = getListNodes(maze);
                     MST = prim(temp);
                     break;
             }

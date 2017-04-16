@@ -23,6 +23,7 @@ struct Heap_S {
 
 };
 
+int contains(Heap * heap, MinHeapNode * what);
 void heap_init(Heap ** heap);
 void heap_add(Heap * heap, MinHeapNode * value);
 MinHeapNode * heap_remove(Heap * heap);
@@ -33,5 +34,6 @@ int parent(int index);
 void lchild(int index);
 void rchild(int index);
 void swap(MinHeapNode * n1, MinHeapNode * n2);
+int decreaseKey(Heap * heap, MinHeapNode * who);
 
 #endif

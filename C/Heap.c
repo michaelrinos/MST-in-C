@@ -1,4 +1,5 @@
 #include "Heap.h"
+#include "Node.h"
 #include <stdio.h>
 
 void siftUp(Heap * heap, int startIndex);
@@ -12,7 +13,6 @@ void heap_init(Heap ** heap){
     (*heap) = malloc(sizeof(heap));
     (*heap)->size = 0;
     (*heap)->capacity = NODES;
-    printf("Nodes %d", NODES);
     (*heap)->array = calloc(NODES, sizeof(MinHeapNode));
 }
 
@@ -105,4 +105,23 @@ void swap(MinHeapNode * n1, MinHeapNode * n2){
     *n2 = temp;
 }
 
-
+int contains(Heap * heap, MinHeapNode * what){
+    for (size_t i = 0; i < heap->capacity; i++){
+        MinHeapNode * temp = heap->array[i];
+        if (compareToNode(temp->Node, what->Node)){
+            return 1;
+        }
+    }
+    return 0;
+}
+int decreaseKey(Heap * heap, MinHeapNode * who){
+    for (size_t i = 0; i < heap->capacity; i++){
+        MinHeapNode * temp = heap->array[i];
+        if (compareToNode(temp->Node, who->Node) == 0){
+            temp->key = who->key;
+            siftUp(heap, i);
+            return 1;
+        }
+    }
+    return 0;
+}
