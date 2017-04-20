@@ -47,5 +47,6 @@ void strLongPrint(void* key, void* value);
 void longLongPrint(void* key, void* value);
 
 void strStrPrint(void * key, void * value);
+void strIntPrint(void * key, void * value);
 
 #endif

@@ -9,15 +9,6 @@
 #include <stdlib.h>
 
 
-
-
-
-
-
-
-
-
-
 int numbers = 0;
 
 
@@ -34,11 +25,11 @@ int numbers = 0;
 Edge * prim(Node * a){
     Node parent[numbers];
     int key[numbers];
-    Edge * MST = calloc(sizeof(Edge), numbers);
+    Edge * MST = calloc(numbers ,sizeof(Edge));
     Heap * minHeap = malloc(sizeof(Heap));
     for (int i = 1; i < numbers ; i++) {
         Node * n = malloc(sizeof(Node));
-        init_node((Node **) &n, "-1", printNode);
+        init_node((Node **) n, "-1", printNode);
         parent[i] = *n;
         key[i] = INT_MAX;
         MinHeapNode * m = malloc(sizeof(MinHeapNode));
@@ -51,7 +42,6 @@ Edge * prim(Node * a){
     m->Node = &a[0];
     m->key = key[0];
     heap_add(minHeap, m);
-//    minHeap.insert(new MinHeapNode(a[0], key[0]));
     while ( minHeap->size != 0){                 //!minHeap.isEmpty() ){
         MinHeapNode * u = heap_remove(minHeap);
         Node ** neighbors = u->Node->neighbors;
@@ -168,7 +158,7 @@ Edge * kruskal(Edge * a){
         sprintf(str_i, "%d", i);        
 
         Node * n = malloc(sizeof(Node));
-        init_node((Node **) &n, str_i, printNode);
+        init_node( &n, str_i, printNode);
         b[i] = *n;
     }
 
@@ -176,17 +166,17 @@ Edge * kruskal(Edge * a){
     int edges = 0;
 
     //LinkedList<Edge> MST = new LinkedList<>();
-    Edge * MST = calloc(sizeof(Edge), numbers);
+    Edge * MST = calloc(numbers, sizeof(Edge));
     int size = 0;
 
     while (includedCount < numbers-1){
         Node root1 = b[ a[edges].row ];
         Node root2 = b[ a[edges].col ];
 
-        if (root1.predecessor == NULL){
+        if (root1.predecessor){
             root1.predecessor = &root1;
         }
-        if (root2.predecessor == NULL){
+        if (root2.predecessor){
             root2.predecessor = &root2;
         }
 
@@ -335,16 +325,15 @@ void printSorts(Edge * arr,int korp, int morl, int sort, long runTime, int print
             }
             break;
     }
-
-    
     int tWeight = 0;
-    for (int i = 0; i < numbers; i++){
-        if (&arr[i] != NULL){
-            Edge * temp = &arr[i];
+    for (int i = 0; i < numbers-1; i++){
+        if (&arr[i]){
+            Edge temp = arr[i];
             
-            if (printEdges)
-                temp->print(temp);
-            tWeight+=temp->weight;
+            if (printEdges){
+                temp.print(&temp);
+            }
+            tWeight+=temp.weight;
         }
     }
     /**for (Edge temp : arr){
@@ -380,9 +369,9 @@ void sorter(Maze * maze, int korp, int lorm, int sort, int printEdges){
     time_t startTime;
     time_t endTime;
     //Edge lst[numbers];
-    Edge * lst;
-    Edge * MST;
-    Node * temp;
+    Edge * lst = calloc(numbers, sizeof(Edge *));
+    Edge * MST = calloc(numbers, sizeof(Edge *));
+    Node * temp = calloc(numbers, sizeof(Node *));
     switch (korp) {
         case 1:
             switch (lorm) {
@@ -409,7 +398,7 @@ void sorter(Maze * maze, int korp, int lorm, int sort, int printEdges){
                     quickSort(lst, 0, maze->mSize, maze->mSize );
                     break;
             }
-            //MST = kruskal(lst);
+            MST = kruskal(lst);
             endTime = time(0);
             break;
         case 2:

@@ -26,7 +26,7 @@ Maze * create_maze(size_t size){
     }   
     
 
-    maze->graph = create(strHash, strEquals, strLongPrint);
+    maze->graph = create(strHash, strEquals, strIntPrint);
     if ( maze->graph == NULL){
         assert(NULL);
     }
@@ -73,39 +73,38 @@ void generate(Maze * maze, int n, int seed, double p){
         maze->count = 0;
         int range = n - 1 + 1;
 		for (int i = 0; i < n; i++) {
-                for (int j = i; j < n; j++) {
-                    if (i == j) continue;
-					double r = (double) rand() / RAND_MAX;
-                    if (r <= p){
-                        int weight = 1 + rand() % (range+1-0);
-                        maze->matrix[i][j] = weight;
-                        maze->matrix[j][i] = weight;
+            for (int j = i; j < n; j++) {
+                if (i == j) continue;
+                double r = (double) rand() / RAND_MAX;
+                if (r <= p){
+                    int weight = 1 + rand() % (range+1-0);
+                    maze->matrix[i][j] = weight;
+                    maze->matrix[j][i] = weight;
 
-                        char * str_i = malloc(sizeof(char) * MAX_NUMS);
-                        char * str_j = malloc(sizeof(char) * MAX_NUMS);
-                        char * str_w = malloc(sizeof(char) * MAX_NUMS);
+                    char * str_i = malloc(sizeof(char) * MAX_NUMS);
+                    char * str_j = malloc(sizeof(char) * MAX_NUMS);
+                    
+                    sprintf(str_i, "%d", i);                                // Convert i to string
+                    Node * i = get(maze->graph, str_i );                    // Get i from the graph
+                    
+                    sprintf(str_j, "%d", j);
+                    Node * j = get(maze->graph,  str_j );
+                    
+                    putNeighbor(i, j, weight);                              // Set j as a neighbor of i 
+                    put(i->weights, (void*)str_j, (void*) (long) weight);   // Add j's weight in i
 
-                        sprintf(str_w, "%d", weight);                           // Convert weight to string
-                        
-                        sprintf(str_i, "%d", i);                                // Convert i to string
-                        Node * i = get(maze->graph, str_i );                    // Get i from the graph
-                        
-                        sprintf(str_j, "%d", j);
-                        Node * j = get(maze->graph,  str_j );
-                        
-                        putNeighbor(i, j, weight);                              // Set j as a neighbor of i 
-                        put(i->weights, (void*)str_j, (void*)str_w);            // Add j's weight in i
 
-                        putNeighbor(j, i, weight);                              // Set i as a neighbor of j
-                        put(i->weights, (void*)str_i, (void*)str_w);           // Add i's weight in j
+                    putNeighbor(j, i, weight);                              // Set i as a neighbor of j
+                    put(i->weights, (void*)str_i, (void*) (long) weight);   // Add i's weight in j
 
-                        /**printf("Node %s neighbor is %s\n", str_i, str_j);
-                        for (size_t q = 0; q < i->nSize; q++){
-                            i->neighbors[q]->print(i->neighbors[q]);
-                        }
-                        **/
+
+                    /**printf("Node %s neighbor is %s\n", str_i, str_j);
+                    for (size_t q = 0; q < i->nSize; q++){
+                        i->neighbors[q]->print(i->neighbors[q]);
                     }
+                    **/
                 }
+            }
         }
         Node * zeroNode = get(maze->graph, "0");
         Node * invalidNode = malloc(sizeof(*invalidNode));
@@ -139,8 +138,10 @@ void printMatrix(Maze * maze){
 
 void printList(Maze * maze) {
     printf("The graph as an adjacency list:\n");
+    //dump( ((Node *) get(maze->graph,"0"))->weights , 1);
+    //dump( ((Node *) get(maze->graph,"6"))->weights , 1);
     for (int i = 0; i < maze->count; i++) { 
-        char * str = malloc(sizeof(int));
+        char * str = malloc(sizeof(char) * MAX_NUMS);
         sprintf(str, "%d", i);
         ((Node *)get(maze->graph, str))->print(get(maze->graph,str));
     }
@@ -168,7 +169,7 @@ void DFSInfo(Maze * maze){
 }
 
 Edge * getMatrix(Maze * maze){
-    Edge *edges = calloc(sizeof(Edge), maze->count);
+    Edge *edges = calloc(maze->count, sizeof(Edge) );
     int loc = 0;
     for (int i = 0; i < maze->count; i++){
         for (int j = 0; j < maze->count; j++){
@@ -188,7 +189,7 @@ Edge * getMatrix(Maze * maze){
 }
 
 Edge * getList(Maze * maze){
-    Edge * edges = calloc(sizeof(Edge), maze->count);
+    Edge * edges = calloc(maze->count, sizeof(Edge) );
     Table * table = maze->graph;
     int loc = 0;
     for (int i = 0; i < maze->count; i++ ){
@@ -201,6 +202,7 @@ Edge * getList(Maze * maze){
                 e->weight =(long) get(n->weights, str);
                 e->row = i;
                 e->col = atoi(n->name);
+                e->print = printEdge;
                 edges[loc++] = *e;
             }
         }
@@ -209,7 +211,7 @@ Edge * getList(Maze * maze){
 }
 
 Node * getMatrixNodes(Maze * maze){ 
-    Node * nodes = calloc(sizeof(Node), maze->count);
+    Node * nodes = calloc(maze->count, sizeof(Edge) );
     for (int i = 0; i < maze->count ; i++) {
         char * str = malloc(sizeof(char) * MAX_NUMS);
         sprintf(str, "%d", i);
@@ -236,7 +238,7 @@ Node * getMatrixNodes(Maze * maze){
 }
 
 Node * getListNodes(Maze * maze){
-    Node * nodes = calloc(sizeof(Node), maze->count);
+    Node * nodes = calloc(maze->count, sizeof(Node));
     for (int i = 0; i < maze->count; i ++){
         char * str = malloc(sizeof(char) * MAX_NUMS);
         sprintf(str, "%d", i);

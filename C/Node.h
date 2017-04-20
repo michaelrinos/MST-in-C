@@ -26,6 +26,6 @@ int compareToNode(Node * a, Node * b);
 void init_node(Node ** node, char * name, void (*printNode)(Node * n));
 void destroy_node(Node * n);
 void printNode(Node * n);
-void * putNeighbor(Node * a, Node * b, long weight);
+void * putNeighbor(Node * a, Node * b, int weight);
 
 #endif

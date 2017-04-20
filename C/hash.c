@@ -52,3 +52,6 @@ void strNodePrint(void* key, void* value) {
 void strStrPrint(void * key, void * value){
     printf("%s : %s", (char *) key, (char *) value);
 }
+void strIntPrint(void * key, void * value){
+    printf("%s : %d", (char *) key, *((int *) value));
+}
