@@ -71,13 +71,13 @@ void generate(Maze * maze, int n, int seed, double p){
     
     while (maze->count != n){
         maze->count = 0;
-        int range = n - 1 + 1;
+        int range = 7;
 		for (int i = 0; i < n; i++) {
             for (int j = i; j < n; j++) {
                 if (i == j) continue;
                 double r = (double) rand() / RAND_MAX;
                 if (r <= p){
-                    int weight = 1 + rand() % (range+1-0);
+                    int weight = rand() % (range);
                     maze->matrix[i][j] = weight;
                     maze->matrix[j][i] = weight;
 

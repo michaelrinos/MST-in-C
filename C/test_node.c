@@ -26,23 +26,13 @@ Node * testNode(Node * nodes){
     }
     printf("\n\nCreated an array of %d Nodes\n\n", TEST_AMOUNT);
     srand(5);
-    int weight = 1 + rand() % (50+ 1 -0);
-    printf("The first weight is: %d\n", weight);
-    put(nodes[0].weights, nodes[1].name, (void *) (long) weight);
-    weight = 1 + rand() % (50+ 1 -0);
-    printf("The secound weight is: %d\n", weight);
-    put(nodes[0].weights, nodes[2].name, (void *) (long) weight);
-    weight = 1 + rand() % (50+ 1 -0);
-    printf("The third weight is: %d\n", weight);
-    put(nodes[0].weights, nodes[3].name, (void *) (long) weight);
-    dump(nodes[0].weights, 1);
-    long got = ((long)get(nodes[0].weights, (void *) nodes[1].name));
-    printf("The first gotten is: %ld\n", got);
-    got = (long)get(nodes[0].weights, (void *) nodes[2].name);
-    printf("The secound gotten is: %ld\n", got);
-    got = (long)get(nodes[0].weights, (void *) nodes[3].name);
-    printf("The third gotten is: %ld\n", got);
-    
+    int weight;// = 1 + rand() % (7-1+1+1-1);
+    for (int i = 0; i < 50; i++){
+        weight =rand() % (7-1+1+1-1);
+        if (weight == 0)
+            printf("Weight: %d\n", weight);
+        //printf("Weight: %d\n", weight);
+    }
 
 
     for (size_t i = 0; i < TEST_AMOUNT; i++){

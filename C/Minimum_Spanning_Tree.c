@@ -225,7 +225,7 @@ void quickSort(Edge * arr, int low, int high, int length) {
     int i = low, j = high;                          // make left < pivot and right > pivot
     while (i <= j) {
         while (compareTo(&pivot, &arr[i]) > 0) i++;   //pivot.compareTo(arr[i]) > 0) i++;
-        while (compareTo(&pivot, &arr[j]) < 0) j++;   //pivot.compareTo(arr[j]) < 0) j--;
+        while (compareTo(&pivot, &arr[j]) < 0) j--;   //pivot.compareTo(arr[j]) < 0) j--;
         if (i <= j) {
             Edge temp = arr[i];
             arr[i++] = arr[j];
@@ -233,8 +233,8 @@ void quickSort(Edge * arr, int low, int high, int length) {
         }
     }
     // recursively sort two sub parts
-    if (low < j) quickSort(arr, low, j, length - j);
-    if (high > i) quickSort(arr, i, high, length - i);
+    if (low < j) quickSort(arr, low, j, middle);
+    if (high > i) quickSort(arr, i, high, middle+1);
 }
 
 
@@ -245,19 +245,52 @@ void quickSort(Edge * arr, int low, int high, int length) {
 * @param a The edge array to be sorted
 * @param k The size of the edge array to be sorted
 */
-void countSort(Edge * a, int k, int length) {
-    Edge copy[length];
-    int c[k];
-    for (int i = 0; i < length; i++) {
-        copy[i] = a[i];
-        c[ copy[i].weight ]++;
+void countSort(Edge * a, int k) {
+    Edge copy[k];
+    int c[k], i;
+    memset(c, 0, sizeof(c));
+ 
+    /**
+    for (int i =0; i < k; i++){
+        printf("%d\n", c[i]);
     }
+    **/
+
+    for (i = 0; i < k; i++) {
+        //memcpy(&copy[i], &a[i], sizeof(Edge));
+        ++c[ a[i].weight ];
+    }
+    for (i = 1; i < k; i++)
+        c[i] += c[i-1];
+
+    for (i = 0; i < k; i++){
+        copy[c[a[i].weight]-1] = a[i];
+        --(c[a[i].weight]);
+    }
+
+    for (i = 0; i < k; i++){
+        a[i] = copy[i];
+    }
+
+
+}
+/**
+void countSort(Edge * a, int k) {
+    Edge copy[k];
+    int c[k];
+    for (int i = 0; i < k; i++) c[i] = 0;
+
+    for (int i = 0; i < k; i++) {
+        memcpy(&copy[i], &a[i], sizeof(Edge));
+        ++c[ copy[i].weight ];
+    }
+
     for (int i = 1; i < k; i++)
         c[i] += c[i-1];
-    for (int i = length-1; i >= 0; i--)
+    for (int i = k-1; i >= 0; i--)
         a[--c[ copy[i].weight ]] = copy[i];
 }
-
+**/
 
 /**
 * Insertion Sort sorts a list of edges by taking the smallest/
@@ -389,10 +422,10 @@ void sorter(Maze * maze, int korp, int lorm, int sort, int printEdges){
             }
             switch (sort) {
                 case 1:
-                    insertionSort(lst, maze->mSize);
+                    insertionSort(lst, numbers);
                     break;
                 case 2:
-                    countSort(lst, numbers + 1, maze->mSize);
+                    countSort(lst, numbers);
                     break;
                 case 3:
                     quickSort(lst, 0, maze->mSize, maze->mSize );
@@ -454,8 +487,6 @@ int main(int argc, const char* argv[]){
         exit(EXIT_FAILURE);
     }
 
-    printf("n %d, seed %d p %f", n, seed, p); 
-
     fclose(fp); //be kind rewind
 
 
@@ -468,12 +499,11 @@ int main(int argc, const char* argv[]){
     //Init maze
     Maze * maze = create_maze(numbers);
     generate(maze, n, seed, p);
-    printf("Maze %d", maze->count);
     const time_t endTime = time(0);
     assert(maze != NULL);
     
     if ( print ) {
-        printf("\nTEST: n= %d, seed=%d, p=%f\n", numbers, seed, p);
+        printf("TEST: n= %d, seed=%d, p=%f\n", numbers, seed, p);
         printf("Time to generate the graph: %lu milliseconds\n\n", (endTime - startTime));
         printMatrix(maze);
         printList(maze);
@@ -481,9 +511,9 @@ int main(int argc, const char* argv[]){
 
         
 		sorter(maze, 1, 1, 1, print);
+        sorter(maze, 1, 1, 2, print);
+        sorter(maze, 1, 1, 3, print);
         /**
-        sorter(g, 1, 1, 2, print);
-        sorter(g, 1, 1, 3, print);
         sorter(g, 1, 2, 1, print);
         sorter(g, 1, 2, 2, print);
         sorter(g, 1, 2, 3, print);
