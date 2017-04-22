@@ -196,12 +196,14 @@ Edge * getList(Maze * maze){
         char * str = malloc(sizeof(char) * MAX_NUMS);
         sprintf(str, "%d", i);
         Node * n = get(table, str);
+        Node ** neighbors = n->neighbors;
         for (size_t j = 0; j < n->nSize; j++){
-            if ( atoi(n->name) > i ){
+            Node * neighbor = neighbors[j];
+            if ( atoi(neighbor->name) > i ){
                 Edge * e = malloc(sizeof(e));
-                e->weight =(long) get(n->weights, str);
+                e->weight =(long) get(neighbor->weights, str);
                 e->row = i;
-                e->col = atoi(n->name);
+                e->col = atoi(neighbor->name);
                 e->print = printEdge;
                 edges[loc++] = *e;
             }
