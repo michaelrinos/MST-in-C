@@ -50,12 +50,10 @@ Edge * prim(Node * a){
 
             int name = atoi(v->name);
             int weight = *((int *) get(v->weights, (void *)u->Node->name));
-            //int weight = v.getWeight(u.getNode().getName());
             MinHeapNode * neighbor = malloc(sizeof(MinHeapNode));
             neighbor->Node = v;
             neighbor->key = key[name];
             
-            //MinHeapNode neighbor = new MinHeapNode(v,key[name]);
 
             if (contains(minHeap, neighbor) // If the node isn't in the MST
                     && weight < key[name]
@@ -64,12 +62,10 @@ Edge * prim(Node * a){
                 key[name] = weight;
                 
                 parent[name] = *(u->Node);
-                //parent[Integer.parseInt(v.getName())] = u.getNode();
                 MinHeapNode * t = malloc(sizeof(MinHeapNode));
                 t->Node = v;
                 t->key = weight;
                 decreaseKey(minHeap, t);
-                //minHeap.decreaseKey(new MinHeapNode(v,weight));
 
             }
         }
@@ -83,7 +79,6 @@ Edge * prim(Node * a){
             e->col = i;
             e->print = printEdge;
             MST[count++] = *e;
-            //MST.add(new Edge(parent[i].getWeight(Integer.toString(i)), Integer.parseInt(parent[i].getName()), i));
         }
     }
     
@@ -165,7 +160,6 @@ Edge * kruskal(Edge * a){
     int includedCount = 0;
     int edges = 0;
 
-    //LinkedList<Edge> MST = new LinkedList<>();
     Edge * MST = calloc(numbers, sizeof(Edge));
     int size = 0;
 
@@ -185,7 +179,6 @@ Edge * kruskal(Edge * a){
         
         if ( compareToNode(&root1, &root2) != 0 ){
             MST[size++] = a[edges];
-            //MST.add( a [edges] );
             includedCount+=1;
             Union(root1, root2);
         }
@@ -218,23 +211,25 @@ Edge * kruskal(Edge * a){
 * @param low The first item in the list
 * @param high The last item in the list
 */
-void quickSort(Edge * arr, int low, int high, int length) {
-    if (arr == NULL || length == 0 || low >= high) return;
+void quickSort(Edge * arr, int low, int high) {
+    if (arr == NULL || low >= high) return;
     int middle = low + (high - low) / 2;            // pick the pivot
     Edge pivot = arr[middle];
     int i = low, j = high;                          // make left < pivot and right > pivot
     while (i <= j) {
-        while (compareTo(&pivot, &arr[i]) > 0) i++;   //pivot.compareTo(arr[i]) > 0) i++;
-        while (compareTo(&pivot, &arr[j]) < 0) j--;   //pivot.compareTo(arr[j]) < 0) j--;
+        while (compareTo(&arr[i], &pivot) < 0) i++;   //pivot.compareTo(arr[i]) > 0) i++;
+        while (compareTo(&arr[j], &pivot) > 0) j--;   //pivot.compareTo(arr[j]) < 0) j--;
         if (i <= j) {
             Edge temp = arr[i];
-            arr[i++] = arr[j];
-            arr[j--] = temp;
+            arr[i] = arr[j];
+            arr[j] = temp;
+            i++;
+            j--;
         }
     }
     // recursively sort two sub parts
-    if (low < j) quickSort(arr, low, j, middle);
-    if (high > i) quickSort(arr, i, high, middle+1);
+    if (low < j) quickSort(arr, low, j);
+    if (high > i) quickSort(arr, i, high );
 }
 
 
@@ -250,11 +245,6 @@ void countSort(Edge * a, int k) {
     int c[k], i;
     memset(c, 0, sizeof(c));
  
-    /**
-    for (int i =0; i < k; i++){
-        printf("%d\n", c[i]);
-    }
-    **/
 
     for (i = 0; i < k; i++) {
         //memcpy(&copy[i], &a[i], sizeof(Edge));
@@ -274,23 +264,6 @@ void countSort(Edge * a, int k) {
 
 
 }
-/**
-void countSort(Edge * a, int k) {
-    Edge copy[k];
-    int c[k];
-    for (int i = 0; i < k; i++) c[i] = 0;
-
-    for (int i = 0; i < k; i++) {
-        memcpy(&copy[i], &a[i], sizeof(Edge));
-        ++c[ copy[i].weight ];
-    }
-
-    for (int i = 1; i < k; i++)
-        c[i] += c[i-1];
-    for (int i = k-1; i >= 0; i--)
-        a[--c[ copy[i].weight ]] = copy[i];
-}
-**/
 
 /**
 * Insertion Sort sorts a list of edges by taking the smallest/
@@ -369,11 +342,6 @@ void printSorts(Edge * arr,int korp, int morl, int sort, long runTime, int print
             tWeight+=temp.weight;
         }
     }
-    /**for (Edge temp : arr){
-        if (printEdges)
-            printf(temp);
-        tWeight+=temp.getWeight();
-    }**/
     if (!printEdges)
         printf("\n");
 
@@ -420,15 +388,24 @@ void sorter(Maze * maze, int korp, int lorm, int sort, int printEdges){
                     lst = getMatrix(maze);
                     break;
             }
+            
+            int length = 0;
+            for (int i = 0; i < factorial(numbers-1); i++){
+                if (lst[i].print){
+                    lst[i].print(&lst[i]);
+                    length++;
+                }
+                else break;
+            }
             switch (sort) {
                 case 1:
-                    insertionSort(lst, numbers);
+                    insertionSort(lst, length);
                     break;
                 case 2:
-                    countSort(lst, numbers);
+                    countSort(lst, length);
                     break;
                 case 3:
-                    quickSort(lst, 0, maze->mSize, maze->mSize );
+                    quickSort(lst, 0, length);
                     break;
             }
             MST = kruskal(lst);
@@ -452,7 +429,6 @@ void sorter(Maze * maze, int korp, int lorm, int sort, int printEdges){
             break;
     }
 
-    //LinkedList<Edge> krus = kruskal(lst);
     printSorts(MST, korp,lorm, sort, (endTime-startTime), printEdges);
     //return lst;
 } 
@@ -516,9 +492,9 @@ int main(int argc, const char* argv[]){
         sorter(maze, 1, 2, 1, print);
         sorter(maze, 1, 2, 2, print);
         sorter(maze, 1, 2, 3, print);
-        /**
 
-        sorter(g, 2, 1, 1, print);
+        sorter(maze, 2, 1, 1, print);
+        /**
         sorter(g, 2, 2, 1, print);
         **/
 

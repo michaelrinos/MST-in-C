@@ -28,5 +28,6 @@ Edge * getMatrix(Maze * maze);
 Edge * getList(Maze * maze);
 Node * getMatrixNodes(Maze * maze);
 Node * getListNodes(Maze * maze);
+int factorial(int f);
 
 #endif

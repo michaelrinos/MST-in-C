@@ -3,6 +3,12 @@
 #include <stdlib.h>
 #include <assert.h>
 
+int factorial(int f){
+    if (f == 0)
+        return 1;
+    return (f + factorial(f-1));
+}
+
 Maze * create_maze(size_t size){
     Maze * maze = (Maze *)malloc(sizeof(Maze));
     if ( maze == NULL ){
@@ -169,19 +175,21 @@ void DFSInfo(Maze * maze){
 }
 
 Edge * getMatrix(Maze * maze){
-    Edge *edges = calloc(maze->count, sizeof(Edge) );
+    Edge *edges = calloc(factorial(maze->count-1), sizeof(Edge) );
     int loc = 0;
     for (int i = 0; i < maze->count; i++){
         for (int j = 0; j < maze->count; j++){
             if ( i == j ) continue;
             if ( maze->matrix[i][j] == 0 ) continue;
             else {
-                Edge * e = malloc(sizeof(e));
-                e->weight = maze->matrix[i][j];
-                e->row = i;
-                e->col = j;
-                e->print = printEdge;
-                edges[loc++] = *e;
+                if (j > i){
+                    Edge * e = malloc(sizeof(e));
+                    e->weight = maze->matrix[i][j];
+                    e->row = i;
+                    e->col = j;
+                    e->print = printEdge;
+                    edges[loc++] = *e;
+                }
             }
         }
     }
@@ -189,10 +197,10 @@ Edge * getMatrix(Maze * maze){
 }
 
 Edge * getList(Maze * maze){
-    Edge * edges = calloc(maze->count, sizeof(Edge) );
+    Edge * edges = malloc(factorial(maze->count -1) * sizeof(Edge) );
     Table * table = maze->graph;
     int loc = 0;
-    for (int i = 0; i < maze->count; i++ ){
+    for (int i = 0; i < maze->count - 1; i++ ){
         char * str = malloc(sizeof(char) * MAX_NUMS);
         sprintf(str, "%d", i);
         Node * n = get(table, str);
@@ -209,27 +217,32 @@ Edge * getList(Maze * maze){
             }
         }
     }
+    /**
+    for ( int i = 0; i < factorial(maze->count-1); i ++){
+        if (edges[i].weight)
+            printEdge(&edges[i]);
+    }
+    **/
     return edges;
 }
 
 Node * getMatrixNodes(Maze * maze){ 
-    Node * nodes = calloc(maze->count, sizeof(Edge) );
+    Node * nodes = malloc(maze->count * sizeof(Node) );
     for (int i = 0; i < maze->count ; i++) {
         char * str = malloc(sizeof(char) * MAX_NUMS);
         sprintf(str, "%d", i);
         Node * n = malloc(sizeof(Node));
         init_node(&n, str, printNode);
-        nodes[0] = *n;
-        //nodes.add(new Node(Integer.toString(i)));
+        nodes[i] = *n;
+        
     }
-
     for (int i = 0; i < maze->count; i++) {
         for (int j = 0; j < maze->count ; j++) {
             if (i == j) continue;
             if (maze->matrix[i][j] == 0) continue;
             else {
                 putNeighbor(&nodes[i], &nodes[j], maze->matrix[i][j]);
-                putNeighbor(&nodes[j], &nodes[i], maze->matrix[i][j]);
+                //putNeighbor(&nodes[j], &nodes[i], maze->matrix[i][j]);
 
                 //nodes.get(i).addNeighbor(nodes.get(j),matrix[i][j]);
                 //nodes.get(j).addNeighbor(nodes.get(i),matrix[i][j]);
