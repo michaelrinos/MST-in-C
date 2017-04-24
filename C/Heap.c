@@ -17,8 +17,6 @@ void heap_init(Heap ** heap){
 }
 
 void heap_add(Heap * heap, MinHeapNode * value){
-    printf("Key: %d\n", value->key);
-    printNode(value->Node);
     heap->array[heap->size] = value;
     siftUp(heap, heap->size);
     heap->size++;

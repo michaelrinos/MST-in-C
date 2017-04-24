@@ -38,17 +38,19 @@ Edge * prim(Node * a){
         m->key = key[i];
         heap_add(minHeap, m);
     }
+
     key[0] = 0;
     MinHeapNode * m = malloc(sizeof(MinHeapNode));
     m->Node = &a[0];
     m->key = key[0];
     heap_add(minHeap, m);
+
+
     while ( minHeap->size != 0){                 //!minHeap.isEmpty() ){
         MinHeapNode * u = heap_remove(minHeap);
         Node ** neighbors = u->Node->neighbors;
         for (size_t i = 0; i < u->Node->nSize;i++){
             Node * v = neighbors[0];
-
             int name = atoi(v->name);
             int weight =  (long) get(v->weights, (void *)u->Node->name);
             MinHeapNode * neighbor = malloc(sizeof(MinHeapNode));
@@ -74,8 +76,13 @@ Edge * prim(Node * a){
     size_t count = 0;
     for (int i = 0; i < numbers ; i++) {
         if ( &parent[i] != NULL) {
+            char * str = malloc(sizeof(char) * MAX_NUMS);
+            sprintf(str, "%d", i);
             Edge * e = malloc(sizeof(Edge));
-            e->weight = *( (int *) get(parent[i].weights, (void *) &i));
+            
+            if ( get(parent[i].weights, (void *) str))
+                continue;
+            e->weight = (long) get(parent[i].weights, (void *) &i);
             e->row = atoi(parent[i].name);
             e->col = i;
             e->print = printEdge;
@@ -393,7 +400,6 @@ void sorter(Maze * maze, int korp, int lorm, int sort, int printEdges){
             int length = 0;
             for (int i = 0; i < factorial(numbers-1); i++){
                 if (lst[i].print){
-                    lst[i].print(&lst[i]);
                     length++;
                 }
                 else break;

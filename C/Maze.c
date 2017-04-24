@@ -97,11 +97,8 @@ void generate(Maze * maze, int n, int seed, double p){
                     Node * j = get(maze->graph,  str_j );
                     
                     putNeighbor(i, j, weight);                              // Set j as a neighbor of i 
-                    put(i->weights, (void*)str_j, (void*) (long) weight);   // Add j's weight in i
-
 
                     putNeighbor(j, i, weight);                              // Set i as a neighbor of j
-                    put(i->weights, (void*)str_i, (void*) (long) weight);   // Add i's weight in j
 
 
                     /**printf("Node %s neighbor is %s\n", str_i, str_j);
@@ -237,15 +234,12 @@ Node * getMatrixNodes(Maze * maze){
         
     }
     for (int i = 0; i < maze->count; i++) {
-        for (int j = 0; j < maze->count ; j++) {
+        for (int j = i; j < maze->count ; j++) {
             if (i == j) continue;
             if (maze->matrix[i][j] == 0) continue;
             else {
                 putNeighbor(&nodes[i], &nodes[j], maze->matrix[i][j]);
-                //putNeighbor(&nodes[j], &nodes[i], maze->matrix[i][j]);
-
-                //nodes.get(i).addNeighbor(nodes.get(j),matrix[i][j]);
-                //nodes.get(j).addNeighbor(nodes.get(i),matrix[i][j]);
+                putNeighbor(&nodes[j], &nodes[i], maze->matrix[i][j]);
             }
         }
     }

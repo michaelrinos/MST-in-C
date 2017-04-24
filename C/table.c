@@ -79,7 +79,9 @@ void* get(Table* t, void* key){
 			assert(NULL);
 		}
 	}
-	return t->table[index]->value;
+    if (t->table[index])
+    	return t->table[index]->value;
+    return NULL;
 }
 
 

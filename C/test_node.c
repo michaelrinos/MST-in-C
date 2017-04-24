@@ -26,18 +26,17 @@ Node * testNode(Node * nodes){
     }
     printf("\n\nCreated an array of %d Nodes\n\n", TEST_AMOUNT);
     srand(5);
-    int weight;// = 1 + rand() % (7-1+1+1-1);
-    for (int i = 0; i < 50; i++){
+    int weight;
+    for (int i = 0; i < TEST_AMOUNT; i++){
         weight =rand() % (7-1+1+1-1);
-        if (weight == 0)
-            printf("Weight: %d\n", weight);
-        //printf("Weight: %d\n", weight);
+        putNeighbor(&nodes[0], &nodes[i], weight);
     }
 
 
     for (size_t i = 0; i < TEST_AMOUNT; i++){
         nodes[i].print(&nodes[i]);
     }
+    dump(nodes[0].weights, 1);
     return nodes;
 
 }
