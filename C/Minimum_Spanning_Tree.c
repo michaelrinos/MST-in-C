@@ -26,7 +26,8 @@ Edge * prim(Node * a){
     Node parent[numbers];
     int key[numbers];
     Edge * MST = calloc(numbers ,sizeof(Edge));
-    Heap * minHeap = malloc(sizeof(Heap));
+    Heap * minHeap;
+    heap_init(&minHeap);
     for (int i = 1; i < numbers ; i++) {
         Node * n = malloc(sizeof(Node));
         init_node((Node **) n, "-1", printNode);
@@ -49,7 +50,7 @@ Edge * prim(Node * a){
             Node * v = neighbors[0];
 
             int name = atoi(v->name);
-            int weight = *((int *) get(v->weights, (void *)u->Node->name));
+            int weight =  (long) get(v->weights, (void *)u->Node->name);
             MinHeapNode * neighbor = malloc(sizeof(MinHeapNode));
             neighbor->Node = v;
             neighbor->key = key[name];
