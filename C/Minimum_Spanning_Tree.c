@@ -25,29 +25,42 @@ int numbers = 0;
 Edge * prim(Node * a){
     Node parent[numbers];
     int key[numbers];
-    Edge * MST = calloc(numbers ,sizeof(Edge));
+    Edge * MST = malloc(numbers * sizeof(Edge));
     Heap * minHeap;
     heap_init(&minHeap);
     for (int i = 1; i < numbers ; i++) {
         Node * n = malloc(sizeof(Node));
-        init_node((Node **) n, "-1", printNode);
+        init_node(&n, "-1", printNode);
         parent[i] = *n;
+        
+        printf("Parent[%d]: ", i);
+        printNode(&parent[i]);
         key[i] = INT_MAX;
         MinHeapNode * m = malloc(sizeof(MinHeapNode));
         m->Node = &a[i];
         m->key = key[i];
         heap_add(minHeap, m);
     }
+    printf("Before 0\n");
+    hDump(minHeap, 1);
 
     key[0] = 0;
     MinHeapNode * m = malloc(sizeof(MinHeapNode));
     m->Node = &a[0];
     m->key = key[0];
     heap_add(minHeap, m);
+    printf("After 0\n");
+    hDump(minHeap, 1);
+    printf("Thats all folks\n");
 
 
     while ( minHeap->size != 0){                 //!minHeap.isEmpty() ){
+        printf("Before the removal\n");
+        hDump(minHeap, 1);
         MinHeapNode * u = heap_remove(minHeap);
+        printf("After the removal\n");
+        hDump(minHeap, 1);
+
         Node ** neighbors = u->Node->neighbors;
         for (size_t i = 0; i < u->Node->nSize;i++){
             Node * v = neighbors[0];
@@ -65,23 +78,26 @@ Edge * prim(Node * a){
                 key[name] = weight;
                 
                 parent[name] = *(u->Node);
+                
                 MinHeapNode * t = malloc(sizeof(MinHeapNode));
                 t->Node = v;
                 t->key = weight;
                 decreaseKey(minHeap, t);
-
             }
         }
     }
     size_t count = 0;
     for (int i = 0; i < numbers ; i++) {
-        if ( &parent[i] != NULL) {
+        if ( &parent[i]) {
+            printNode(&(parent[i]));
             char * str = malloc(sizeof(char) * MAX_NUMS);
             sprintf(str, "%d", i);
             Edge * e = malloc(sizeof(Edge));
             
-            if ( get(parent[i].weights, (void *) str))
+            if ( get(parent[i].weights, (void *) str)){
+                printf("ITS NULL\n");
                 continue;
+            }
             e->weight = (long) get(parent[i].weights, (void *) &i);
             e->row = atoi(parent[i].name);
             e->col = i;

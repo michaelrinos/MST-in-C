@@ -35,5 +35,6 @@ void lchild(int index);
 void rchild(int index);
 void swap(MinHeapNode * n1, MinHeapNode * n2);
 int decreaseKey(Heap * heap, MinHeapNode * who);
+void hDump(Heap * heap, int full);
 
 #endif
