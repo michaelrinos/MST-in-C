@@ -119,7 +119,7 @@ int contains(Heap * heap, MinHeapNode * what){
 }
 int decreaseKey(Heap * heap, MinHeapNode * who){
     printf("HEAP::DECREASE KEY\n");
-    for (size_t i = 0; i < heap->capacity; i++){
+    for (size_t i = 0; i < heap->size; i++){
         MinHeapNode * temp = heap->array[i];
         if (compareToNode(temp->Node, who->Node) == 0){
             printf("its in here\n");
