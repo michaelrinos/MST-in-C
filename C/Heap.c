@@ -25,6 +25,7 @@ MinHeapNode * heap_remove(Heap * heap){
     MinHeapNode * res =  (MinHeapNode *)heap->array[0];
     heap->size--;
     heap->array[0] = heap->array[heap->size];
+    memset(&(heap->array[heap->size]), 0, sizeof(MinHeapNode));
     siftDown(heap, 0);
     return res;
 }
@@ -107,9 +108,11 @@ void swap(MinHeapNode * n1, MinHeapNode * n2){
 
 int contains(Heap * heap, MinHeapNode * what){
     for (size_t i = 0; i < heap->capacity; i++){
-        MinHeapNode * temp = heap->array[i];
-        if (compareToNode(temp->Node, what->Node)){
-            return 1;
+        if (heap->array[i]){
+            MinHeapNode * temp = heap->array[i];
+            if (compareToNode(temp->Node, what->Node)){
+                return 1;
+            }
         }
     }
     return 0;
