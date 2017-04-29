@@ -28,6 +28,7 @@ Edge * prim(Node * a){
     Edge * MST = malloc(numbers * sizeof(Edge));
     Heap * minHeap;
     heap_init(&minHeap);
+
     for (int i = 1; i < numbers ; i++) {
         Node * n = malloc(sizeof(Node));
         init_node(&n, "-1", printNode);
@@ -48,9 +49,6 @@ Edge * prim(Node * a){
 
     while ( minHeap->size != 0){                 //!minHeap.isEmpty() ){
         MinHeapNode * u = heap_remove(minHeap);
-        printf("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n");
-        printf("HEAP SIZE %lu\n", minHeap->size);
-        printf("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n\n");
 
         Node ** neighbors = u->Node->neighbors;
         for (size_t i = 0; i < u->Node->nSize;i++){
@@ -60,55 +58,29 @@ Edge * prim(Node * a){
             MinHeapNode * neighbor = malloc(sizeof(MinHeapNode));
             neighbor->Node = v;
             neighbor->key = key[name];
-            /**
-            printf("Is this guys in the MST: \n");
-            printNode(neighbor->Node);
-            printf("I GET A RESPONSE OF %d", contains(minHeap, neighbor)); 
-            hDump(minHeap, 1);
-            **/
-            
-
             if (contains(minHeap, neighbor) // If the node isn't in the MST
                     && weight < key[name]
                     ){
-                
-                printf("Weight: %d\t key[%d]: %d\n", weight, name, key[name]);
                 key[name] = weight;
-                printf("Weight: %d\t key[%d]: %d\n", weight, name, key[name]);
-                printf("Putting in to parent[%d]: \t", name);
-                printNode(u->Node);
+                
                 parent[name] = *(u->Node);
                 
-                MinHeapNode * t = malloc(sizeof(MinHeapNode));
-                t->Node = v;
-                t->key = weight;
+                MinHeapNode t = { .Node = v, .key = weight};
+                //t->Node = v;
+                //t->key = weight;
                 
-                /**printf("Before the decrease\n");
-                hDump(minHeap, 1);
-                printf("The node who's key is being decreased\n");
-                printNode(v);
-                **/
-                decreaseKey(minHeap, t);
-                /**
-                printf("After the decreasel\n");
-                hDump(minHeap, 1);
-                **/
+                decreaseKey(minHeap, &t);
             }
         }
     }
     size_t count = 0;
     for (int i = 1; i < numbers ; i++) {
         if ( &parent[i]) {
-            printNode(&(parent[i]));
             char * str = malloc(sizeof(char) * MAX_NUMS);
             sprintf(str, "%d", i);
             Edge * e = malloc(sizeof(Edge));
             
-            if ( get(parent[i].weights, (void *) str)){
-                printf("ITS NULL\n");
-                continue;
-            }
-            e->weight = (long) get(parent[i].weights, (void *) &i);
+            e->weight = (long) get(parent[i].weights, (void *) str);
             e->row = atoi(parent[i].name);
             e->col = i;
             e->print = printEdge;
