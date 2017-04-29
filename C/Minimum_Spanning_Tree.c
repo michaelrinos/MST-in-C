@@ -58,18 +58,23 @@ Edge * prim(Node * a){
             MinHeapNode * neighbor = malloc(sizeof(MinHeapNode));
             neighbor->Node = v;
             neighbor->key = key[name];
+            if (!contains(minHeap, neighbor)){
+                printf("Does the heap contain: ");
+                printNode(neighbor->Node);
+                printf("I get %d\n", contains(minHeap, neighbor));
+                hDump(minHeap, 1);
+            }
             if (contains(minHeap, neighbor) // If the node isn't in the MST
                     && weight < key[name]
                     ){
                 key[name] = weight;
                 
+                printf("Weight: %d\t key[%d]: %d\n", weight, name, key[name]);
                 parent[name] = *(u->Node);
                 
-                MinHeapNode t = { .Node = v, .key = weight};
-                //t->Node = v;
-                //t->key = weight;
+                MinHeapNode * t = &(struct MinHeapNode){ .Node = v, .key = weight};
                 
-                decreaseKey(minHeap, &t);
+                decreaseKey(minHeap, t);
             }
         }
     }
