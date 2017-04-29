@@ -34,16 +34,12 @@ Edge * prim(Node * a){
         init_node(&n, "-1", printNode);
         parent[i] = *n;
         key[i] = INT_MAX;
-        MinHeapNode * m = malloc(sizeof(MinHeapNode));
-        m->Node = &a[i];
-        m->key = key[i];
+        MinHeapNode * m = &(struct MinHeapNode){ .Node = &a[i], .key = key[i]};
         heap_add(minHeap, m);
     }
 
     key[0] = 0;
-    MinHeapNode * m = malloc(sizeof(MinHeapNode));
-    m->Node = &a[0];
-    m->key = key[0];
+    MinHeapNode * m = &(struct MinHeapNode){ .Node = &a[0], .key = key[0]};
     heap_add(minHeap, m);
 
 
@@ -55,9 +51,7 @@ Edge * prim(Node * a){
             Node * v = neighbors[i];
             int name = atoi(v->name);
             int weight =  (long) get(v->weights, (void *)u->Node->name);
-            MinHeapNode * neighbor = malloc(sizeof(MinHeapNode));
-            neighbor->Node = v;
-            neighbor->key = key[name];
+            MinHeapNode * neighbor = &(struct MinHeapNode){ .Node = v, .key = key[name]};
             if (!contains(minHeap, neighbor)){
                 printf("Does the heap contain: ");
                 printNode(neighbor->Node);
