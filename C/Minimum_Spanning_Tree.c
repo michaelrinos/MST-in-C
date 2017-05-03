@@ -58,12 +58,14 @@ Edge * prim(Node * a){
             MinHeapNode * neighbor = malloc(sizeof(MinHeapNode));
             neighbor->Node = v;
             neighbor->key = key[name];
+            /**
             if (!contains(minHeap, neighbor)){
                 printf("Does the heap contain: ");
                 printNode(neighbor->Node);
                 printf("I get %d\n", contains(minHeap, neighbor));
                 hDump(minHeap, 1);
             }
+            **/
             if (contains(minHeap, neighbor) // If the node isn't in the MST
                     && weight < key[name]
                     ){
@@ -118,13 +120,13 @@ Edge * prim(Node * a){
 * @param p The root or any of its children of a tree
 * @return The root of the Tree
 */
-Node find(Node p) {
-    Node * pp = p.predecessor;
-    if (compareToNode(&p, pp) != 0){          //!(p.equals( p.getp() ) )
-        Node daPred = find(*pp);
-        p.predecessor = &daPred;
+Node * find(Node * p) {
+    Node * pp = p->predecessor;
+    if (compareToNode(p, pp) != 0){          //!(p.equals( p.getp() ) )
+        Node * daPred = find(pp);
+        p->predecessor = daPred;
     }
-    return *p.predecessor;
+    return p->predecessor;
 }
 
 /**
@@ -136,16 +138,16 @@ Node find(Node p) {
 * @param u A Node in a tree of Nodes
 * @param v A Node in a tree of Nodes
 */
-void Union(Node u, Node v) {
-    Node i = find(u);
-    Node j = find(v);
+void Union(Node ** u, Node ** v) {
+    Node * i = find(*u);
+    Node * j = find(*v);
 
-    if (i.rank > j.rank) {
-        j.predecessor = &i;
+    if (i->rank > j->rank) {
+        j->predecessor = i;
     } else {
-        i.predecessor = &j;
-        if (i.rank == j.rank) {
-            j.rank = j.rank + 1;
+        i->predecessor = j;
+        if (i->rank == j->rank) {
+            j->rank = j->rank + 1;
         }
     }
 }
@@ -175,23 +177,30 @@ Edge * kruskal(Edge * a){
     int size = 0;
 
     while (includedCount < numbers-1){
-        Node root1 = b[ a[edges].row ];
-        Node root2 = b[ a[edges].col ];
-
-        if (root1.predecessor){
-            root1.predecessor = &root1;
+        Node * root1 = &b[ a[edges].row ];
+        Node * root2 = &b[ a[edges].col ];
+        
+        if (!root1->predecessor->name){                  //Predecessor has a valid mem adress because of 
+            root1->predecessor = root1;                 // the malloc call but the pred's name should not be innitialized yet
         }
-        if (root2.predecessor){
-            root2.predecessor = &root2;
+        if (!root2->predecessor->name){
+            root2->predecessor = root2;
         }
-
+        /**
+        printf("BEFORE\n");
+        printf("Name of node: %s\t Name of pred %s\n", root1->name, root1->predecessor->name);
+        **/
         root1 = find(root1);
         root2 = find(root2);
         
-        if ( compareToNode(&root1, &root2) != 0 ){
+        if ( compareToNode(root1, root2) != 0 ){
             MST[size++] = a[edges];
             includedCount+=1;
-            Union(root1, root2);
+            Union( &root1 , &root2 );
+            /**
+            printf("AFTER\n");
+            printf("Name of node: %s\t Name of pred %s\n", root1->name, root1->predecessor->name);
+            **/
         }
         edges++;
     }
@@ -504,25 +513,21 @@ int main(int argc, const char* argv[]){
         sorter(maze, 1, 2, 3, print);
 
         sorter(maze, 2, 1, 1, print);
-        /**
-        sorter(g, 2, 2, 1, print);
-        **/
+        sorter(maze, 2, 2, 1, print);
 
     } else {
         printf("\nTEST: n= %d, seed=%d, p=%f\n", numbers, seed, p);
         printf("Time to generate the graph: %lu milliseconds\n\n", (endTime - startTime));
         
-        /**
-        sorter(g, 1, 1, 1, print);
-        sorter(g, 1, 1, 2, print);
-        sorter(g, 1, 1, 3, print);
-        sorter(g, 1, 2, 1, print);
-        sorter(g, 1, 2, 2, print);
-        sorter(g, 1, 2, 3, print);
+        sorter(maze, 1, 1, 1, print);
+        sorter(maze, 1, 1, 2, print);
+        sorter(maze, 1, 1, 3, print);
+        sorter(maze, 1, 2, 1, print);
+        sorter(maze, 1, 2, 2, print);
+        sorter(maze, 1, 2, 3, print);
 
-        sorter(g, 2, 1, 1, print);
-        sorter(g, 2, 2, 1, print);
-        **/
+        sorter(maze, 2, 1, 1, print);
+        sorter(maze, 2, 2, 1, print);
 
     }
 
