@@ -30,9 +30,16 @@ void init_node(Node ** node, char * name, void (*printNode)(Node * n)){
     (*node)->print = printNode;
 }
 
-void destroy_node(Node * n){
+void destroyNode(Node * n){
     free(n->predecessor);
+    for (size_t i = 0; i < n->nCapacity; i++){
+        if (n->neighbors[i]){
+            free(n->neighbors[i]);
+        }    
+    }
     free(n->neighbors);
+    free(n->name);
+    destroy(n->weights);
     free(n);
 }
 
@@ -64,7 +71,7 @@ void * putNeighbor(Node * a, Node * b, int weight){
 }
 
 void printNode(Node * n){
-    char * result = calloc(sizeof(char*), 7);
+    char * result = calloc(sizeof(char), 256);
     strcpy(result , n->name);
     strcat(result , "-> ");
 
@@ -90,6 +97,7 @@ void printNode(Node * n){
     }
     strcat(result, "\n");
     printf("%s", result);
+    free(result);
 }
 
 

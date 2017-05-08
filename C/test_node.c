@@ -43,14 +43,15 @@ Node * testNode(Node * nodes){
 
 
 int main(int argc, char * argv[]) {
-    Node * nodes = malloc(sizeof(Node) * TEST_AMOUNT);
+    //Node * nodes = malloc(sizeof(Node) * TEST_AMOUNT);
     //Node * modes = testNode(nodes);
-    testNode(nodes);
+    //testNode(nodes);
     
-    /**for (size_t i = 0; i < TEST_AMOUNT; i++){
-        modes[i].print(&modes[i]);
-        //dump(modes[i].weights, 1);
-    }**/
+    Node * n;
+    init_node(&n, "1", printNode);
+    printNode(n);
+    destroyNode(n);
+        
 
     int seed = 0;
     if (argc == 2){

@@ -446,7 +446,7 @@ void sorter(Maze * maze, int korp, int lorm, int sort, int printEdges){
             break;
     }
 
-    printSorts(MST, korp,lorm, sort, (endTime-startTime), printEdges);
+    printSorts(MST, korp, lorm, sort, (endTime-startTime), printEdges);
     //return lst;
 } 
 
