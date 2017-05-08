@@ -21,8 +21,6 @@ Maze * create_maze(size_t size){
 
     maze->mSize = size;
 
-    maze->predecessors = (int *) malloc(sizeof(int) * maze->pSize);
-
     maze->matrix = (int **) malloc(sizeof(int *) * maze->mSize);
     for (size_t i = 0; i < maze->mSize; i++){
         maze->matrix[i] = (int *) malloc(sizeof(int) * maze->mSize);
@@ -37,6 +35,16 @@ Maze * create_maze(size_t size){
         assert(NULL);
     }
     return maze;
+}
+
+void deleteMaze(Maze * maze){
+    free(maze->predecessors);
+    for (size_t i = 0; i < maze->mSize; i++){
+        free(maze->matrix[i]);
+    }
+    destroy(maze->graph);
+    free(maze->matrix);
+    free(maze);
 }
 
 void canReachDFS(Maze * maze, char * start){ 
@@ -99,13 +107,11 @@ void generate(Maze * maze, int n, int seed, double p){
                     putNeighbor(i, j, weight);                              // Set j as a neighbor of i 
 
                     putNeighbor(j, i, weight);                              // Set i as a neighbor of j
+                    
+                    free(str_i);
+                    free(str_j);
 
 
-                    /**printf("Node %s neighbor is %s\n", str_i, str_j);
-                    for (size_t q = 0; q < i->nSize; q++){
-                        i->neighbors[q]->print(i->neighbors[q]);
-                    }
-                    **/
                 }
             }
         }
@@ -115,7 +121,6 @@ void generate(Maze * maze, int n, int seed, double p){
         zeroNode->predecessor = invalidNode;
 
         //set the predecessor of 0 as -1
-        //printf("Should loop forever without call to canReachDFS");
         canReachDFS(maze, "0");                 //Update how many nodes we can get 
                                                 //to from the first node used in 
                                                 //while check and set to count.
@@ -231,6 +236,7 @@ Node * getMatrixNodes(Maze * maze){
         Node * n = malloc(sizeof(Node));
         init_node(&n, str, printNode);
         nodes[i] = *n;
+        free(str);
         
     }
     for (int i = 0; i < maze->count; i++) {

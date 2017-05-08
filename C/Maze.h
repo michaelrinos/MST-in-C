@@ -19,7 +19,8 @@ struct Maze{
 
 typedef struct Maze Maze;
 
-Maze* create_maze(size_t size);
+Maze * create_maze(size_t size);
+void deleteMaze(Maze * maze);
 void generate(Maze * maze, int number, int seed, double value);
 void printMatrix(Maze * maze);
 void printList(Maze * maze);

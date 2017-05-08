@@ -94,7 +94,7 @@ Edge * prim(Node * a){
             MST[count++] = *e;
         }
     }
-    
+    deleteHeap(minHeap); 
     return MST;
 }
 
@@ -204,6 +204,7 @@ Edge * kruskal(Edge * a){
         }
         edges++;
     }
+
     return MST;
 }
 
@@ -428,19 +429,16 @@ void sorter(Maze * maze, int korp, int lorm, int sort, int printEdges){
                     break;
             }
             MST = kruskal(lst);
+            free(lst);
             endTime = time(0);
             break;
         case 2:
             switch (lorm){
                 case 1:
-                    lst = getMatrix(maze);
-
                     temp = getMatrixNodes(maze);
                     MST = prim(temp);
                     break;
                 case 2:
-                    lst = getMatrix(maze);
-
                     temp = getListNodes(maze);
                     MST = prim(temp);
                     break;
@@ -471,14 +469,18 @@ int main(int argc, const char* argv[]){
 
     fscanf(fp, "%d", &n);                                   //Get n value
     if (n < 2){                                             //Check n value is valid
-        printf("n must be greater than 1");
+        printf("n must be greater than 1\n");
         exit(EXIT_FAILURE);
     }
 
     fscanf(fp, "%d", &seed);                                //Get seed value
+    if (!seed){
+        printf("failed to retrieve seed value\n");
+        exit(EXIT_FAILURE);
+    }
     fscanf(fp, "%lf", &p);                                  //Get p value
     if (p < 0 || p > 1){                                    //Check n value is valid
-        printf("p must be between 0 and 1");
+        printf("p must be between 0 and 1\n");
         exit(EXIT_FAILURE);
     }
 
@@ -530,6 +532,7 @@ int main(int argc, const char* argv[]){
         sorter(maze, 2, 2, 1, print);
 
     }
+    deleteMaze(maze);
 
     
     return 0;
