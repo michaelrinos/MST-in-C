@@ -10,12 +10,15 @@ int lChild(int index);
 int rChild(int index);
 
 void heap_init(Heap ** heap){
-    (*heap) = malloc(sizeof(heap));
     (*heap)->size = 0;
     (*heap)->capacity = NODES;
     (*heap)->array = calloc(NODES, sizeof(MinHeapNode));
 }
 
+void deleteHeap(Heap * heap){
+    free(heap->array);
+    free(heap);
+}
 void heap_add(Heap * heap, MinHeapNode * value){
     heap->array[heap->size] = value;
     siftUp(heap, heap->size);
@@ -145,13 +148,4 @@ void hDump(Heap * heap, int full){
         } 
     }
     printf("\n");
-}
-void deleteHeap(Heap * heap){
-    for (size_t i = 0; i < heap->capacity; i++){
-        if (heap->array[i]){
-            free(heap->array[i]);
-        }
-    }
-    free(heap->array);
-    free(heap);
 }

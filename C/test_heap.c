@@ -30,7 +30,8 @@ void testHeap(Heap * heap){
 int main( void ) {
     Heap * heap = malloc(sizeof(heap));
     heap_init(&heap);
-    testHeap(heap);
+    //testHeap(heap);
+    deleteHeap(heap);
     
     return 0 ;
 }
