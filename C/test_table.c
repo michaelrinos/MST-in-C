@@ -224,7 +224,7 @@ void testStrNode() {
 /// @param argv command line arguments
 /// @return EXIT_SUCCESS
 int main(int argc, char* argv[]) {
-    //testLongStr();  // first test for long keys and c-string values
+    testLongStr();  // first test for long keys and c-string values
     //testStrLong();  // second test for c-string keys and long values
 
     // If no number is specified on the command line, seed on current time
@@ -232,8 +232,9 @@ int main(int argc, char* argv[]) {
     if (argc == 2) {
         seed = atoi(argv[1]);
     }
+    printf("Seed for error: %d", seed);
     //testStrNode();
-    testStress(seed);  // third test for int keys and int values
+    //testStress(seed);  // third test for int keys and int values
 
     return EXIT_SUCCESS;
 }

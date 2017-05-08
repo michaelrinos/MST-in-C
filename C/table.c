@@ -174,7 +174,7 @@ void* put(Table* t, void* key, void* value){
 		for (size_t i = 0; i<oldCap; ++i){
 			if(oldTable[i]!=NULL){
 				put(t, oldTable[i]->key, oldTable[i]->value);
-				//free(oldTable[i]);
+				free(oldTable[i]);
 			}
 
 		}
