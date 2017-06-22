@@ -7,40 +7,76 @@
 #include <stdlib.h>
 #include <assert.h>
 
+#define MAX_STRING_SIZE 16
 
+/*
 void init_node(Node ** node, char * name, void (*printNode)(Node * n)){
     *node = (Node *) malloc(sizeof(Node));
-    if ( node == NULL ){
+    if ( !node){
         assert(NULL);
     }
     (*node)->rank=0;
     (*node)->marked=0;
     (*node)->nSize=0;
     (*node)->name=strdup(name);
-    (*node)->predecessor=(Node *)malloc(sizeof(Node));
+    (*node)->predecessor=malloc(sizeof(Node));
     if ( (*node)->predecessor == NULL ){
         assert(NULL);
     }
     (*node)->nCapacity = INITIAL_CAPACITY;
-    (*node)->neighbors=(Node **)calloc((*node)->nCapacity, sizeof(Node *));
+    (*node)->neighbors=calloc((*node)->nCapacity, sizeof(Node *));
     if ( (*node)->neighbors == NULL ){
         assert(NULL);
     }
     (*node)->weights = create(strHash, strEquals, strLongPrint );
     (*node)->print = printNode;
+    printf("Creaded Node: %s\n", (*node)->name);
+}
+*/
+
+Node * init_node(char * name){
+    Node * node = malloc(sizeof(Node));
+    if (!node){
+        assert(NULL);
+    }
+    node->rank=0;
+    node->marked=0;
+    node->nSize=0;
+    node->name=strdup(name);
+    node->predecessor=malloc(sizeof(Node));
+    if ( node->predecessor == NULL ){
+        assert(NULL);
+    }
+    node->nCapacity = INITIAL_CAPACITY;
+    node->neighbors=calloc(node->nCapacity, sizeof(Node *));
+    if ( node->neighbors == NULL ){
+        assert(NULL);
+    }
+    node->weights = create(strHash, strEquals, strLongPrint );
+    node->print = printNode;
+    printf("Creaded Node: %s\n", node->name);
+    return node;
 }
 
-void destroyNode(Node * n){
-    free(n->predecessor);
-    for (size_t i = 0; i < n->nCapacity; i++){
-        if (n->neighbors[i]){
-            free(n->neighbors[i]);
-        }    
+void deleteNode(Node * n){
+    printf("Before deleting checking n: %p, %d, %s\n", (void*)n, !n, n->name);
+    if (n->print){
+    printf("Deleting Node %s\n", n->name);
+    if (n->predecessor != n && n->predecessor->print){
+        printf("Deleting %s's predecessor %s\n", n->name, n->predecessor->name);
+        deleteNode(n->predecessor);
     }
+    else{
+        printf("Predecessor not set deleting malloc\n");
+        free(n->predecessor);   
+    }
+    printf("Neighbors have been taken care of continuing deletion of %s\n", n->name);
     free(n->neighbors);
     free(n->name);
     destroy(n->weights);
+    memset(n, 0, sizeof(Node));
     free(n);
+    }
 }
 
 
@@ -60,9 +96,10 @@ void * putNeighbor(Node * a, Node * b, int weight){
         for (size_t i = 0; i < oldCap; i++){
             if(oldNeighbors[i] != NULL){
                 int x = atoi( oldNeighbors[i]->name );
-                printf("X: %d\n\n\n", x); 
-                putNeighbor(a, b, *( (int *) get(a->weights, &x )) );
-                free(oldNeighbors[i]);
+                char * weight = malloc(sizeof(char) * MAX_STRING_SIZE);
+                sprintf(weight, "%d", x);
+                putNeighbor(a, oldNeighbors[i], (long)  get(a->weights, weight ) );
+                free(weight);
             }
         }
         free(oldNeighbors);
@@ -91,7 +128,7 @@ void printNode(Node * n){
             strcat(result, "(");
             strcat(result, weight_s);
             strcat(result, ") ");
-
+            free(weight_s);
 
         }
     }

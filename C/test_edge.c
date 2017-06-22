@@ -26,13 +26,15 @@ Edge * testEdge(Edge * edges){
 
 
 int main(int argc, char * argv[]) {
-    Edge * edges = malloc(sizeof(Edge) * TEST_AMOUNT);
+    /**Edge * edges = malloc(sizeof(Edge) * TEST_AMOUNT);
     Edge * adges = testEdge(edges);
 
     for (size_t i = 0; i < TEST_AMOUNT; i++){
         adges[i].print(&adges[i]);
     }
-
+    **/
+    Edge * edge = malloc(sizeof(Edge));
+    free(edge);
     int seed = 0;
     if (argc == 2){
        seed = atoi(argv[1]);

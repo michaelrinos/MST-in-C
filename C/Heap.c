@@ -10,6 +10,7 @@ int lChild(int index);
 int rChild(int index);
 
 void heap_init(Heap ** heap){
+    *heap = malloc(sizeof(Heap));
     (*heap)->size = 0;
     (*heap)->capacity = NODES;
     (*heap)->array = calloc(NODES, sizeof(MinHeapNode));
@@ -124,12 +125,8 @@ int decreaseKey(Heap * heap, MinHeapNode * who){
     for (size_t i = 0; i < heap->size; i++){
         MinHeapNode * temp = heap->array[i];
         if (compareToNode(temp->Node, who->Node) == 0){
-            //printf("Before:\n");
-            //hDump(heap, 1);
             temp->key = who->key;
             siftUp(heap, i);
-            //printf("After:\n");
-            //hDump(heap, 1);
 
             return 1;
         }

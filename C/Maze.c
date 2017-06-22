@@ -38,9 +38,16 @@ Maze * create_maze(size_t size){
 }
 
 void deleteMaze(Maze * maze){
+    printf("This is maze->count: %d\n", maze->count);
     free(maze->predecessors);
     for (size_t i = 0; i < maze->mSize; i++){
         free(maze->matrix[i]);
+    }
+    for (int i = 0; i < maze->count; i++){
+        char str[MAX_NUMS];
+        sprintf(str, "%d", (int)i);
+        printf("About to delete NODE: %s\n", ((Node *) get(maze->graph, (void*) str))->name);
+        deleteNode(get(maze->graph, (void*) str));
     }
     destroy(maze->graph);
     free(maze->matrix);
@@ -76,7 +83,7 @@ void generate(Maze * maze, int n, int seed, double p){
         char * str = malloc(sizeof(char) * MAX_NUMS);
         sprintf(str, "%d", i);
 
-        Node * node = malloc(sizeof(*node));
+        Node * node;
         init_node(&node, str, printNode);
         put(maze->graph, (void*)str, (void*)node);
     }
@@ -85,7 +92,7 @@ void generate(Maze * maze, int n, int seed, double p){
     
     while (maze->count != n){
         maze->count = 0;
-        int range = 7;
+        int range = n;
 		for (int i = 0; i < n; i++) {
             for (int j = i; j < n; j++) {
                 if (i == j) continue;
@@ -116,15 +123,41 @@ void generate(Maze * maze, int n, int seed, double p){
             }
         }
         Node * zeroNode = get(maze->graph, "0");
-        Node * invalidNode = malloc(sizeof(*invalidNode));
+        Node * invalidNode;
         init_node(&invalidNode, (char *)"-1", printNode);
         zeroNode->predecessor = invalidNode;
-
         //set the predecessor of 0 as -1
         canReachDFS(maze, "0");                 //Update how many nodes we can get 
                                                 //to from the first node used in 
                                                 //while check and set to count.
-    }
+        printf("COUNT EQUAL-> %d == %d\n", maze->count, n );
+        
+        if (maze->count != n){
+            printf("ENTERING UNTESTED TERRITORY");
+            
+            Table * old = maze->graph;
+            maze->graph = create(strHash, strEquals, strIntPrint);
+            
+            for (int i = 0; i < n; i++){
+                char * str = malloc(sizeof(char) * MAX_NUMS);
+                sprintf(str, "%d", i);
+
+                Node * node = malloc(sizeof(*node));
+                init_node(&node, str, printNode);
+                put(maze->graph, (void*)str, (void*)node);
+                
+                deleteNode( (Node *)get(old, (void *)str));
+
+                for (int j = 0; j < n; j++){
+                    maze->matrix[i][j] = 0;
+                }
+
+            }
+            deleteNode(invalidNode);
+            destroy(old);
+        }
+        
+        }
 }
 
 void printMatrix(Maze * maze){
@@ -152,6 +185,7 @@ void printList(Maze * maze) {
         char * str = malloc(sizeof(char) * MAX_NUMS);
         sprintf(str, "%d", i);
         ((Node *)get(maze->graph, str))->print(get(maze->graph,str));
+        free(str);
     }
     printf("\n");
 }
@@ -172,6 +206,7 @@ void DFSInfo(Maze * maze){
         char * str = malloc(sizeof(int));
         sprintf(str, "%d", i);
         printf("%s " , ( (Node*) get(maze->graph, str) )->predecessor->name );
+        free(str);
     }
     printf("\n");
 }
@@ -210,21 +245,12 @@ Edge * getList(Maze * maze){
         for (size_t j = 0; j < n->nSize; j++){
             Node * neighbor = neighbors[j];
             if ( atoi(neighbor->name) > i ){
-                Edge * e = malloc(sizeof(e));
-                e->weight =(long) get(neighbor->weights, str);
-                e->row = i;
-                e->col = atoi(neighbor->name);
-                e->print = printEdge;
-                edges[loc++] = *e;
+                Edge e = {.weight = (long) get(neighbor->weights, str), .row = i, .col = atoi(neighbor->name), .print = printEdge};
+                edges[loc++] = e;
             }
         }
+        free(str);
     }
-    /**
-    for ( int i = 0; i < factorial(maze->count-1); i ++){
-        if (edges[i].weight)
-            printEdge(&edges[i]);
-    }
-    **/
     return edges;
 }
 

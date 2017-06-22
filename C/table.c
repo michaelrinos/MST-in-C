@@ -30,7 +30,7 @@ Table* create(long (*hash)(void* key),
 
 /// Destroy a table 
 /// @param t The table to destroy
-void destroy(Table* t){
+void destroy(Table * t){
 	for (unsigned int i =0; i < t->capacity;i++){
 		free(t->table[i]);
 	}

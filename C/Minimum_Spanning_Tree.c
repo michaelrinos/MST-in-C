@@ -30,7 +30,7 @@ Edge * prim(Node * a){
     heap_init(&minHeap);
 
     for (int i = 1; i < numbers ; i++) {
-        Node * n = malloc(sizeof(Node));
+        Node * n;
         init_node(&n, "-1", printNode);
         parent[i] = *n;
         key[i] = INT_MAX;
@@ -58,27 +58,20 @@ Edge * prim(Node * a){
             MinHeapNode * neighbor = malloc(sizeof(MinHeapNode));
             neighbor->Node = v;
             neighbor->key = key[name];
-            /**
-            if (!contains(minHeap, neighbor)){
-                printf("Does the heap contain: ");
-                printNode(neighbor->Node);
-                printf("I get %d\n", contains(minHeap, neighbor));
-                hDump(minHeap, 1);
-            }
-            **/
             if (contains(minHeap, neighbor) // If the node isn't in the MST
                     && weight < key[name]
                     ){
                 key[name] = weight;
                 
-                //printf("Weight: %d\t key[%d]: %d\n", weight, name, key[name]);
                 parent[name] = *(u->Node);
                 
                 MinHeapNode * t = &(struct MinHeapNode){ .Node = v, .key = weight};
                 
                 decreaseKey(minHeap, t);
+               
             }
         }
+        free(u);
     }
     size_t count = 0;
     for (int i = 1; i < numbers ; i++) {
@@ -94,6 +87,7 @@ Edge * prim(Node * a){
             MST[count++] = *e;
         }
     }
+    
     deleteHeap(minHeap); 
     return MST;
 }
@@ -160,14 +154,15 @@ void Union(Node ** u, Node ** v) {
 * @return the Minimum spanning tree
 */
 Edge * kruskal(Edge * a){
-    Node b[numbers];
+    Node * b[numbers];
     for (int i = 0; i < numbers ; i++) {
         char * str_i = malloc(sizeof(char) * MAX_NUMS);
         sprintf(str_i, "%d", i);        
 
-        Node * n = malloc(sizeof(Node));
+        Node * n;
         init_node( &n, str_i, printNode);
-        b[i] = *n;
+        b[i] = n;
+        free(str_i);
     }
 
     int includedCount = 0;
@@ -177,8 +172,8 @@ Edge * kruskal(Edge * a){
     int size = 0;
 
     while (includedCount < numbers-1){
-        Node * root1 = &b[ a[edges].row ];
-        Node * root2 = &b[ a[edges].col ];
+        Node * root1 = b[ a[edges].row ];
+        Node * root2 = b[ a[edges].col ];
         
         if (!root1->predecessor->name){                  //Predecessor has a valid mem adress because of 
             root1->predecessor = root1;                 // the malloc call but the pred's name should not be innitialized yet
@@ -186,10 +181,6 @@ Edge * kruskal(Edge * a){
         if (!root2->predecessor->name){
             root2->predecessor = root2;
         }
-        /**
-        printf("BEFORE\n");
-        printf("Name of node: %s\t Name of pred %s\n", root1->name, root1->predecessor->name);
-        **/
         root1 = find(root1);
         root2 = find(root2);
         
@@ -197,14 +188,12 @@ Edge * kruskal(Edge * a){
             MST[size++] = a[edges];
             includedCount+=1;
             Union( &root1 , &root2 );
-            /**
-            printf("AFTER\n");
-            printf("Name of node: %s\t Name of pred %s\n", root1->name, root1->predecessor->name);
-            **/
         }
         edges++;
     }
-
+    for (int i = 0; i < numbers-1; i++){
+        //deleteNode(b[i]);
+    }
     return MST;
 }
 
@@ -429,7 +418,6 @@ void sorter(Maze * maze, int korp, int lorm, int sort, int printEdges){
                     break;
             }
             MST = kruskal(lst);
-            free(lst);
             endTime = time(0);
             break;
         case 2:
@@ -437,6 +425,7 @@ void sorter(Maze * maze, int korp, int lorm, int sort, int printEdges){
                 case 1:
                     temp = getMatrixNodes(maze);
                     MST = prim(temp);
+                    
                     break;
                 case 2:
                     temp = getListNodes(maze);
@@ -508,6 +497,7 @@ int main(int argc, const char* argv[]){
 
         
 		sorter(maze, 1, 1, 1, print);
+        /**
         sorter(maze, 1, 1, 2, print);
         sorter(maze, 1, 1, 3, print);
         sorter(maze, 1, 2, 1, print);
@@ -516,6 +506,7 @@ int main(int argc, const char* argv[]){
 
         sorter(maze, 2, 1, 1, print);
         sorter(maze, 2, 2, 1, print);
+        **/
 
     } else {
         printf("\nTEST: n= %d, seed=%d, p=%f\n", numbers, seed, p);

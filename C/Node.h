@@ -23,8 +23,8 @@ struct Node{
 
 
 int compareToNode(Node * a, Node * b);
-void init_node(Node ** node, char * name, void (*printNode)(Node * n));
-void destroyNode(Node * n);
+Node * init_node(char * name);
+void deleteNode(Node * n);
 void printNode(Node * n);
 void * putNeighbor(Node * a, Node * b, int weight);
 

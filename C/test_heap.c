@@ -28,7 +28,7 @@ void testHeap(Heap * heap){
 }
 
 int main( void ) {
-    Heap * heap = malloc(sizeof(heap));
+    Heap * heap;
     heap_init(&heap);
     //testHeap(heap);
     deleteHeap(heap);
