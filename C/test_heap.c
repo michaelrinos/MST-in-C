@@ -10,8 +10,7 @@ void testHeap(Heap * heap){
     for (size_t i = 0; i < TEST_AMOUNT; i ++){
         char str[TEST_AMOUNT + 1] = "";
         sprintf(str, "%zu", i);
-        Node * n;
-        init_node(&n, str, printNode);
+        Node * n = init_node( str );
         MinHeapNode * m = malloc(sizeof(MinHeapNode));
         temp = m;
         m->Node = n;

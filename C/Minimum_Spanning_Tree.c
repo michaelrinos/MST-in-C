@@ -30,8 +30,7 @@ Edge * prim(Node * a){
     heap_init(&minHeap);
 
     for (int i = 1; i < numbers ; i++) {
-        Node * n;
-        init_node(&n, "-1", printNode);
+        Node * n = init_node("-1");
         parent[i] = *n;
         key[i] = INT_MAX;
         MinHeapNode * m = malloc(sizeof(MinHeapNode));
@@ -118,7 +117,7 @@ Node * find(Node * p) {
     Node * pp = p->predecessor;
     if (compareToNode(p, pp) != 0){          //!(p.equals( p.getp() ) )
         Node * daPred = find(pp);
-        p->predecessor = daPred;
+        setPred(p, daPred);
     }
     return p->predecessor;
 }
@@ -137,8 +136,9 @@ void Union(Node ** u, Node ** v) {
     Node * j = find(*v);
 
     if (i->rank > j->rank) {
-        j->predecessor = i;
+        setPred(j, i);
     } else {
+        setPred(i, j);
         i->predecessor = j;
         if (i->rank == j->rank) {
             j->rank = j->rank + 1;
@@ -159,8 +159,7 @@ Edge * kruskal(Edge * a){
         char * str_i = malloc(sizeof(char) * MAX_NUMS);
         sprintf(str_i, "%d", i);        
 
-        Node * n;
-        init_node( &n, str_i, printNode);
+        Node * n = init_node( str_i );
         b[i] = n;
         free(str_i);
     }
@@ -175,10 +174,10 @@ Edge * kruskal(Edge * a){
         Node * root1 = b[ a[edges].row ];
         Node * root2 = b[ a[edges].col ];
         
-        if (!root1->predecessor->name){                  //Predecessor has a valid mem adress because of 
-            root1->predecessor = root1;                 // the malloc call but the pred's name should not be innitialized yet
+        if (!root1->predSet){
+            setPred(root1, root1); 
         }
-        if (!root2->predecessor->name){
+        if (!root2->predSet){
             root2->predecessor = root2;
         }
         root1 = find(root1);
@@ -191,9 +190,11 @@ Edge * kruskal(Edge * a){
         }
         edges++;
     }
+
     for (int i = 0; i < numbers-1; i++){
-        //deleteNode(b[i]);
+    //    deleteNode(b[i]);
     }
+
     return MST;
 }
 

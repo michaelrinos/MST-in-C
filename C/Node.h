@@ -12,6 +12,7 @@ typedef struct Node Node;
 struct Node{
     int rank;
     int marked;
+    int predSet;
     size_t nSize;
     size_t nCapacity;
     char * name;
@@ -27,5 +28,6 @@ Node * init_node(char * name);
 void deleteNode(Node * n);
 void printNode(Node * n);
 void * putNeighbor(Node * a, Node * b, int weight);
+void setPred(Node * who, Node * pred);
 
 #endif

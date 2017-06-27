@@ -11,31 +11,31 @@
 /// @exception Assert fails if can't allocate space
 /// @return A newly created table
 Table* create(long (*hash)(void* key),
-              bool (*equals)(void* key1, void* key2),
-              void (*print)(void* key1, void* key2)){
+          bool (*equals)(void* key1, void* key2),
+          void (*print)(void* key1, void* key2)){
 
-	Table* myTable =(Table*)malloc(sizeof(Table));
-	if (myTable==NULL){
-		assert(NULL);
-	}
-	myTable-> table = (Entry**)calloc(INITIAL_CAPACITY, sizeof(Entry*));
-	myTable-> size = 0;
-	myTable-> capacity = INITIAL_CAPACITY;
-	myTable-> hash = hash;
-	myTable-> equals = equals;
-	myTable-> print = print; 
-	return myTable;
+    Table* myTable =(Table*)malloc(sizeof(Table));
+    if (myTable==NULL){
+        assert(NULL);
+    }
+    myTable-> table = (Entry**)calloc(INITIAL_CAPACITY, sizeof(Entry*));
+    myTable-> size = 0;
+    myTable-> capacity = INITIAL_CAPACITY;
+    myTable-> hash = hash;
+    myTable-> equals = equals;
+    myTable-> print = print; 
+    return myTable;
 }
 
 
 /// Destroy a table 
 /// @param t The table to destroy
 void destroy(Table * t){
-	for (unsigned int i =0; i < t->capacity;i++){
-		free(t->table[i]);
-	}
-	free(t->table);
-	free(t);
+    for (unsigned int i =0; i < t->capacity;i++){
+        free(t->table[i]);
+    }
+    free(t->table);
+    free(t);
 }
 
 /// Print out information about the hash table (size,

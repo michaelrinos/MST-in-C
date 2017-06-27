@@ -15,15 +15,19 @@ int main(int argc, char * argv[]) {
     generate(maze, TEST_AMOUNT, seed, p);
     printMatrix(maze);
     printList(maze);
-    /**
+    
     Edge * temp1 = getList(maze);
-    printEdge(&temp1[0]);
     printf("Size of temp1: %lu\n", sizeof(temp1));
     free(temp1);
-    Edge * temp2 = getMatrix(maze);
+    //Edge * temp2 = getMatrix(maze);
+    //temp2 = temp2;
+    //free(temp2);
+    /*
     Node * temp3 = getMatrixNodes(maze);
     Node * temp4 = getListNodes(maze);
-    **/
+    temp4 = temp4;
+    temp3 = temp3;
+    */
 
     deleteMaze(maze);
 

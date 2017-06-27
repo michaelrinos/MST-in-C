@@ -9,31 +9,6 @@
 
 #define MAX_STRING_SIZE 16
 
-/*
-void init_node(Node ** node, char * name, void (*printNode)(Node * n)){
-    *node = (Node *) malloc(sizeof(Node));
-    if ( !node){
-        assert(NULL);
-    }
-    (*node)->rank=0;
-    (*node)->marked=0;
-    (*node)->nSize=0;
-    (*node)->name=strdup(name);
-    (*node)->predecessor=malloc(sizeof(Node));
-    if ( (*node)->predecessor == NULL ){
-        assert(NULL);
-    }
-    (*node)->nCapacity = INITIAL_CAPACITY;
-    (*node)->neighbors=calloc((*node)->nCapacity, sizeof(Node *));
-    if ( (*node)->neighbors == NULL ){
-        assert(NULL);
-    }
-    (*node)->weights = create(strHash, strEquals, strLongPrint );
-    (*node)->print = printNode;
-    printf("Creaded Node: %s\n", (*node)->name);
-}
-*/
-
 Node * init_node(char * name){
     Node * node = malloc(sizeof(Node));
     if (!node){
@@ -41,12 +16,13 @@ Node * init_node(char * name){
     }
     node->rank=0;
     node->marked=0;
+    node->predSet=0;
     node->nSize=0;
     node->name=strdup(name);
-    node->predecessor=malloc(sizeof(Node));
+    /*node->predecessor=malloc(sizeof(Node));
     if ( node->predecessor == NULL ){
         assert(NULL);
-    }
+    }*/
     node->nCapacity = INITIAL_CAPACITY;
     node->neighbors=calloc(node->nCapacity, sizeof(Node *));
     if ( node->neighbors == NULL ){
@@ -59,18 +35,18 @@ Node * init_node(char * name){
 }
 
 void deleteNode(Node * n){
-    printf("Before deleting checking n: %p, %d, %s\n", (void*)n, !n, n->name);
+    //printf("\nBefore deleting checking n: %p, %d, %s\n", (void*)n, !n, n->name);
     if (n->print){
-    printf("Deleting Node %s\n", n->name);
-    if (n->predecessor != n && n->predecessor->print){
-        printf("Deleting %s's predecessor %s\n", n->name, n->predecessor->name);
+    //printf("Deleting Node %s\n", n->name);
+    if (n->predSet){
+        //printf("Deleting %s's predecessor %s\n", n->name, n->predecessor->name);
         deleteNode(n->predecessor);
     }
     else{
-        printf("Predecessor not set deleting malloc\n");
+        //printf("Predecessor not set deleting malloc\n");
         free(n->predecessor);   
     }
-    printf("Neighbors have been taken care of continuing deletion of %s\n", n->name);
+    //printf("Neighbors have been taken care of continuing deletion of %s\n", n->name);
     free(n->neighbors);
     free(n->name);
     destroy(n->weights);
@@ -142,5 +118,12 @@ int compareToNode(Node * a, Node * b){
     return strcmp(a->name, b->name);
 
 }
+
+
+void setPred(Node * who, Node * pred){
+    who->predecessor = pred;
+    who->predSet = 1;
+}
+
 
 

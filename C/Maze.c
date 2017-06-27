@@ -43,12 +43,25 @@ void deleteMaze(Maze * maze){
     for (size_t i = 0; i < maze->mSize; i++){
         free(maze->matrix[i]);
     }
+    
+    /*
     for (int i = 0; i < maze->count; i++){
         char str[MAX_NUMS];
         sprintf(str, "%d", (int)i);
         printf("About to delete NODE: %s\n", ((Node *) get(maze->graph, (void*) str))->name);
         deleteNode(get(maze->graph, (void*) str));
     }
+    */
+    void ** daKeys = keys(maze->graph);
+    void ** daValues = values(maze->graph);
+    for (size_t i = 0; i < maze->graph->size; i++){
+        free( (char *) daKeys[i] );
+        deleteNode( (Node *) daValues[i]);
+    }
+    free(daKeys);
+    free(daValues);
+
+    
     destroy(maze->graph);
     free(maze->matrix);
     free(maze);
@@ -64,8 +77,7 @@ void canReachDFS(Maze * maze, char * start){
     for (size_t i = 0; i < startNode->nSize; i++){
         if (allNeighbors[i] != NULL && allNeighbors[i]->marked == 0){
             Node * tmp = allNeighbors[i];
-            tmp->predecessor = startNode;
-            
+            setPred(tmp, startNode);
             canReachDFS(maze, tmp->name);
         }
     }
@@ -83,8 +95,7 @@ void generate(Maze * maze, int n, int seed, double p){
         char * str = malloc(sizeof(char) * MAX_NUMS);
         sprintf(str, "%d", i);
 
-        Node * node;
-        init_node(&node, str, printNode);
+        Node * node = init_node( str );
         put(maze->graph, (void*)str, (void*)node);
     }
 
@@ -117,15 +128,13 @@ void generate(Maze * maze, int n, int seed, double p){
                     
                     free(str_i);
                     free(str_j);
-
-
                 }
             }
         }
         Node * zeroNode = get(maze->graph, "0");
-        Node * invalidNode;
-        init_node(&invalidNode, (char *)"-1", printNode);
-        zeroNode->predecessor = invalidNode;
+        Node * invalidNode = init_node( "-1");
+        setPred(zeroNode, invalidNode);
+
         //set the predecessor of 0 as -1
         canReachDFS(maze, "0");                 //Update how many nodes we can get 
                                                 //to from the first node used in 
@@ -142,8 +151,7 @@ void generate(Maze * maze, int n, int seed, double p){
                 char * str = malloc(sizeof(char) * MAX_NUMS);
                 sprintf(str, "%d", i);
 
-                Node * node = malloc(sizeof(*node));
-                init_node(&node, str, printNode);
+                Node * node = init_node( str );
                 put(maze->graph, (void*)str, (void*)node);
                 
                 deleteNode( (Node *)get(old, (void *)str));
@@ -157,7 +165,7 @@ void generate(Maze * maze, int n, int seed, double p){
             destroy(old);
         }
         
-        }
+    }
 }
 
 void printMatrix(Maze * maze){
@@ -259,8 +267,7 @@ Node * getMatrixNodes(Maze * maze){
     for (int i = 0; i < maze->count ; i++) {
         char * str = malloc(sizeof(char) * MAX_NUMS);
         sprintf(str, "%d", i);
-        Node * n = malloc(sizeof(Node));
-        init_node(&n, str, printNode);
+        Node * n = init_node( str );
         nodes[i] = *n;
         free(str);
         
