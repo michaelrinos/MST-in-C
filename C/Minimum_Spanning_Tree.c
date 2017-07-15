@@ -434,17 +434,20 @@ void sorter(Maze * maze, int korp, int lorm, int sort, int printEdges){
         case 2:
             switch (lorm){
                 case 1:
+                    startTime = time(0);
                     temp = getMatrixNodes(maze);
                     MST = prim(temp);
                     free(temp);
                     
                     break;
                 case 2:
+                    startTime = time(0);
                     temp = getListNodes(maze);
                     MST = prim(temp);
                     free(temp);
                     break;
             }
+            endTime = time(0);
             break;
     }
 
