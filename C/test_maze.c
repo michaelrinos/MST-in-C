@@ -23,10 +23,13 @@ int main(int argc, char * argv[]) {
     Edge * temp2 = getMatrix(maze);
     free(temp2);
     
-    /*
-    Node * temp3 = getMatrixNodes(maze);
+    Node ** temp3 = getMatrixNodes(maze);
+    for (int i = 0; i < TEST_AMOUNT; i++){
+        printNode(temp3[i]);
+    }
     free(temp3);
         
+    /*
     Node * temp4 = getListNodes(maze);
     free(temp4);
     */

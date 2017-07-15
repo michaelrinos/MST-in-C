@@ -263,13 +263,27 @@ Edge * getList(Maze * maze){
     return edges;
 }
 
-Node * getMatrixNodes(Maze * maze){ 
-    Node * nodes = malloc(maze->count * sizeof(Node) );
+Node ** getMatrixNodes(Maze * maze){ 
+    Node ** nodes = malloc(maze->count * sizeof(Node*) );
     for (int i = 0; i < maze->count ; i++) {
         char * str = malloc(sizeof(char) * MAX_NUMS);
         sprintf(str, "%d", i);
         Node * n = init_node( str );
-        nodes[i] = *n;
+        /*
+        Node n = {
+            .rank = 0, 
+            .marked = 0, 
+            .predSet =0, 
+            .nSize = 0, 
+            .name = strdup(str), 
+            .nCapacity = INITIAL_CAPACITY,
+            .neighbors = calloc(INITIAL_CAPACITY, sizeof(Node *)),
+            .weights = create(strHash, strEquals, strLongPrint),
+            .print = printNode
+        };
+        */
+
+        nodes[i] = n;
         free(str);
         
     }
@@ -278,20 +292,20 @@ Node * getMatrixNodes(Maze * maze){
             if (i == j) continue;
             if (maze->matrix[i][j] == 0) continue;
             else {
-                putNeighbor(&nodes[i], &nodes[j], maze->matrix[i][j]);
-                putNeighbor(&nodes[j], &nodes[i], maze->matrix[i][j]);
+                putNeighbor(nodes[i], nodes[j], maze->matrix[i][j]);
+                putNeighbor(nodes[j], nodes[i], maze->matrix[i][j]);
             }
         }
     }
     return nodes;
 }
 
-Node * getListNodes(Maze * maze){
-    Node * nodes = calloc(maze->count, sizeof(Node));
+Node ** getListNodes(Maze * maze){
+    Node ** nodes = calloc(maze->count, sizeof(Node *));
     for (int i = 0; i < maze->count; i ++){
         char * str = malloc(sizeof(char) * MAX_NUMS);
         sprintf(str, "%d", i);
-        nodes[i] = *((Node *)get(maze->graph, str));
+        nodes[i] = (Node *)get(maze->graph, str);
     }
     return nodes;
 }

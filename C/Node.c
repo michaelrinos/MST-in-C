@@ -1,13 +1,5 @@
-#define _GNU_SOURCE
-
 #include "Node.h"
 #include "hash.h"
-#include <string.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <assert.h>
-
-#define MAX_STRING_SIZE 16
 
 Node * init_node(char * name){
     Node * node = malloc(sizeof(Node));

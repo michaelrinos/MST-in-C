@@ -22,26 +22,26 @@ int numbers = 0;
 //
 ///////////////////////////////////////////////////////////////////////////////
 
-Edge * prim(Node * a){
-    Node parent[numbers];
+Edge * prim(Node ** a){
+    Node * parent[numbers];
     int key[numbers];
     Edge * MST = malloc(numbers * sizeof(Edge));
     Heap * minHeap;
     heap_init(&minHeap);
 
     for (int i = 1; i < numbers ; i++) {
-        Node * n = init_node("-1");
-        parent[i] = *n;
+        Node * n = &(struct Node){.name = "-1"};
+        parent[i] = n;
         key[i] = INT_MAX;
         MinHeapNode * m = malloc(sizeof(MinHeapNode));
-        m->Node = &a[i];
+        m->Node = a[i];
         m->key = key[i];
         heap_add(minHeap, m);
     }
 
     key[0] = 0;
     MinHeapNode * m = malloc(sizeof(MinHeapNode));
-    m->Node = &a[0];
+    m->Node = a[0];
     m->key = key[0];
     heap_add(minHeap, m);
 
@@ -61,14 +61,15 @@ Edge * prim(Node * a){
                     && weight < key[name]
                     ){
                 key[name] = weight;
-                
-                parent[name] = *(u->Node);
+              
+                parent[name] = u->Node;
                 
                 MinHeapNode * t = &(struct MinHeapNode){ .Node = v, .key = weight};
                 
                 decreaseKey(minHeap, t);
                
             }
+            free(neighbor);
         }
         free(u);
     }
@@ -77,14 +78,19 @@ Edge * prim(Node * a){
         if ( &parent[i]) {
             char * str = malloc(sizeof(char) * MAX_NUMS);
             sprintf(str, "%d", i);
-            Edge * e = malloc(sizeof(Edge));
+            Edge e;
             
-            e->weight = (long) get(parent[i].weights, (void *) str);
-            e->row = atoi(parent[i].name);
-            e->col = i;
-            e->print = printEdge;
-            MST[count++] = *e;
+            e.weight = (long) get(parent[i]->weights, (void *) str);
+            e.row = atoi(parent[i]->name);
+            e.col = i;
+            e.print = printEdge;
+            MST[count++] = e;
+            free(str);
         }
+    }
+    
+    for (int i = 0; i < numbers; i++){
+        deleteNode(a[i]);
     }
     
     deleteHeap(minHeap); 
@@ -370,8 +376,6 @@ void printSorts(Edge * arr,int korp, int morl, int sort, long runTime, int print
             printf( "Runtime: %lu milliseconds\n\n", runTime);
             break;
     }
-    free(arr);
-    
 }
 
 /**
@@ -388,7 +392,7 @@ void sorter(Maze * maze, int korp, int lorm, int sort, int printEdges){
     //Edge lst[numbers];
     Edge * lst;
     Edge * MST;
-    Node * temp;
+    Node ** temp;
     switch (korp) {
         case 1:
             switch (lorm) {
@@ -432,17 +436,21 @@ void sorter(Maze * maze, int korp, int lorm, int sort, int printEdges){
                 case 1:
                     temp = getMatrixNodes(maze);
                     MST = prim(temp);
+                    free(temp);
                     
                     break;
                 case 2:
                     temp = getListNodes(maze);
                     MST = prim(temp);
+                    free(temp);
                     break;
             }
             break;
     }
 
     printSorts(MST, korp, lorm, sort, (endTime-startTime), printEdges);
+    
+    free(MST);
     //return lst;
 } 
 
@@ -501,19 +509,17 @@ int main(int argc, const char* argv[]){
         printMatrix(maze);
         printList(maze);
         DFSInfo(maze);
-
-        
+        /* 
 		sorter(maze, 1, 1, 1, print);
         sorter(maze, 1, 1, 2, print);
         sorter(maze, 1, 1, 3, print);
         sorter(maze, 1, 2, 1, print);
         sorter(maze, 1, 2, 2, print);
         sorter(maze, 1, 2, 3, print);
+        */
 
-        /**
         sorter(maze, 2, 1, 1, print);
         sorter(maze, 2, 2, 1, print);
-        **/
 
     } else {
         printf("\nTEST: n= %d, seed=%d, p=%f\n", numbers, seed, p);
@@ -525,9 +531,10 @@ int main(int argc, const char* argv[]){
         sorter(maze, 1, 2, 1, print);
         sorter(maze, 1, 2, 2, print);
         sorter(maze, 1, 2, 3, print);
-
+        /*
         sorter(maze, 2, 1, 1, print);
         sorter(maze, 2, 2, 1, print);
+        */
 
     }
     deleteMaze(maze);
