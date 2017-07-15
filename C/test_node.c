@@ -46,6 +46,14 @@ int main(int argc, char * argv[]) {
         deleteNode(nodes[i]);
     }
     free(nodes);
+    Node * a = init_node("a");
+    Node * b = init_node("b");
+    setPred(a,b);
+    compareToNode(a,b);
+    deleteNode(a);
+    printNode(b);
+    deleteNode(b);
+
 
     int seed = 0;
     if (argc == 2){

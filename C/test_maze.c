@@ -19,14 +19,16 @@ int main(int argc, char * argv[]) {
     Edge * temp1 = getList(maze);
     printf("Size of temp1: %lu\n", sizeof(temp1));
     free(temp1);
-    //Edge * temp2 = getMatrix(maze);
-    //temp2 = temp2;
-    //free(temp2);
+    
+    Edge * temp2 = getMatrix(maze);
+    free(temp2);
+    
     /*
     Node * temp3 = getMatrixNodes(maze);
+    free(temp3);
+        
     Node * temp4 = getListNodes(maze);
-    temp4 = temp4;
-    temp3 = temp3;
+    free(temp4);
     */
 
     deleteMaze(maze);

@@ -134,6 +134,7 @@ void generate(Maze * maze, int n, int seed, double p){
         Node * zeroNode = get(maze->graph, "0");
         Node * invalidNode = init_node( "-1");
         setPred(zeroNode, invalidNode);
+        deleteNode(invalidNode);
 
         //set the predecessor of 0 as -1
         canReachDFS(maze, "0");                 //Update how many nodes we can get 
@@ -228,12 +229,12 @@ Edge * getMatrix(Maze * maze){
             if ( maze->matrix[i][j] == 0 ) continue;
             else {
                 if (j > i){
-                    Edge * e = malloc(sizeof(e));
-                    e->weight = maze->matrix[i][j];
-                    e->row = i;
-                    e->col = j;
-                    e->print = printEdge;
-                    edges[loc++] = *e;
+                    Edge e;
+                    e.weight = maze->matrix[i][j];
+                    e.row = i;
+                    e.col = j;
+                    e.print = printEdge;
+                    edges[loc++] = e;
                 }
             }
         }

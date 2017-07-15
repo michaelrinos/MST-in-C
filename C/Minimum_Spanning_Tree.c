@@ -131,15 +131,16 @@ Node * find(Node * p) {
 * @param u A Node in a tree of Nodes
 * @param v A Node in a tree of Nodes
 */
-void Union(Node ** u, Node ** v) {
-    Node * i = find(*u);
-    Node * j = find(*v);
+void Union(Node * u, Node * v) {
+    
+    Node * i = find(u);
+    Node * j = find(v);
 
     if (i->rank > j->rank) {
         setPred(j, i);
     } else {
         setPred(i, j);
-        i->predecessor = j;
+        //i->predecessor = j;
         if (i->rank == j->rank) {
             j->rank = j->rank + 1;
         }
@@ -177,22 +178,25 @@ Edge * kruskal(Edge * a){
         if (!root1->predSet){
             setPred(root1, root1); 
         }
+        
+
         if (!root2->predSet){
-            root2->predecessor = root2;
+            setPred(root2, root2);
         }
+
         root1 = find(root1);
         root2 = find(root2);
         
         if ( compareToNode(root1, root2) != 0 ){
             MST[size++] = a[edges];
             includedCount+=1;
-            Union( &root1 , &root2 );
+            Union( root1 , root2 );
         }
         edges++;
     }
 
-    for (int i = 0; i < numbers-1; i++){
-    //    deleteNode(b[i]);
+    for (int i = 0; i < numbers; i++){
+        deleteNode(b[i]);
     }
 
     return MST;
@@ -366,6 +370,7 @@ void printSorts(Edge * arr,int korp, int morl, int sort, long runTime, int print
             printf( "Runtime: %lu milliseconds\n\n", runTime);
             break;
     }
+    free(arr);
     
 }
 
@@ -381,9 +386,9 @@ void sorter(Maze * maze, int korp, int lorm, int sort, int printEdges){
     time_t startTime;
     time_t endTime;
     //Edge lst[numbers];
-    Edge * lst = calloc(numbers, sizeof(Edge *));
-    Edge * MST = calloc(numbers, sizeof(Edge *));
-    Node * temp = calloc(numbers, sizeof(Node *));
+    Edge * lst;
+    Edge * MST;
+    Node * temp;
     switch (korp) {
         case 1:
             switch (lorm) {
@@ -419,6 +424,7 @@ void sorter(Maze * maze, int korp, int lorm, int sort, int printEdges){
                     break;
             }
             MST = kruskal(lst);
+            free(lst);
             endTime = time(0);
             break;
         case 2:
@@ -498,13 +504,13 @@ int main(int argc, const char* argv[]){
 
         
 		sorter(maze, 1, 1, 1, print);
-        /**
         sorter(maze, 1, 1, 2, print);
         sorter(maze, 1, 1, 3, print);
         sorter(maze, 1, 2, 1, print);
         sorter(maze, 1, 2, 2, print);
         sorter(maze, 1, 2, 3, print);
 
+        /**
         sorter(maze, 2, 1, 1, print);
         sorter(maze, 2, 2, 1, print);
         **/
