@@ -306,7 +306,7 @@ Node ** getListNodes(Maze * maze){
         char * str = malloc(sizeof(char) * MAX_NUMS);
         sprintf(str, "%d", i);
         nodes[i] = get(maze->graph, str);
-        //free(str);
+        free(str);
     }
     return nodes;
 }
