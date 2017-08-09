@@ -512,21 +512,23 @@ int main(int argc, const char* argv[]){
         printMatrix(maze);
         printList(maze);
         DFSInfo(maze);
-        /* 
-		sorter(maze, 1, 1, 1, print);
+         
+		/*sorter(maze, 1, 1, 1, print);
         sorter(maze, 1, 1, 2, print);
         sorter(maze, 1, 1, 3, print);
         sorter(maze, 1, 2, 1, print);
         sorter(maze, 1, 2, 2, print);
         sorter(maze, 1, 2, 3, print);
         */
+        
 
-        sorter(maze, 2, 1, 1, print);
+        //sorter(maze, 2, 1, 1, print);
         sorter(maze, 2, 2, 1, print);
 
     } else {
         printf("\nTEST: n= %d, seed=%d, p=%f\n", numbers, seed, p);
         printf("Time to generate the graph: %lu milliseconds\n\n", (endTime - startTime));
+        
         
         sorter(maze, 1, 1, 1, print);
         sorter(maze, 1, 1, 2, print);

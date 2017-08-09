@@ -40,12 +40,28 @@ int main(int argc, char * argv[]) {
     //init_node(&n, "1", printNode);
     //printNode(n);
     //deleteNode(n);
+    
+    printf("This is node 0:\n");
+    printNode(nodes[0]);
+    printf("This is a copy of 0:\n");
+    Node * copy = copy_node(nodes[0]);
+    printNode(copy);
+
+    deleteNode(nodes[0]);
+    printNode(copy);
+
+    printf("\n");
+    
+/*
             
     for (size_t i = 0; i < TEST_AMOUNT; i++){
         nodes[i]->print(nodes[i]);
         deleteNode(nodes[i]);
     }
     free(nodes);
+
+
+
     Node * a = init_node("a");
     Node * b = init_node("b");
     setPred(a,b);
@@ -55,6 +71,8 @@ int main(int argc, char * argv[]) {
     deleteNode(b);
 
 
+
+*/
     int seed = 0;
     if (argc == 2){
        seed = atoi(argv[1]);

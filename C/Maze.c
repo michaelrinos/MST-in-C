@@ -38,7 +38,6 @@ Maze * create_maze(size_t size){
 }
 
 void deleteMaze(Maze * maze){
-    printf("This is maze->count: %d\n", maze->count);
     free(maze->predecessors);
     for (size_t i = 0; i < maze->mSize; i++){
         free(maze->matrix[i]);
@@ -54,7 +53,10 @@ void deleteMaze(Maze * maze){
     */
     void ** daKeys = keys(maze->graph);
     void ** daValues = values(maze->graph);
-    for (size_t i = 0; i < maze->graph->size; i++){
+    for (size_t i = 0; i < maze->graph->size-1; i++){
+        printf("i %lu\n", maze->graph->size);
+        printf("Key name: %s\n", (char*)daKeys[i+1]);
+        printf("Value name: %s\n", ((Node *)daValues[i])->name);
         free( (char *) daKeys[i] );
         deleteNode( (Node *) daValues[i]);
     }
@@ -92,6 +94,7 @@ void generate(Maze * maze, int n, int seed, double p){
     maze->predecessors[0] = -1;
 
     for (int i = 0; i < n; i++){
+        printf("N: %d\n", n);
         char * str = malloc(sizeof(char) * MAX_NUMS);
         sprintf(str, "%d", i);
 
@@ -269,19 +272,6 @@ Node ** getMatrixNodes(Maze * maze){
         char * str = malloc(sizeof(char) * MAX_NUMS);
         sprintf(str, "%d", i);
         Node * n = init_node( str );
-        /*
-        Node n = {
-            .rank = 0, 
-            .marked = 0, 
-            .predSet =0, 
-            .nSize = 0, 
-            .name = strdup(str), 
-            .nCapacity = INITIAL_CAPACITY,
-            .neighbors = calloc(INITIAL_CAPACITY, sizeof(Node *)),
-            .weights = create(strHash, strEquals, strLongPrint),
-            .print = printNode
-        };
-        */
 
         nodes[i] = n;
         free(str);
@@ -305,7 +295,9 @@ Node ** getListNodes(Maze * maze){
     for (int i = 0; i < maze->count; i ++){
         char * str = malloc(sizeof(char) * MAX_NUMS);
         sprintf(str, "%d", i);
-        nodes[i] = get(maze->graph, str);
+        //nodes[i] = get(maze->graph, str);
+        //Copy Constructor
+        nodes[i] = copy_node(get(maze->graph, str));
         free(str);
     }
     return nodes;

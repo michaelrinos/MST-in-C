@@ -30,6 +30,7 @@ struct Node{
 
 int compareToNode(Node * a, Node * b);
 Node * init_node(char * name);
+Node * copy_node(Node * other);
 void deleteNode(Node * n);
 void printNode(Node * n);
 void * putNeighbor(Node * a, Node * b, int weight);

@@ -35,19 +35,25 @@ Node * copy_node(Node * other){
     node->name = strdup(other->name);
     node->nCapacity = other->nCapacity;
     node->neighbors = calloc(node->nCapacity, sizeof(Node *));
-    if ( node->neighbors == NULL ){
-        assert(NULL);
-    }
+    if ( node->neighbors == NULL )  assert(NULL);
     node->weights = create(strHash, strEquals, strLongPrint );
     node->print = printNode;
-
+    printf("\nCopying\n");
+    for ( size_t i = 0; i < other->nSize; i++){
+        putNeighbor(node, 
+                other->neighbors[i], 
+                (long) get(other->weights, (void *)other->neighbors[i]->name) 
+                ) ;
+        printNode(other->neighbors[i]);
+    }
+    printf("\nDone\n");
     return node;
 }
 
 void deleteNode(Node * n){
     //printf("\nBefore deleting checking n: %p, %d, %s\n", (void*)n, !n, n->name);
-    if (n->print){
     //printf("Deleting Node %s\n", n->name);
+    if ( n->print){
     if (n->predSet){
         //printf("Deleting %s's predecessor %s\n", n->name, n->predecessor->name);
         //printf("My name: %s\t Pred Name %s\n", n->name, n->predecessor->name);
