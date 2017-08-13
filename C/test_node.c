@@ -18,9 +18,8 @@ Node ** testNode(){
     for (size_t i = 0; i < TEST_AMOUNT ; i++){
         char str[TEST_AMOUNT + 1] ="";
         sprintf(str, "%zu", i);
-        Node * n =init_node(str);
+        nodes[i] = init_node(str);
         
-        nodes[i] = n;
         //nodes[i].print(&nodes[i]);
     }
     srand(5);
@@ -46,16 +45,13 @@ int main(int argc, char * argv[]) {
     printf("This is a copy of 0:\n");
     Node * copy = copy_node(nodes[0]);
     printNode(copy);
+    printf("First Neighbor %s\n",copy->neighbors[0]->name);
 
     deleteNode(nodes[0]);
-    printNode(copy);
+    nodes[0] = copy;
 
-    printf("\n");
-    
-/*
-            
     for (size_t i = 0; i < TEST_AMOUNT; i++){
-        nodes[i]->print(nodes[i]);
+        printNode(nodes[i]);
         deleteNode(nodes[i]);
     }
     free(nodes);
@@ -72,7 +68,6 @@ int main(int argc, char * argv[]) {
 
 
 
-*/
     int seed = 0;
     if (argc == 2){
        seed = atoi(argv[1]);

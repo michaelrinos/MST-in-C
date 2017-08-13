@@ -513,7 +513,8 @@ int main(int argc, const char* argv[]){
         printList(maze);
         DFSInfo(maze);
          
-		/*sorter(maze, 1, 1, 1, print);
+		/*
+        sorter(maze, 1, 1, 1, print);
         sorter(maze, 1, 1, 2, print);
         sorter(maze, 1, 1, 3, print);
         sorter(maze, 1, 2, 1, print);
@@ -522,7 +523,7 @@ int main(int argc, const char* argv[]){
         */
         
 
-        //sorter(maze, 2, 1, 1, print);
+        sorter(maze, 2, 1, 1, print);
         sorter(maze, 2, 2, 1, print);
 
     } else {

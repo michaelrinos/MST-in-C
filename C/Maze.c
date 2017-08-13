@@ -53,10 +53,7 @@ void deleteMaze(Maze * maze){
     */
     void ** daKeys = keys(maze->graph);
     void ** daValues = values(maze->graph);
-    for (size_t i = 0; i < maze->graph->size-1; i++){
-        printf("i %lu\n", maze->graph->size);
-        printf("Key name: %s\n", (char*)daKeys[i+1]);
-        printf("Value name: %s\n", ((Node *)daValues[i])->name);
+    for (size_t i = 0; i < maze->graph->size; i++){
         free( (char *) daKeys[i] );
         deleteNode( (Node *) daValues[i]);
     }

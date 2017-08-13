@@ -26,6 +26,7 @@ int main(int argc, char * argv[]) {
     Node ** temp3 = getMatrixNodes(maze);
     for (int i = 0; i < TEST_AMOUNT; i++){
         printNode(temp3[i]);
+        deleteNode(temp3[i]);
     }
     free(temp3);
         

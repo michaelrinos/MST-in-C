@@ -30,24 +30,21 @@ Node * copy_node(Node * other){
     node->rank = other->rank;
     node->marked = other->marked;
     node->predSet = other->predSet;
-    node->predecessor = other->predecessor;
-    node->nSize = other->nSize;
+    if (node->predSet) node->predecessor = copy_node(other->predecessor);
+    node->nSize = 0;
     node->name = strdup(other->name);
     node->nCapacity = other->nCapacity;
     node->neighbors = calloc(node->nCapacity, sizeof(Node *));
     if ( node->neighbors == NULL )  assert(NULL);
     node->weights = create(strHash, strEquals, strLongPrint );
     node->print = printNode;
-    printf("\nCopying\n");
     for ( size_t i = 0; i < other->nSize; i++){
         putNeighbor(node, 
                 other->neighbors[i], 
                 (long) get(other->weights, (void *)other->neighbors[i]->name) 
                 ) ;
-        printNode(other->neighbors[i]);
     }
-    printf("\nDone\n");
-    return node;
+    return &(*node);
 }
 
 void deleteNode(Node * n){
@@ -63,7 +60,6 @@ void deleteNode(Node * n){
     free(n->neighbors);
     free(n->name);
     destroy(n->weights);
-    memset(n, 0, sizeof(Node));
     free(n);
     }
 }
@@ -105,7 +101,7 @@ void printNode(Node * n){
         if (n->neighbors[i] == NULL){
             continue;   
         }
-        if (get(n->weights, (void *)n->neighbors[i]->name) != NULL){
+        if (n->neighbors[i] != NULL && get(n->weights, (void *)n->neighbors[i]->name) != NULL){
 
             long weight = (long) get(n->weights, (void *)n->neighbors[i]->name);
             char * weight_s = malloc(sizeof(char) * 100);
