@@ -121,7 +121,7 @@ Edge * prim(Node ** a){
 */
 Node * find(Node * p) {
     Node * pp = p->predecessor;
-    if (compareToNode(p, pp) != 0){          //!(p.equals( p.getp() ) )
+    if (compareToNode(p, pp) != 0 ){          //!(p.equals( p.getp() ) )
         Node * daPred = find(pp);
         setPred(p, daPred);
     }
@@ -180,11 +180,15 @@ Edge * kruskal(Edge * a){
     while (includedCount < numbers-1){
         Node * root1 = b[ a[edges].row ];
         Node * root2 = b[ a[edges].col ];
-        
+        /* 
+        if (strcmp(root1->name, "5")==0 || strcmp(root2->name, "5") == 0){
+            printf("one of the roots is 5\n");
+        }
+        */
+
         if (!root1->predSet){
             setPred(root1, root1); 
         }
-        
 
         if (!root2->predSet){
             setPred(root2, root2);
@@ -513,16 +517,13 @@ int main(int argc, const char* argv[]){
         printList(maze);
         DFSInfo(maze);
          
-		/*
         sorter(maze, 1, 1, 1, print);
         sorter(maze, 1, 1, 2, print);
         sorter(maze, 1, 1, 3, print);
         sorter(maze, 1, 2, 1, print);
         sorter(maze, 1, 2, 2, print);
         sorter(maze, 1, 2, 3, print);
-        */
         
-
         sorter(maze, 2, 1, 1, print);
         sorter(maze, 2, 2, 1, print);
 
@@ -537,10 +538,9 @@ int main(int argc, const char* argv[]){
         sorter(maze, 1, 2, 1, print);
         sorter(maze, 1, 2, 2, print);
         sorter(maze, 1, 2, 3, print);
-        /*
+
         sorter(maze, 2, 1, 1, print);
         sorter(maze, 2, 2, 1, print);
-        */
 
     }
     deleteMaze(maze);

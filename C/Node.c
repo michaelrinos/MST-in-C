@@ -31,6 +31,8 @@ Node * copy_node(Node * other){
     node->marked = other->marked;
     node->predSet = other->predSet;
     if (node->predSet) node->predecessor = copy_node(other->predecessor);
+    else if (other->predecessor != NULL) 
+        node->predecessor = node;
     node->nSize = 0;
     node->name = strdup(other->name);
     node->nCapacity = other->nCapacity;
