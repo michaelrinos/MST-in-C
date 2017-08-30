@@ -91,7 +91,6 @@ void generate(Maze * maze, int n, int seed, double p){
     maze->predecessors[0] = -1;
 
     for (int i = 0; i < n; i++){
-        printf("N: %d\n", n);
         char * str = malloc(sizeof(char) * MAX_NUMS);
         sprintf(str, "%d", i);
 

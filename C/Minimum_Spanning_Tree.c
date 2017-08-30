@@ -397,6 +397,8 @@ void sorter(Maze * maze, int korp, int lorm, int sort, int printEdges){
     Edge * lst;
     Edge * MST;
     Node ** temp;
+
+
     switch (korp) {
         case 1:
             switch (lorm) {
@@ -422,13 +424,13 @@ void sorter(Maze * maze, int korp, int lorm, int sort, int printEdges){
             }
             switch (sort) {
                 case 1:
-                    insertionSort(lst, length);
+                    insertionSort(lst, length-1);
                     break;
                 case 2:
-                    countSort(lst, length);
+                    countSort(lst, length-1);
                     break;
                 case 3:
-                    quickSort(lst, 0, length);
+                    quickSort(lst, 0, length-1);
                     break;
             }
             MST = kruskal(lst);
@@ -516,7 +518,7 @@ int main(int argc, const char* argv[]){
         printMatrix(maze);
         printList(maze);
         DFSInfo(maze);
-         
+        
         sorter(maze, 1, 1, 1, print);
         sorter(maze, 1, 1, 2, print);
         sorter(maze, 1, 1, 3, print);
@@ -530,7 +532,6 @@ int main(int argc, const char* argv[]){
     } else {
         printf("\nTEST: n= %d, seed=%d, p=%f\n", numbers, seed, p);
         printf("Time to generate the graph: %lu milliseconds\n\n", (endTime - startTime));
-        
         
         sorter(maze, 1, 1, 1, print);
         sorter(maze, 1, 1, 2, print);
