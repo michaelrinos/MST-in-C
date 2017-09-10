@@ -139,8 +139,6 @@ void generate(Maze * maze, int n, int seed, double p){
         canReachDFS(maze, "0");                 //Update how many nodes we can get 
                                                 //to from the first node used in 
                                                 //while check and set to count.
-        printf("COUNT EQUAL-> %d == %d\n", maze->count, n );
-        
         if (maze->count != n){
             printf("ENTERING UNTESTED TERRITORY");
             
@@ -298,3 +296,4 @@ Node ** getListNodes(Maze * maze){
     }
     return nodes;
 }
+
