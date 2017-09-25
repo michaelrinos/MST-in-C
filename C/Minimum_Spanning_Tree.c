@@ -518,7 +518,7 @@ int main(int argc, const char* argv[]){
         printMatrix(maze);
         printList(maze);
         DFSInfo(maze);
-        
+       
         sorter(maze, 1, 1, 1, print);
         sorter(maze, 1, 1, 2, print);
         sorter(maze, 1, 1, 3, print);

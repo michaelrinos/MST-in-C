@@ -38,7 +38,6 @@ Maze * create_maze(size_t size){
 }
 
 void deleteMaze(Maze * maze){
-    free(maze->predecessors);
     for (size_t i = 0; i < maze->mSize; i++){
         free(maze->matrix[i]);
     }
@@ -87,8 +86,6 @@ void canReachDFS(Maze * maze, char * start){
 
 void generate(Maze * maze, int n, int seed, double p){
     maze->pSize = n;
-    maze->predecessors = (int *)malloc(sizeof(int) * maze->pSize);
-    maze->predecessors[0] = -1;
 
     for (int i = 0; i < n; i++){
         char * str = malloc(sizeof(char) * MAX_NUMS);
