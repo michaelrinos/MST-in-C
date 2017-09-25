@@ -105,7 +105,7 @@ void generate(Maze * maze, int n, int seed, double p){
                 if (i == j) continue;
                 double r = (double) rand() / RAND_MAX;
                 if (r <= p){
-                    int weight = rand() % (range);
+                    int weight = rand() % (range) + 1;
                     maze->matrix[i][j] = weight;
                     maze->matrix[j][i] = weight;
 
