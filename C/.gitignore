@@ -3,6 +3,7 @@ test_table.o
 Node.o
 test_edge.o
 test_node.o
+test_maze.o
 Heap.o
 Maze.o
 table.o
@@ -14,3 +15,4 @@ test_edge
 test_heap
 test_node
 test_table
+test_maze
