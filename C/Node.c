@@ -132,15 +132,16 @@ int compareToNode(Node * a, Node * b){
 
 
 void setPred(Node * who, Node * pred){
-    if (who->predSet){
-        deleteNode(who->predecessor);
-    }
     if (compareToNode(who, pred) == 0){
         who->predecessor = pred;
         who->predSet = 0;
     }
     else{
-        who->predecessor = copy_node(pred);
+        Node * temp =copy_node(pred);
+        if (who->predSet){
+            deleteNode(who->predecessor);
+        }
+        who->predecessor = temp;
         who->predSet = 1;
     }
 }

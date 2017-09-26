@@ -175,7 +175,6 @@ Edge * kruskal(Edge * a){
     int edges = 0;
 
     Edge * MST = calloc(numbers, sizeof(Edge));
-    int size = 0;
 
     while (includedCount < numbers-1){
         Node * root1 = b[ a[edges].row ];
@@ -185,7 +184,6 @@ Edge * kruskal(Edge * a){
             printf("one of the roots is 5\n");
         }
         */
-
         if (!root1->predSet){
             setPred(root1, root1); 
         }
@@ -198,8 +196,7 @@ Edge * kruskal(Edge * a){
         root2 = find(root2);
         
         if ( compareToNode(root1, root2) != 0 ){
-            MST[size++] = a[edges];
-            includedCount+=1;
+            MST[includedCount++] = a[edges];
             Union( root1 , root2 );
         }
         edges++;
@@ -424,13 +421,13 @@ void sorter(Maze * maze, int korp, int lorm, int sort, int printEdges){
             }
             switch (sort) {
                 case 1:
-                    insertionSort(lst, length-1);
+                    insertionSort(lst, length);
                     break;
                 case 2:
-                    countSort(lst, length-1);
+                    countSort(lst, length);
                     break;
                 case 3:
-                    quickSort(lst, 0, length-1);
+                    quickSort(lst, 0, length);
                     break;
             }
             MST = kruskal(lst);
@@ -533,15 +530,15 @@ int main(int argc, const char* argv[]){
         printf("\nTEST: n= %d, seed=%d, p=%f\n", numbers, seed, p);
         printf("Time to generate the graph: %lu milliseconds\n\n", (endTime - startTime));
         
-        sorter(maze, 1, 1, 1, !print);
-        sorter(maze, 1, 1, 2, !print);
-        sorter(maze, 1, 1, 3, !print);
-        sorter(maze, 1, 2, 1, !print);
-        sorter(maze, 1, 2, 2, !print);
-        sorter(maze, 1, 2, 3, !print);
+        sorter(maze, 1, 1, 1, print);
+        sorter(maze, 1, 1, 2, print);
+        sorter(maze, 1, 1, 3, print);
+        sorter(maze, 1, 2, 1, print);
+        sorter(maze, 1, 2, 2, print);
+        sorter(maze, 1, 2, 3, print);
 
-        sorter(maze, 2, 1, 1, !print);
-        sorter(maze, 2, 2, 1, !print);
+        sorter(maze, 2, 1, 1, print);
+        sorter(maze, 2, 2, 1, print);
 
     }
     deleteMaze(maze);
