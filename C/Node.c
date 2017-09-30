@@ -56,7 +56,7 @@ void deleteNode(Node * n){
     if (n->predSet){
         //printf("Deleting %s's predecessor %s\n", n->name, n->predecessor->name);
         //printf("My name: %s\t Pred Name %s\n", n->name, n->predecessor->name);
-        deleteNode(n->predecessor);
+        //deleteNode(n->predecessor);
     }
     //printf("Neighbors have been taken care of continuing deletion of %s\n", n->name);
     free(n->neighbors);
@@ -131,17 +131,22 @@ int compareToNode(Node * a, Node * b){
 }
 
 
-void setPred(Node * who, Node * pred){
-    if (compareToNode(who, pred) == 0){
+void setPred(Node * who, Node * pred, int copy){
+    /*if (compareToNode(who, pred) == 0){
         who->predecessor = pred;
         who->predSet = 0;
-    }
-    else{
-        Node * temp =copy_node(pred);
-        if (who->predSet){
+    }*/
+    if (!copy){
+        who->predecessor = pred;
+        who->predSet = 0;
+    }else{
+        //Node * temp =copy_node(pred);
+        /*if (who->predSet){
             deleteNode(who->predecessor);
         }
         who->predecessor = temp;
+        */
+        who->predecessor = copy_node(pred);
         who->predSet = 1;
     }
 }

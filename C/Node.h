@@ -34,6 +34,6 @@ Node * copy_node(Node * other);
 void deleteNode(Node * n);
 void printNode(Node * n);
 void * putNeighbor(Node * a, Node * b, int weight);
-void setPred(Node * who, Node * pred);
+void setPred(Node * who, Node * pred, int copy);
 
 #endif

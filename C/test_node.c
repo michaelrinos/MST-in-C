@@ -60,7 +60,7 @@ int main(int argc, char * argv[]) {
 
     Node * a = init_node("a");
     Node * b = init_node("b");
-    setPred(a,b);
+    setPred(a,b, 0);
     compareToNode(a,b);
     deleteNode(a);
     printNode(b);

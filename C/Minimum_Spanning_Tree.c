@@ -177,6 +177,10 @@ Edge * kruskal(Edge * a){
     Edge * MST = calloc(numbers, sizeof(Edge));
 
     while (includedCount < numbers-1){
+        int row = a[edges].row;
+        int col = a[edges].col;
+        printf("row %d Col %d\n", row,col);
+    
         Node * root1 = b[ a[edges].row ];
         Node * root2 = b[ a[edges].col ];
         /* 
@@ -194,11 +198,14 @@ Edge * kruskal(Edge * a){
 
         root1 = find(root1);
         root2 = find(root2);
+
         
         if ( compareToNode(root1, root2) != 0 ){
             MST[includedCount++] = a[edges];
             Union( root1 , root2 );
         }
+        //printf("root of %s is %s\n", b[row]->name, find(root1)->name);
+        //printf("root of %s is %s\n", b[col]->name, find(root2)->name);
         edges++;
     }
 
@@ -541,8 +548,8 @@ int main(int argc, const char* argv[]){
         sorter(maze, 2, 2, 1, print);
 
     }
-    deleteMaze(maze);
 
+    deleteMaze(maze);
     
     return 0;
 }
