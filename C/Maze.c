@@ -75,7 +75,7 @@ void canReachDFS(Maze * maze, char * start){
     for (size_t i = 0; i < startNode->nSize; i++){
         if (allNeighbors[i] != NULL && allNeighbors[i]->marked == 0){
             Node * tmp = allNeighbors[i];
-            setPred(tmp, startNode);
+            setPred(tmp, startNode, 0);
             canReachDFS(maze, tmp->name);
         }
     }
@@ -129,7 +129,7 @@ void generate(Maze * maze, int n, int seed, double p){
         }
         Node * zeroNode = get(maze->graph, "0");
         Node * invalidNode = init_node( "-1");
-        setPred(zeroNode, invalidNode);
+        setPred(zeroNode, invalidNode, 1);
         deleteNode(invalidNode);
 
         //set the predecessor of 0 as -1

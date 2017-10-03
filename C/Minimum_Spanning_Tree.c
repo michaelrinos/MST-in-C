@@ -123,7 +123,7 @@ Node * find(Node * p) {
     Node * pp = p->predecessor;
     if (compareToNode(p, pp) != 0 ){          //!(p.equals( p.getp() ) )
         Node * daPred = find(pp);
-        setPred(p, daPred);
+        setPred(p, daPred, 0);
     }
     return p->predecessor;
 }
@@ -143,9 +143,9 @@ void Union(Node * u, Node * v) {
     Node * j = find(v);
 
     if (i->rank > j->rank) {
-        setPred(j, i);
+        setPred(j, i, 0);
     } else {
-        setPred(i, j);
+        setPred(i, j, 0);
         //i->predecessor = j;
         if (i->rank == j->rank) {
             j->rank = j->rank + 1;
@@ -177,10 +177,6 @@ Edge * kruskal(Edge * a){
     Edge * MST = calloc(numbers, sizeof(Edge));
 
     while (includedCount < numbers-1){
-        int row = a[edges].row;
-        int col = a[edges].col;
-        printf("row %d Col %d\n", row,col);
-    
         Node * root1 = b[ a[edges].row ];
         Node * root2 = b[ a[edges].col ];
         /* 
@@ -189,11 +185,11 @@ Edge * kruskal(Edge * a){
         }
         */
         if (!root1->predSet){
-            setPred(root1, root1); 
+            setPred(root1, root1, 0); 
         }
 
         if (!root2->predSet){
-            setPred(root2, root2);
+            setPred(root2, root2, 0 );
         }
 
         root1 = find(root1);
@@ -401,7 +397,7 @@ void sorter(Maze * maze, int korp, int lorm, int sort, int printEdges){
     Edge * lst;
     Edge * MST;
     Node ** temp;
-
+    int length = 0;
 
     switch (korp) {
         case 1:
@@ -419,7 +415,6 @@ void sorter(Maze * maze, int korp, int lorm, int sort, int printEdges){
                     break;
             }
             
-            int length = 0;
             for (int i = 0; i < factorial(numbers-1); i++){
                 if (lst[i].print){
                     length++;
@@ -442,26 +437,29 @@ void sorter(Maze * maze, int korp, int lorm, int sort, int printEdges){
             endTime = time(0);
             break;
         case 2:
+            startTime = time(0);
             switch (lorm){
                 case 1:
-                    startTime = time(0);
                     temp = getMatrixNodes(maze);
-                    MST = prim(temp);
-                    free(temp);
                     
                     break;
                 case 2:
-                    startTime = time(0);
                     temp = getListNodes(maze);
-                    MST = prim(temp);
-                    free(temp);
                     break;
             }
+            MST = prim(temp);
+            free(temp);
             endTime = time(0);
             break;
     }
 
     printSorts(MST, korp, lorm, sort, (endTime-startTime), printEdges);
+    if ( korp == 2 && lorm == 2){
+        printf("In HERE\n\n\n\n");
+        for (int i = 0; i < maze->count-1 ; i++){
+            //deleteNode(temp[i]);
+        }
+    }
     
     free(MST);
     //return lst;

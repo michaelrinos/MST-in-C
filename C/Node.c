@@ -29,10 +29,16 @@ Node * copy_node(Node * other){
     Node * node = malloc(sizeof(Node));
     node->rank = other->rank;
     node->marked = other->marked;
-    node->predSet = other->predSet;
-    if (node->predSet) node->predecessor = copy_node(other->predecessor);
+    /*node->predSet = delete_copies > 0 ? 2 : 0;  //lambda since 1 means that the predecessor is a
+                                                // pointer which we dont want to delete
+                                                // We specify if delete is anything other than 0
+                                                // predSet should be > 1 (in our case 2)
+    */
+    node->predSet = 0;
+    /*if (node->predSet) node->predecessor = copy_node(other->predecessor);
     else if (other->predecessor != NULL) 
         node->predecessor = node;
+    */
     node->nSize = 0;
     node->name = strdup(other->name);
     node->nCapacity = other->nCapacity;
@@ -53,10 +59,10 @@ void deleteNode(Node * n){
     //printf("\nBefore deleting checking n: %p, %d, %s\n", (void*)n, !n, n->name);
     //printf("Deleting Node %s\n", n->name);
     if ( n->print){
-    if (n->predSet){
+    if (n->predSet == 2){
         //printf("Deleting %s's predecessor %s\n", n->name, n->predecessor->name);
         //printf("My name: %s\t Pred Name %s\n", n->name, n->predecessor->name);
-        //deleteNode(n->predecessor);
+        deleteNode(n->predecessor);
     }
     //printf("Neighbors have been taken care of continuing deletion of %s\n", n->name);
     free(n->neighbors);
@@ -138,7 +144,7 @@ void setPred(Node * who, Node * pred, int copy){
     }*/
     if (!copy){
         who->predecessor = pred;
-        who->predSet = 0;
+        who->predSet = 1;
     }else{
         //Node * temp =copy_node(pred);
         /*if (who->predSet){
@@ -147,7 +153,7 @@ void setPred(Node * who, Node * pred, int copy){
         who->predecessor = temp;
         */
         who->predecessor = copy_node(pred);
-        who->predSet = 1;
+        who->predSet = 2;
     }
 }
 
